@@ -26,5 +26,10 @@ namespace Admin_App
         {
             MessageBox.Show("Hello world!!");
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Hello world!!!!");
+        }
     }
 }
