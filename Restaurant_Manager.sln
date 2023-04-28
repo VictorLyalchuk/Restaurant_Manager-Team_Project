@@ -10,6 +10,13 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data_Access_Entity", "Data_Access_Entity\Data_Access_Entity.csproj", "{E05F0923-49E1-4FDD-A089-53989CD66102}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryForServer", "LibraryForServer\LibraryForServer.csproj", "{D712934D-FCD0-4E79-A98F-9156E0268773}"
+
+=======
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waiter_App", "Waiter_App\Waiter_App.csproj", "{CB0D6BCA-0732-45E3-ADF8-53F84B17A789}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client_App", "Client_App\Client_App.csproj", "{F81B3472-3EA3-44E8-B904-A4B97C6C2BDA}"
+
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
