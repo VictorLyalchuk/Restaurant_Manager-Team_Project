@@ -103,6 +103,14 @@ namespace Waiter_Main
             orders.ShowDialog();
         }
 
+
+        private void ActiveOrderLBItem_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Orders order = new Orders();
+            this.Close();
+            order.ShowDialog();
+        }
+
         private async void SendMessage(LogicClass message)
         {
             byte[] data;
@@ -114,6 +122,7 @@ namespace Waiter_Main
             }
             await client.SendAsync(data, data.Length, serverEndPoint);
         }
+
 
 
     }

@@ -8,7 +8,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="img\back.jpg" />
+    <None Remove="img\key-icon.png" />
+    <None Remove="img\key.png" />
+    <None Remove="img\logo.png" />
+    <None Remove="img\logoicon.png" />
+    <None Remove="img\rest.png" />
+    <None Remove="img\user-icon.png" />
+    <None Remove="img\user.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="4.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Data_Access_Entity\Data_Access_Entity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="img\back.jpg" />
+    <Resource Include="img\key.png" />
+    <Resource Include="img\logo.png" />
+    <Resource Include="img\logoicon.png" />
+    <Resource Include="img\rest.png" />
+    <Resource Include="img\user.png" />
   </ItemGroup>
 
 </Project>
