@@ -19,6 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Data_Access_Entity\Data_Access_Entity.csproj" />
+    <ProjectReference Include="..\LibraryForServer\LibraryForServer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="img\back.jpg" />
     <Resource Include="img\logo.png" />
     <Resource Include="img\logoicon.png" />
