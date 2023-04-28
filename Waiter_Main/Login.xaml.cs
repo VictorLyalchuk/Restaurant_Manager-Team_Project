@@ -93,9 +93,13 @@ namespace Waiter_App
         {
             if (username.SelectedItem != null) usersurname.IsEnabled = true;
             else { usersurname.IsEnabled = false; return; }
-            Waiter waiter = restaurantContext.Waiters.Where(x => x.FirstName == username.SelectedItem.ToString()).FirstOrDefault()!;
+            var waiter = restaurantContext.Waiters.Where(x => x.FirstName == username.SelectedItem.ToString())!;
             usersurname.Items.Clear();
-            usersurname.Items.Add(waiter.SurName);
+            foreach (var item in waiter)
+            {
+                usersurname.Items.Add(item.SurName);
+            }
+            
 
         }
     }
