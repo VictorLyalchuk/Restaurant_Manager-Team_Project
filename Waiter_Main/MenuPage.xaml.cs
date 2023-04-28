@@ -81,6 +81,11 @@ namespace Waiter_Main
             orders.ShowDialog();
         }
 
-
+        private void ActiveOrderLBItem_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Orders order = new Orders();
+            this.Close();
+            order.ShowDialog();
+        }
     }
 }

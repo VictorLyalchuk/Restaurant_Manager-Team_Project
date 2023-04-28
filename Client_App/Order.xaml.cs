@@ -12,17 +12,16 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Client_App
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Order.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Order : Window
     {
-        public MainWindow()
+        public Order()
         {
             InitializeComponent();
         }
@@ -39,7 +38,6 @@ namespace Client_App
         {
             WindowInteropHelper helper = new WindowInteropHelper(this);
             SendMessage(helper.Handle, 161, 2, 0);
-
         }
 
         private void pnlControlBar_MouseEnter(object sender, MouseEventArgs e)
@@ -68,7 +66,7 @@ namespace Client_App
 
         #endregion
 
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             Menu menu = new Menu();
             this.Close();

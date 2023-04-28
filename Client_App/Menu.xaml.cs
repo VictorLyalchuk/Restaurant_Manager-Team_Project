@@ -12,17 +12,16 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Client_App
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Menu.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Menu : Window
     {
-        public MainWindow()
+        public Menu()
         {
             InitializeComponent();
         }
@@ -57,7 +56,9 @@ namespace Client_App
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            MainWindow login = new MainWindow();
+            this.Close();
+            login.ShowDialog();
         }
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
@@ -66,13 +67,14 @@ namespace Client_App
             else this.WindowState = WindowState.Normal;
         }
 
+
         #endregion
 
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        private void OpenCatalogueBtn_Click(object sender, RoutedEventArgs e)
         {
-            Menu menu = new Menu();
+            Order order = new Order();
             this.Close();
-            menu.ShowDialog();
+            order.ShowDialog();
         }
     }
 }
