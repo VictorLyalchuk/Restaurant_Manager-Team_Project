@@ -21,7 +21,6 @@ class RestaurantServer
     }
     private LogicClass ConvertFromBytes(byte[] data)
     {
-
         using (var memStream = new MemoryStream())
         {
             try

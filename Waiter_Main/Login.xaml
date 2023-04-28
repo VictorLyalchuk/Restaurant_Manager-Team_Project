@@ -191,7 +191,14 @@
                              Height="28"
                              VerticalContentAlignment="Center"
                              Margin="0,5,0,0"
+
                              Padding="20,0,0,0">
+
+
+                             Padding="20,0,0,0"
+                                 
+                             SelectionChanged="username_SelectionChanged">
+                        
 
                     </ComboBox>
 
@@ -213,7 +220,8 @@
                              Height="28"
                              VerticalContentAlignment="Center"
                              Margin="0,5,0,0"
-                             Padding="20,0,0,0">
+                             Padding="20,0,0,0"
+                             IsEnabled="False">
                     </ComboBox>
 
                     <Button x:Name="btnLogin"                          
