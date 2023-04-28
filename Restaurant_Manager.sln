@@ -7,11 +7,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Admin_App", "Admin_App\Admi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server_App", "Server_App\Server_App.csproj", "{E15BBA1D-7436-4025-A2F5-BB00DAEF61CC}"
 EndProject
+
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryForServer", "LibraryForServer\LibraryForServer.csproj", "{D712934D-FCD0-4E79-A98F-9156E0268773}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Waiter_App", "Waiter_Main\Waiter_App.csproj", "{7A0C6BBE-D663-49AC-9FA8-DE34E504E6E1}"
+
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data_Access_Entity", "Data_Access_Entity\Data_Access_Entity.csproj", "{E05F0923-49E1-4FDD-A089-53989CD66102}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryForServer", "LibraryForServer\LibraryForServer.csproj", "{D712934D-FCD0-4E79-A98F-9156E0268773}"
 
-=======
+
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Waiter_App", "Waiter_App\Waiter_App.csproj", "{CB0D6BCA-0732-45E3-ADF8-53F84B17A789}"
 EndProject
@@ -40,6 +45,10 @@ Global
 		{D712934D-FCD0-4E79-A98F-9156E0268773}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D712934D-FCD0-4E79-A98F-9156E0268773}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D712934D-FCD0-4E79-A98F-9156E0268773}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A0C6BBE-D663-49AC-9FA8-DE34E504E6E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A0C6BBE-D663-49AC-9FA8-DE34E504E6E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A0C6BBE-D663-49AC-9FA8-DE34E504E6E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A0C6BBE-D663-49AC-9FA8-DE34E504E6E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
