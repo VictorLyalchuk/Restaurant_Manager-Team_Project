@@ -15,17 +15,39 @@ using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
 using Waiter_App;
+using System.Net.Sockets;
+using System.Net;
+using System.Configuration;
+using LibraryForServer;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Waiter_Main
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window
     {
+        static int WaiterID;
+        IPEndPoint serverEndPoint;
+        UdpClient client;
         public MainWindow()
         {
             InitializeComponent();
+            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+        }
+        public MainWindow(int Id)
+        {
+            InitializeComponent();
+            WaiterID = Id;
+
+            #region Connect to server
+            client = new UdpClient();
+            string serverAddress = ConfigurationManager.AppSettings["ServerAddress"]!;
+            short serverPort = short.Parse(ConfigurationManager.AppSettings["ServerPort"]!);
+            serverEndPoint = new IPEndPoint(IPAddress.Parse(serverAddress), serverPort);
+            SendMessage(new LogicClass { Function = "$JOIN", Id = WaiterID });
+            #endregion
+
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
         }
 
@@ -79,6 +101,18 @@ namespace Waiter_Main
             Orders orders = new Orders();
             this.Close();
             orders.ShowDialog();
+        }
+
+        private async void SendMessage(LogicClass message)
+        {
+            byte[] data;
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (var ms = new MemoryStream())
+            {
+                formatter.Serialize(ms, message);
+                data = ms.ToArray();
+            }
+            await client.SendAsync(data, data.Length, serverEndPoint);
         }
 
 

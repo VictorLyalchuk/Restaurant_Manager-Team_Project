@@ -1,4 +1,6 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using Data_Access_Entity;
+using Data_Access_Entity.Entities;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +26,18 @@ namespace Waiter_App
     /// </summary>
     public partial class Login : Window
     {
+        RestaurantContext restaurantContext = new RestaurantContext();
         public Login()
         {
             InitializeComponent();
+            var waiter = restaurantContext.Waiters;
+            foreach (var waiterItem in waiter) 
+            {
+                username.Items.Add(waiterItem.FirstName);
+                usersurname.Items.Add(waiterItem.SurName);
+            }
         }
+
         #region adaptive borderless-window react
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -72,9 +82,21 @@ namespace Waiter_App
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow menu = new MainWindow();
+            Waiter waiter = restaurantContext.Waiters.Where(x => x.FirstName == username.SelectedItem.ToString() && 
+                                                            x.SurName == usersurname.SelectedItem.ToString()).FirstOrDefault()!;
+            MainWindow menu = new MainWindow(waiter.ID);
             this.Close();
             menu.ShowDialog();
+        }
+
+        private void username_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (username.SelectedItem != null) usersurname.IsEnabled = true;
+            else { usersurname.IsEnabled = false; return; }
+            Waiter waiter = restaurantContext.Waiters.Where(x => x.FirstName == username.SelectedItem.ToString()).FirstOrDefault()!;
+            usersurname.Items.Clear();
+            usersurname.Items.Add(waiter.SurName);
+
         }
     }
 }
