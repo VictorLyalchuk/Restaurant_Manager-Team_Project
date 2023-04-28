@@ -1,4 +1,5 @@
 ﻿using Data_Access_Entity.Entities;
+using Data_Access_Entity.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data_Access_Entity
@@ -25,6 +26,12 @@ namespace Data_Access_Entity
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            
+            modelBuilder.SeedAdmins();
+            modelBuilder.SeedCategories();
+            modelBuilder.SeedProducts();
+            modelBuilder.SeedWaiters();
+            modelBuilder.SeedTables();
 
             modelBuilder.Entity<Product>().HasOne(p => p.Category).WithMany(c => c.Products).HasForeignKey(p => p.CategoryId);
             modelBuilder.Entity<ProductOrder>().HasKey(po => new {po.OrderId, po.ProductId});
