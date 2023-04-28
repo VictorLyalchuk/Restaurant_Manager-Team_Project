@@ -100,7 +100,6 @@ namespace Waiter_App
                 usersurname.Items.Add(item.SurName);
             }
             
-
         }
     }
 }
