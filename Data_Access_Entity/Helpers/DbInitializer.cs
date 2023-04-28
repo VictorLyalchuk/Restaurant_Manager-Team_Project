@@ -25,42 +25,37 @@ namespace Data_Access_Entity.Helpers
                 new Category()
                 {
                     ID = 1,
-                    Name = "Entrees",
+                    Name = "Appetizer",
                 },
                 new Category()
                 {
                     ID = 2,
-                    Name = "Soup",
+                    Name = "Main Dishes",
                 },
                 new Category()
                 {
                     ID = 3,
-                    Name = "Salad",
-                },
-                new Category()
-                {
-                    ID = 4,
-                    Name = "Dishes",
-                },
-                new Category()
-                {
-                    ID = 5,
                     Name = "Pizza",
                 },
                 new Category()
                 {
-                    ID = 6,
-                    Name = "Drinks",
+                    ID = 4,
+                    Name = "Sushi",
                 },
                 new Category()
                 {
-                    ID = 7,
+                    ID = 5,
+                    Name = "Burgers",
+                },
+                new Category()
+                {
+                    ID = 6,
                     Name = "Desserts",
                 },
                 new Category()
                 {
-                    ID = 8,
-                    Name = "Ice Cream",
+                    ID = 7,
+                    Name = "Drinks",
                 },
             });
         }
