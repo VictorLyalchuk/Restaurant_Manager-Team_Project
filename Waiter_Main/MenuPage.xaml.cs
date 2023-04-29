@@ -108,6 +108,8 @@ namespace Waiter_Main
             this.Close();
             orders.ShowDialog();
         }
+
+        #region Function For Server_App
         private async void SendMessage(LogicClassToWaiters message)
         {
             byte[] data;
@@ -128,10 +130,11 @@ namespace Waiter_Main
                 {
                     byte[] data = client.Receive(ref serverEndPoint);
                     MessageBox.Show("Accepted");
-                    LogicClassToOrders logic = (LogicClassToOrders)ConvertFromBytes(data);
+                    LogicClass logic = (LogicClass)ConvertFromBytes(data);
                     if (logic.Function == "$ADDORDER")
                     {
-                        Order order = logic.Order;
+                        LogicClassToOrders classToOrders = (LogicClassToOrders)logic;
+                        Order order = classToOrders.Order;
                         Application.Current.Dispatcher.Invoke(() =>
                         {
                             MessageBox.Show($"ID : {order.ID}\nWaiter ID : {order.Waiter}");
@@ -160,7 +163,7 @@ namespace Waiter_Main
                 }
             }
         }
-
+        #endregion
 
     }
 }
