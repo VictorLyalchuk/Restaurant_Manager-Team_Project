@@ -90,9 +90,10 @@ namespace Client_App
         {
             Data_Access_Entity.Entities.Order order = new Data_Access_Entity.Entities.Order() { ID = 1, Active = true, OrderDate = DateTime.Now, WaiterId = 1 };
             SendMessage(new LogicClassToOrders { Function = "$ADDORDER", Order = order });
-            //Listen();
+            //ListenAsync();
         }
-        private async void SendMessage(LogicClassToOrders message)
+        #region Function For Server
+        private async void SendMessage(object message)
         {
             byte[] data;
             BinaryFormatter formatter = new BinaryFormatter();
@@ -103,5 +104,38 @@ namespace Client_App
             }
             await client.SendAsync(data, data.Length, serverEndPoint);
         }
+        async void ListenAsync()
+        {
+            await Task.Run(() => {
+
+                while (true)
+                {
+                    byte[] data = client.Receive(ref serverEndPoint);
+                    MessageBox.Show("Accepted");
+                    LogicClass logic = (LogicClass)ConvertFromBytes(data);
+                }
+
+            });
+        }
+        public object ConvertFromBytes(byte[] data)
+        {
+            using (var memStream = new MemoryStream())
+            {
+                try
+                {
+                    var binForm = new BinaryFormatter();
+                    memStream.Write(data, 0, data.Length);
+                    memStream.Seek(0, SeekOrigin.Begin);
+                    object obj = binForm.Deserialize(memStream);
+                    return obj;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+            }
+        }
+        #endregion
     }
 }

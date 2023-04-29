@@ -21,7 +21,7 @@ class RestaurantServer
         Waiters.Add(new WaitersIp { Id = id, Ip = memberm });
         Console.WriteLine($@" {clientIPEndPoint} Waiter was added, Id : {id}");
     }
-    private async void SendMessage(LogicClassToOrders message, IPEndPoint waiter)
+    private async void SendMessage(object message, IPEndPoint waiter)
     {
         byte[] data;
         BinaryFormatter formatter = new BinaryFormatter();
