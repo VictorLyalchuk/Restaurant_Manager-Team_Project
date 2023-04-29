@@ -214,6 +214,7 @@
                             FontSize="12"
                             FontFamily="Montserrat"
                             Cursor="Hand"
+                            Click="AddOrder_Click"
                             Style="{StaticResource designBtn}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom" Margin="10,10,10,0" >
                         <Button.Template>
                             <ControlTemplate TargetType="Button">

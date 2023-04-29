@@ -21,6 +21,7 @@ using System.Configuration;
 using LibraryForServer;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Data_Access_Entity.Entities;
 
 namespace Waiter_Main
 {
@@ -30,25 +31,24 @@ namespace Waiter_Main
         static int WaiterID;
         IPEndPoint serverEndPoint;
         UdpClient client;
+
         public MainWindow()
         {
             InitializeComponent();
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
         }
-        public MainWindow(int Id)
+        public MainWindow(int Id) : this()
         {
-            InitializeComponent();
             WaiterID = Id;
-
             #region Connect to server
             client = new UdpClient();
             string serverAddress = ConfigurationManager.AppSettings["ServerAddress"]!;
             short serverPort = short.Parse(ConfigurationManager.AppSettings["ServerPort"]!);
             serverEndPoint = new IPEndPoint(IPAddress.Parse(serverAddress), serverPort);
-            SendMessage(new LogicClass { Function = "$JOIN", Id = WaiterID });
+            SendMessage(new LogicClassToWaiters { Function = "$WAITERJOIN",Id = WaiterID});
+            ListenAsync();
             #endregion
 
-            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
         }
 
         #region adaptive borderless-window react
@@ -102,16 +102,13 @@ namespace Waiter_Main
             this.Close();
             orders.ShowDialog();
         }
-
-
         private void ActiveOrderLBItem_DoubleClick(object sender, MouseButtonEventArgs e)
         {
-            Orders order = new Orders();
+            Orders orders = new Orders();
             this.Close();
-            order.ShowDialog();
+            orders.ShowDialog();
         }
-
-        private async void SendMessage(LogicClass message)
+        private async void SendMessage(LogicClassToWaiters message)
         {
             byte[] data;
             BinaryFormatter formatter = new BinaryFormatter();
@@ -123,6 +120,46 @@ namespace Waiter_Main
             await client.SendAsync(data, data.Length, serverEndPoint);
         }
 
+         async void ListenAsync()
+         {
+            await Task.Run(() => {
+
+                while (true)
+                {
+                    byte[] data = client.Receive(ref serverEndPoint);
+                    MessageBox.Show("Accepted");
+                    LogicClassToOrders logic = (LogicClassToOrders)ConvertFromBytes(data);
+                    if (logic.Function == "$ADDORDER")
+                    {
+                        Order order = logic.Order;
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            MessageBox.Show($"ID : {order.ID}\nWaiter ID : {order.Waiter}");
+                        });
+                    }
+                }
+
+            });
+        }
+        public object ConvertFromBytes(byte[] data)
+        {
+            using (var memStream = new MemoryStream())
+            {
+                try
+                {
+                    var binForm = new BinaryFormatter();
+                    memStream.Write(data, 0, data.Length);
+                    memStream.Seek(0, SeekOrigin.Begin);
+                    object obj = binForm.Deserialize(memStream);
+                    return obj;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+            }
+        }
 
 
     }

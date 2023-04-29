@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,17 +15,28 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Configuration;
+using LibraryForServer;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+
 
 namespace Client_App
 {
-    /// <summary>
-    /// Interaction logic for Order.xaml
-    /// </summary>
+
     public partial class Order : Window
     {
+        IPEndPoint serverEndPoint;
+        UdpClient client;
         public Order()
         {
             InitializeComponent();
+            #region Connect to server
+            client = new UdpClient();
+            string serverAddress = ConfigurationManager.AppSettings["ServerAddress"]!;
+            short serverPort = short.Parse(ConfigurationManager.AppSettings["ServerPort"]!);
+            serverEndPoint = new IPEndPoint(IPAddress.Parse(serverAddress), serverPort);
+            #endregion
         }
         #region adaptive borderless-window react
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -71,6 +84,24 @@ namespace Client_App
             Menu menu = new Menu();
             this.Close();
             menu.ShowDialog();
+        }
+
+        private void AddOrder_Click(object sender, RoutedEventArgs e)
+        {
+            Data_Access_Entity.Entities.Order order = new Data_Access_Entity.Entities.Order() { ID = 1, Active = true, OrderDate = DateTime.Now, WaiterId = 1 };
+            SendMessage(new LogicClassToOrders { Function = "$ADDORDER", Order = order });
+            //Listen();
+        }
+        private async void SendMessage(LogicClassToOrders message)
+        {
+            byte[] data;
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (var ms = new MemoryStream())
+            {
+                formatter.Serialize(ms, message);
+                data = ms.ToArray();
+            }
+            await client.SendAsync(data, data.Length, serverEndPoint);
         }
     }
 }

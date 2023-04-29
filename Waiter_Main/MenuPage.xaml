@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Waiter_Main"
         mc:Ignorable="d"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"    
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         FontFamily="Courier New"
+        
          WindowStartupLocation="CenterScreen"
         Title="MainWindow" MinWidth="650" MinHeight="450" Height="550" Width="800" WindowStyle="None"
         Background="Transparent" AllowsTransparency="True" ResizeMode="CanResizeWithGrip"  Icon="img\logoicon.png">
@@ -206,10 +207,11 @@
                                 <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
                             </LinearGradientBrush>
                         </Border.BorderBrush>
-                        <ListBox HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="30,20,20,10">
+                        <ListBox HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="30,20,20,10" >
+
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <WrapPanel IsItemsHost="True" />
+                                    <WrapPanel IsItemsHost="True"/>
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
 
