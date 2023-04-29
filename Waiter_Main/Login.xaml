@@ -194,12 +194,6 @@
 
                              Padding="20,0,0,0">
 
-
-                             Padding="20,0,0,0"
-                                 
-                             SelectionChanged="username_SelectionChanged">
-                        
-
                     </ComboBox>
 
                     <TextBlock Text="Surname"
