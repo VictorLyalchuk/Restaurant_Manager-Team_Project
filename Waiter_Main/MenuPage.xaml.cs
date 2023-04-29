@@ -137,7 +137,7 @@ namespace Waiter_Main
                         Order order = classToOrders.Order;
                         Application.Current.Dispatcher.Invoke(() =>
                         {
-                            MessageBox.Show($"ID : {order.ID}\nWaiter ID : {order.Waiter}");
+                            MessageBox.Show($"ID : {order.ID}\nWaiter ID : {order.WaiterId}\nDate : {order.OrderDate}\nActive : {order.Active}");
                         });
                     }
                 }
