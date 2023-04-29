@@ -123,7 +123,6 @@ namespace Data_Access_Entity.Helpers
                 {
                     ID = 1,
                     WaiterId = 1
-                    
                 },
                 new Table()
                 {
