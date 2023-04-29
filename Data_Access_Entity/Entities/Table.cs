@@ -5,6 +5,6 @@
         public int ID { get; set; }
         public int WaiterId { get; set; }
         public Waiter Waiter { get; set; }
-
+        public bool Active { get; set; }
     }
 }
