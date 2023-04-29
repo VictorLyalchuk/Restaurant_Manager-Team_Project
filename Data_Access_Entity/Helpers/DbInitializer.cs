@@ -122,52 +122,62 @@ namespace Data_Access_Entity.Helpers
                 new Table()
                 {
                     ID = 1,
-                    WaiterId = 1
+                    WaiterId = 1,
+                    Active = true
                 },
                 new Table()
                 {
                     ID = 2,
-                    WaiterId = 1
+                    WaiterId = 1,
+                    Active = true
                 },
                 new Table()
                 {
                     ID = 3,
-                    WaiterId = 1
+                    WaiterId = 1,
+                    Active = true
                 },
                 new Table()
                 {
                     ID = 4,
-                    WaiterId = 2
+                    WaiterId = 2,
+                    Active = true
                 },
                 new Table()
                 {
                     ID = 5,
-                    WaiterId = 2
+                    WaiterId = 2,
+                    Active = true
                 },
                 new Table()
                 {
                     ID = 6,
-                    WaiterId = 3
+                    WaiterId = 3,
+                    Active = true
                 },
                 new Table()
                 {
                     ID = 7,
-                    WaiterId = 3
+                    WaiterId = 3,
+                    Active = true
                 },
                 new Table()
                 {
                     ID = 8,
-                    WaiterId = 4
+                    WaiterId = 4,
+                    Active = true
                 },
                 new Table()
                 {
                     ID = 9,
-                    WaiterId = 4
+                    WaiterId = 4,
+                    Active = true
                 },
                 new Table()
                 {
                     ID = 10,
-                    WaiterId = 5
+                    WaiterId = 5,
+                    Active = true
                 },
             });
         }
