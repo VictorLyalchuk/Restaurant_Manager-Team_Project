@@ -2,6 +2,7 @@
 
 namespace Data_Access_Entity.Entities
 {
+    [Serializable]
     public class Waiter
     {
         public int ID { get; set; }

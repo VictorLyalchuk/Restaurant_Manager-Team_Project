@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data_Access_Entity\Data_Access_Entity.csproj" />
+    <ProjectReference Include="..\LibraryForServer\LibraryForServer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
