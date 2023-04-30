@@ -87,7 +87,7 @@
                             </LinearGradientBrush>
                         </Border.BorderBrush>
                         <ListBox Name="CheckOrdersLB" VerticalAlignment="Top" Margin="5" FontFamily="Segoe UI">
-                            <ListBoxItem Content="• Client at table 2 needs check" />
+                            <ListBoxItem Content="• Client at table 2 needs check" MouseDoubleClick="ListBoxCheck_MouseDoubleClick"/>
                         </ListBox>
                     </Border>
                 </Grid>

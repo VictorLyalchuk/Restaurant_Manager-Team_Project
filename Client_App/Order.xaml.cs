@@ -19,6 +19,7 @@ using System.Configuration;
 using LibraryForServer;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using Data_Access_Entity.Entities;
 
 
 namespace Client_App
@@ -36,6 +37,7 @@ namespace Client_App
             string serverAddress = ConfigurationManager.AppSettings["ServerAddress"]!;
             short serverPort = short.Parse(ConfigurationManager.AppSettings["ServerPort"]!);
             serverEndPoint = new IPEndPoint(IPAddress.Parse(serverAddress), serverPort);
+            //client.Client.Bind(serverEndPoint);
             #endregion
         }
         #region adaptive borderless-window react
@@ -86,11 +88,11 @@ namespace Client_App
             menu.ShowDialog();
         }
 
-        private void AddOrder_Click(object sender, RoutedEventArgs e)
+        private void Order_Click(object sender, RoutedEventArgs e)
         {
             Data_Access_Entity.Entities.Order order = new Data_Access_Entity.Entities.Order() { ID = 1, Active = true, OrderDate = DateTime.Now, WaiterId = 1 };
             SendMessage(new LogicClassToOrders { Function = "$ADDORDER", Order = order });
-            //ListenAsync();
+
         }
         #region Function For Server
         private async void SendMessage(object message)
@@ -111,8 +113,14 @@ namespace Client_App
                 while (true)
                 {
                     byte[] data = client.Receive(ref serverEndPoint);
-                    MessageBox.Show("Accepted");
-                    LogicClass logic = (LogicClass)ConvertFromBytes(data);
+                    LogicClass message = (LogicClass)ConvertFromBytes(data);
+
+                    if (message.Function == "$SENDMESSAGE_TO_CLIENT")
+                    {
+                        LogicClassToCheck logic = (LogicClassToCheck)message;
+                        MessageBox.Show($"-----------------YOUR CHECK-----------------\nOrder ID : {logic.OrderId}\nWaiter ID : {logic.Order.WaiterId}\nOrderDate : {logic.Order.OrderDate}");
+
+                    }    
                 }
 
             });
@@ -137,5 +145,15 @@ namespace Client_App
             }
         }
         #endregion
+
+        private void Accept_Click(object sender, RoutedEventArgs e)
+        {
+            //В поле ID - Записується Order.Id
+            SendMessage(new LogicClassToRecipient { Function = "$CLIENTJOIN", Id = 10 });
+            ListenAsync();
+
+            SendMessage(new LogicClassToCheck { Function = "$SENDMESSAGE_TO_WAITER", Message="Table 5 need check",RecipientId = 1, OrderId = 10 });
+
+        }
     }
 }
