@@ -45,7 +45,7 @@ namespace Waiter_Main
             string serverAddress = ConfigurationManager.AppSettings["ServerAddress"]!;
             short serverPort = short.Parse(ConfigurationManager.AppSettings["ServerPort"]!);
             serverEndPoint = new IPEndPoint(IPAddress.Parse(serverAddress), serverPort);
-            SendMessage(new LogicClassToWaiters { Function = "$WAITERJOIN",Id = WaiterID});
+            SendMessage(new LogicClassToRecipient { Function = "$WAITERJOIN",Id = WaiterID});
             ListenAsync();
             #endregion
 
@@ -110,7 +110,7 @@ namespace Waiter_Main
         }
 
         #region Function For Server_App
-        private async void SendMessage(LogicClassToWaiters message)
+        private async void SendMessage(object message)
         {
             byte[] data;
             BinaryFormatter formatter = new BinaryFormatter();
@@ -129,8 +129,8 @@ namespace Waiter_Main
                 while (true)
                 {
                     byte[] data = client.Receive(ref serverEndPoint);
-                    MessageBox.Show("Accepted");
                     LogicClass logic = (LogicClass)ConvertFromBytes(data);
+
                     if (logic.Function == "$ADDORDER")
                     {
                         LogicClassToOrders classToOrders = (LogicClassToOrders)logic;
@@ -139,6 +139,17 @@ namespace Waiter_Main
                         {
                             MessageBox.Show($"ID : {order.ID}\nWaiter ID : {order.WaiterId}\nDate : {order.OrderDate}\nActive : {order.Active}");
                         });
+                    }
+                    else if (logic.Function == "$SENDMESSAGE_TO_WAITER")
+                    {
+                        LogicClassToCheck logicClassToCheck = (LogicClassToCheck)logic;
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            MessageBox.Show($"Order ID : {logicClassToCheck.OrderId}\nRecepient ID : {logicClassToCheck.RecipientId}\nMessage : {logicClassToCheck.Message}");
+                        });
+                        //Після цьго моменту воно мало би додаватися в колекцію а саме в ListBox, але я щось не зміг налашутвати її, нехотів міняти XAML який писав Артем
+                        //Після чого можна було б зробити DOUBLE CLICK на ListBox повідомлення про чек, і воно надсилає чек нашому клієнту по полю logicClassToCheck.RecepientId
+                        //перед цим це поле - logicClassToCheck.RecepientId,  труба було б змінити на Order.Id
                     }
                 }
 
@@ -165,5 +176,16 @@ namespace Waiter_Main
         }
         #endregion
 
+        private void ListBoxCheck_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            //Це імітація того що ніби то в колекцію додалося повідомлення про чек
+            //В цій колекції будуть зберігатися Id нашого замовленя яке потрібно повернути чеком
+            //Ми нажали на нього два рази, запускається такий код :
+            //Нижче наше замовлення
+            Order order = new Order() { ID = 10, Active = true, OrderDate = DateTime.Now, WaiterId = 1 };
+            SendMessage(new LogicClassToCheck { Function = "$SENDMESSAGE_TO_CLIENT", OrderId = order.ID, RecipientId = order.ID, Order = order});
+            //Надіслали наш об'єкт на сервер
+
+        }
     }
 }

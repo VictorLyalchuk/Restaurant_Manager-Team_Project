@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server_App
+namespace LibraryForServer
 {
-    public class WaitersIp
+    [Serializable]
+    public class LogicClassToRecipient : LogicClass
     {
         public int Id { get; set; }
-        public IPEndPoint Ip { get; set; }
     }
 }

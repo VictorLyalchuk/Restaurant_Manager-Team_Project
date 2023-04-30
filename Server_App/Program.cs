@@ -7,19 +7,26 @@ using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 RestaurantServer restaurantServer = new RestaurantServer();
 restaurantServer.Start();
 class RestaurantServer
 {
     const short port = 4040;
-    HashSet<WaitersIp> Waiters = new HashSet<WaitersIp>();
+    HashSet<RecipientIp> Waiters = new HashSet<RecipientIp>();
+    HashSet<RecipientIp> Clients = new HashSet<RecipientIp>();
     UdpClient server = new UdpClient(port);
     IPEndPoint clientIPEndPoint = null;
     private void AddWaiter(IPEndPoint memberm, int id)
     {
-        Waiters.Add(new WaitersIp { Id = id, Ip = memberm });
+        Waiters.Add(new RecipientIp { Id = id, Ip = memberm });
         Console.WriteLine($@" {clientIPEndPoint} Waiter was added, Id : {id}");
+    }
+    private void AddClient(IPEndPoint memberm, int id)
+    {
+        Clients.Add(new RecipientIp { Id = id, Ip = memberm });
+        Console.WriteLine($@" {clientIPEndPoint} Client was added, Id : {id}");
     }
     private async void SendMessage(object message, IPEndPoint waiter)
     {
@@ -53,29 +60,61 @@ class RestaurantServer
     }
     public void Start()
     {
-        Console.WriteLine("Server started");
-        while (true)
+        try
         {
-            byte[] data = server.Receive(ref clientIPEndPoint);
-            LogicClass waiter = (LogicClass)ConvertFromBytes(data);
-
-            if (waiter.Function == "$WAITERJOIN")
+            Console.WriteLine("Server started");
+            while (true)
             {
-                LogicClassToWaiters logic = (LogicClassToWaiters)waiter;
-                AddWaiter(clientIPEndPoint, logic.Id);
-            }
-            else if (waiter.Function == "$ADDORDER")
-            {
-                LogicClassToOrders logic = (LogicClassToOrders)waiter;
-                Console.WriteLine(logic.Order.ID.ToString() + " " + logic.Order.OrderDate);
-                Order order = logic.Order;
-                IPEndPoint CuurentWaiter = null;
-                foreach (var item in Waiters)
-                    if (item.Id == order.WaiterId)
-                        CuurentWaiter = item.Ip;
-                SendMessage(new LogicClassToOrders { Function = "$ADDORDER", Order = order }, CuurentWaiter!);
-            }
+                byte[] data = server.Receive(ref clientIPEndPoint);
+                LogicClass waiter = (LogicClass)ConvertFromBytes(data);
 
+                if (waiter.Function == "$WAITERJOIN")
+                {
+                    LogicClassToRecipient logic = (LogicClassToRecipient)waiter;
+                    AddWaiter(clientIPEndPoint, logic.Id);
+                }
+                else if (waiter.Function == "$CLIENTJOIN")
+                {
+                    LogicClassToRecipient logic = (LogicClassToRecipient)waiter;
+                    AddClient(clientIPEndPoint, logic.Id);
+                }
+                else if (waiter.Function == "$ADDORDER")
+                {
+                    LogicClassToOrders logic = (LogicClassToOrders)waiter;
+                    //Console.WriteLine(logic.Order.ID.ToString() + " " + logic.Order.OrderDate);
+                    Order order = logic.Order;
+                    IPEndPoint CuurentWaiter = null;
+                    foreach (var item in Waiters)
+                        if (item.Id == order.WaiterId)
+                            CuurentWaiter = item.Ip;
+                    SendMessage(new LogicClassToOrders { Function = "$ADDORDER", Order = order }, CuurentWaiter!);
+                }
+                else if (waiter.Function == "$SENDMESSAGE_TO_WAITER")
+                {
+                    LogicClassToCheck logic = (LogicClassToCheck)waiter;
+                    //Console.WriteLine(logic.Message);
+                    IPEndPoint CuurentWaiter = null;
+                    foreach (var item in Waiters)
+                        if (item.Id == logic.RecipientId)
+                            CuurentWaiter = item.Ip;
+                    SendMessage(logic, CuurentWaiter!);
+                }
+                else if(waiter.Function == "$SENDMESSAGE_TO_CLIENT")
+                {
+                    LogicClassToCheck logic = (LogicClassToCheck)waiter;
+                    //Console.WriteLine("Object was sended to CLIENT with ID : " + logic.RecipientId);
+                    IPEndPoint CuurentClient = null;
+                    foreach (var item in Clients)
+                        if (item.Id == logic.RecipientId)
+                            CuurentClient = item.Ip;
+                    SendMessage(logic, CuurentClient!);
+                }
+            }
         }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
     }
 }

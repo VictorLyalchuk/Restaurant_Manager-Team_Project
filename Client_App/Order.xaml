@@ -169,6 +169,7 @@
                             FontFamily="Montserrat"
                             Cursor="Hand"
                             VerticalAlignment="Bottom"
+                            Click="Order_Click"
                             Style="{StaticResource designBtn}" Grid.Row="2" Margin="10,10,10,0" >
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
@@ -188,6 +189,7 @@
                             FontFamily="Montserrat"
                             Cursor="Hand"
                             VerticalAlignment="Top"
+                            Click="Accept_Click"
                             Style="{StaticResource designBtn2}" Grid.Row="3" Margin="10,5,10,10"  >
 
                         <Button.Template>
@@ -214,7 +216,6 @@
                             FontSize="12"
                             FontFamily="Montserrat"
                             Cursor="Hand"
-                            Click="AddOrder_Click"
                             Style="{StaticResource designBtn}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Bottom" Margin="10,10,10,0" >
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
