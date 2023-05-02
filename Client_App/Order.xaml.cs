@@ -90,7 +90,7 @@ namespace Client_App
 
         private void Order_Click(object sender, RoutedEventArgs e)
         {
-            Data_Access_Entity.Entities.Order order = new Data_Access_Entity.Entities.Order() { ID = 1, Active = true, OrderDate = DateTime.Now, WaiterId = 1 };
+            Data_Access_Entity.Entities.Order order = new Data_Access_Entity.Entities.Order() { ID = 1, Active = true, OrderDate = DateTime.Now, WaiterId = 1,TableId = 1 };
             SendMessage(new LogicClassToOrders { Function = "$ADDORDER", Order = order, Msg = "• Client at table 1 made order" });
 
         }
@@ -152,7 +152,7 @@ namespace Client_App
             SendMessage(new LogicClassToRecipient { Function = "$CLIENTJOIN", Id = 10 });
             ListenAsync();
 
-            SendMessage(new LogicClassToCheck { Function = "$SENDMESSAGE_TO_WAITER", TableID = 1,RecipientId = 1, OrderId = 10 });
+            SendMessage(new LogicClassToCheck { Function = "$SENDMESSAGE_TO_WAITER", TableID = 1, RecipientId = 1, OrderId = 10 });
 
         }
     }

@@ -225,7 +225,8 @@
                             FontFamily="Montserrat"
                             Cursor="Hand"
                             VerticalAlignment="Bottom" HorizontalAlignment="Left"
-                            Style="{StaticResource designBtn}" Grid.Row="0" >
+                            Style="{StaticResource designBtn}" Grid.Row="0" 
+                            Click="ServeMe_Click">
                             <Button.Template>
                                 <ControlTemplate TargetType="Button">
                                     <Border Width="150" Height="60"
