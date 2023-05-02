@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Data_Access_Entity;
+using Data_Access_Entity.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Waiter_Main;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Waiter_App
 {
@@ -22,9 +26,11 @@ namespace Waiter_App
     /// </summary>
     public partial class Orders : Window
     {
+        RestaurantContext restaurantContext = new RestaurantContext();
         public Orders()
         {
             InitializeComponent();
+            GetCategoriesToComboBOx();
         }
         #region adaptive borderless-window react
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -56,7 +62,7 @@ namespace Waiter_App
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            System.Windows.Application.Current.Shutdown();
         }
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
@@ -73,6 +79,40 @@ namespace Waiter_App
             this.Close();
             menu.ShowDialog();
         }
+        private void GetCategoriesToComboBOx()
+        {
+            try
+            {
+                var categories = restaurantContext.Categories;
+                foreach (var item in categories)
+                {
+                    ComboBoxCategories.Items.Add(item.Name);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void ComboBoxCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                ListBoxProductsFromMenu.Items.Clear();
+                Category selectedCategory = restaurantContext.Categories.FirstOrDefault(a => a.Name == (string)ComboBoxCategories.SelectedValue);
+                var products = restaurantContext.Products;
+                foreach (var item in products)
+                {
+                    if (item.CategoryId == selectedCategory.ID)
+                    {
+                        ListBoxProductsFromMenu.Items.Add(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
-
 }

@@ -201,12 +201,12 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <ComboBox Margin="40,0,40,0" Grid.Column="1"></ComboBox>
-                    <ListBox Grid.Row="1" Margin="40,0,40,0" Grid.Column="1">
-                        <ListBoxItem>• Sprite</ListBoxItem>
+                    <ComboBox Name="ComboBoxCategories" Margin="40,0,40,0" Grid.Column="1" SelectionChanged="ComboBoxCategories_SelectionChanged"></ComboBox>
+                    <ListBox Name="ListBoxProductsFromMenu" Grid.Row="1" Margin="40,0,40,0" Grid.Column="1">
+                        <!--<ListBoxItem>• Sprite</ListBoxItem>
                         <ListBoxItem>• Fanta</ListBoxItem>
                         <ListBoxItem>• Cola</ListBoxItem>
-                        <ListBoxItem>• Pepsi</ListBoxItem>
+                        <ListBoxItem>• Pepsi</ListBoxItem>-->
                     </ListBox>
                     <Button BorderThickness="0"
                             Content="ADD"

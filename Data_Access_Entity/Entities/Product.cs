@@ -11,5 +11,9 @@ namespace Data_Access_Entity.Entities
         public Category Category { get; set; }
         public ICollection<ProductOrder>? ProductsOrders { get; set; }
         public double Price { get; set; }
+        public override string ToString()
+        {
+            return $"{Name}";
+        }
     }
 }
