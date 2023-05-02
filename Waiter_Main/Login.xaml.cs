@@ -30,12 +30,7 @@ namespace Waiter_App
         public Login()
         {
             InitializeComponent();
-            var waiter = restaurantContext.Waiters;
-            foreach (var waiterItem in waiter) 
-            {
-                username.Items.Add(waiterItem.FirstName);
-                usersurname.Items.Add(waiterItem.SurName);
-            }
+            GetAccount();
         }
 
         #region adaptive borderless-window react
@@ -99,8 +94,15 @@ namespace Waiter_App
             {
                 usersurname.Items.Add(item.SurName);
             }
-            
-
+        }
+        private void GetAccount()
+        {
+            var waiter = restaurantContext.Waiters;
+            foreach (var waiterItem in waiter)
+            {
+                username.Items.Add(waiterItem.FirstName);
+                usersurname.Items.Add(waiterItem.SurName);
+            }
         }
     }
 }
