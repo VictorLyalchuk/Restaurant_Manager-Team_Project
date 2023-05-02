@@ -11,5 +11,6 @@ namespace LibraryForServer
     public class LogicClassToOrders : LogicClass
     {
         public Order Order { get; set; }
+        public string Msg { get; set; }
     }
 }

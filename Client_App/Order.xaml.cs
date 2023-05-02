@@ -91,7 +91,7 @@ namespace Client_App
         private void Order_Click(object sender, RoutedEventArgs e)
         {
             Data_Access_Entity.Entities.Order order = new Data_Access_Entity.Entities.Order() { ID = 1, Active = true, OrderDate = DateTime.Now, WaiterId = 1 };
-            SendMessage(new LogicClassToOrders { Function = "$ADDORDER", Order = order });
+            SendMessage(new LogicClassToOrders { Function = "$ADDORDER", Order = order, Msg = "• Client at table 1 made order" });
 
         }
         #region Function For Server
@@ -118,7 +118,7 @@ namespace Client_App
                     if (message.Function == "$SENDMESSAGE_TO_CLIENT")
                     {
                         LogicClassToCheck logic = (LogicClassToCheck)message;
-                        MessageBox.Show($"-----------------YOUR CHECK-----------------\nOrder ID : {logic.OrderId}\nWaiter ID : {logic.Order.WaiterId}\nOrderDate : {logic.Order.OrderDate}");
+                        MessageBox.Show($"-----------------YOUR CHECK-----------------\nOrder ID : {logic.Order.ID}\nWaiter ID : {logic.Order.WaiterId}\nOrderDate : {logic.Order.OrderDate}");
 
                     }    
                 }
@@ -152,7 +152,7 @@ namespace Client_App
             SendMessage(new LogicClassToRecipient { Function = "$CLIENTJOIN", Id = 10 });
             ListenAsync();
 
-            SendMessage(new LogicClassToCheck { Function = "$SENDMESSAGE_TO_WAITER", Message="Table 5 need check",RecipientId = 1, OrderId = 10 });
+            SendMessage(new LogicClassToCheck { Function = "$SENDMESSAGE_TO_WAITER", TableID = 1,RecipientId = 1, OrderId = 10 });
 
         }
     }

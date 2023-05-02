@@ -22,6 +22,7 @@ using LibraryForServer;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Data_Access_Entity.Entities;
+using Waiter_App.ViewModel_Models;
 
 namespace Waiter_Main
 {
@@ -32,6 +33,7 @@ namespace Waiter_Main
         IPEndPoint serverEndPoint;
         UdpClient client;
 
+        ViewModel viewModel = new ViewModel();
         public MainWindow()
         {
             InitializeComponent();
@@ -48,6 +50,9 @@ namespace Waiter_Main
             SendMessage(new LogicClassToRecipient { Function = "$WAITERJOIN",Id = WaiterID});
             ListenAsync();
             #endregion
+
+            DataContext = viewModel;
+
 
         }
 
@@ -137,7 +142,8 @@ namespace Waiter_Main
                         Order order = classToOrders.Order;
                         Application.Current.Dispatcher.Invoke(() =>
                         {
-                            MessageBox.Show($"ID : {order.ID}\nWaiter ID : {order.WaiterId}\nDate : {order.OrderDate}\nActive : {order.Active}");
+                            viewModel.AddInNew(new StringClass() { Message = classToOrders.Msg });
+                            MessageBox.Show($"ID : {order.ID}\nWaiter ID : {order.WaiterId}\nDate : {order.OrderDate}\nActive : {order.Active}\n Message : {classToOrders.Msg}");
                         });
                     }
                     else if (logic.Function == "$SENDMESSAGE_TO_WAITER")
@@ -145,9 +151,8 @@ namespace Waiter_Main
                         LogicClassToCheck logicClassToCheck = (LogicClassToCheck)logic;
                         Application.Current.Dispatcher.Invoke(() =>
                         {
-                            MessageBox.Show($"Order ID : {logicClassToCheck.OrderId}\nRecepient ID : {logicClassToCheck.RecipientId}\nMessage : {logicClassToCheck.Message}");
+                            viewModel.AddInReceipts(new IDClass { TableId = logicClassToCheck.TableID, OrderID = logicClassToCheck.OrderId });
                         });
-                        //Після цьго моменту воно мало би додаватися в колекцію а саме в ListBox, але я щось не зміг налашутвати її, нехотів міняти XAML який писав Артем
                         //Після чого можна було б зробити DOUBLE CLICK на ListBox повідомлення про чек, і воно надсилає чек нашому клієнту по полю logicClassToCheck.RecepientId
                         //перед цим це поле - logicClassToCheck.RecepientId,  труба було б змінити на Order.Id
                     }
@@ -178,13 +183,10 @@ namespace Waiter_Main
 
         private void ListBoxCheck_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //Це імітація того що ніби то в колекцію додалося повідомлення про чек
-            //В цій колекції будуть зберігатися Id нашого замовленя яке потрібно повернути чеком
-            //Ми нажали на нього два рази, запускається такий код :
-            //Нижче наше замовлення
+            var Table = viewModel.SelectedRecepient.TableId;
+
             Order order = new Order() { ID = 10, Active = true, OrderDate = DateTime.Now, WaiterId = 1 };
-            SendMessage(new LogicClassToCheck { Function = "$SENDMESSAGE_TO_CLIENT", OrderId = order.ID, RecipientId = order.ID, Order = order});
-            //Надіслали наш об'єкт на сервер
+            SendMessage(new LogicClassToCheck { Function = "$SENDMESSAGE_TO_CLIENT", RecipientId = order.ID, Order = order});
 
         }
     }

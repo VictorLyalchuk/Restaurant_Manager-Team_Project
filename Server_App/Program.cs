@@ -87,7 +87,7 @@ class RestaurantServer
                     foreach (var item in Waiters)
                         if (item.Id == order.WaiterId)
                             CuurentWaiter = item.Ip;
-                    SendMessage(new LogicClassToOrders { Function = "$ADDORDER", Order = order }, CuurentWaiter!);
+                    SendMessage(new LogicClassToOrders { Function = "$ADDORDER", Order = order, Msg = logic.Msg }, CuurentWaiter!);
                 }
                 else if (waiter.Function == "$SENDMESSAGE_TO_WAITER")
                 {

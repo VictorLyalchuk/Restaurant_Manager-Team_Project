@@ -65,9 +65,16 @@
                              
                             </LinearGradientBrush>
                         </Border.BorderBrush>
-                        <ListBox Name="NewOrdersLB" Grid.Row="1" VerticalAlignment="Top" Margin="5" FontFamily="Segoe UI">
-                            <ListBoxItem Content="• Client at table 1 made order" />
-                            <ListBoxItem Content="• Client at table 2 made order" />
+                        <ListBox Name="NewOrdersLB" Grid.Row="1" VerticalAlignment="Top" Margin="5" FontFamily="Segoe UI" Height="105" ItemsSource="{Binding New}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <TextBlock Text="{Binding Message}"></TextBlock>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <!--<ListBoxItem Content="• Client at table 1 made order" />
+                            <ListBoxItem Content="• Client at table 2 made order" />-->
                         </ListBox>
                     </Border>
                     <Border CornerRadius="0" BorderThickness="1" Grid.Row="3" Margin="10,0,10,10">
@@ -86,8 +93,16 @@
                                 <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
                             </LinearGradientBrush>
                         </Border.BorderBrush>
-                        <ListBox Name="CheckOrdersLB" VerticalAlignment="Top" Margin="5" FontFamily="Segoe UI">
-                            <ListBoxItem Content="• Client at table 2 needs check" MouseDoubleClick="ListBoxCheck_MouseDoubleClick"/>
+                        <ListBox Name="CheckOrdersLB" VerticalAlignment="Top" Margin="5" FontFamily="Segoe UI" Height="95" 
+                                 ItemsSource="{Binding Receipts}" SelectedItem="{Binding SelectedRecepient, Mode=TwoWay}" MouseDoubleClick="ListBoxCheck_MouseDoubleClick">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <TextBlock>• Client at table <Run Text="{Binding TableId}"></Run> needs check</TextBlock>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <!--<ListBoxItem Content="• Client at table 2 needs check" MouseDoubleClick="ListBoxCheck_MouseDoubleClick"/>-->
                         </ListBox>
                     </Border>
                 </Grid>
