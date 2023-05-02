@@ -103,7 +103,46 @@ namespace Waiter_App
 
         private void Add_Button_Click(object sender, RoutedEventArgs e)
         {
+            var thisorder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId.ToString() == ComboBoxTables.SelectedValue);
+            Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
 
+            if (thisorder == null)
+            {
+                restaurantContext.ProductsOrders.Add(new ProductOrder
+                {
+                    OrderId = thisorder.ID,
+                    ProductId = selectedvalue.ID
+                });
+            }
+            else
+            {
+                restaurantContext.Orders.Add(new Order
+                {
+                    Active = false,
+                    OrderDate = DateTime.Now,
+                    TableId = (int)ComboBoxTables.SelectedValue,
+                    WaiterId = 1 // Connect Waiter
+                });
+
+                var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.WaiterId == (int)ComboBoxTables.SelectedValue);
+                restaurantContext.ProductsOrders.Add(new ProductOrder
+                {
+                    OrderId = newOrder.ID,
+                    ProductId = selectedvalue.ID
+                });
+            }
+            ListBoxProductsFromOrderByTableNumber.Items.Clear();
+
+            Order thisorderTwo = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId.ToString() == ComboBoxTables.SelectedValue);
+
+
+
+
+            foreach (var item in restaurantContext.ProductsOrders)
+            {
+                if (item.OrderId == thisorderTwo.ID)
+                    ListBoxProductsFromOrderByTableNumber.Items.Add(restaurantContext.Products.FirstOrDefault(a => a.ID == item.ProductId));
+            }
         }
 
         private void ComboBoxTables_SelectionChanged(object sender, SelectionChangedEventArgs e)
