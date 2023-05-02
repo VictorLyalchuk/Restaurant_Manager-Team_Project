@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Data_Access_Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,17 +16,30 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Configuration;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using Data_Access_Entity.Entities;
+using LibraryForServer;
 
 namespace Client_App
 {
-    /// <summary>
-    /// Interaction logic for Menu.xaml
-    /// </summary>
     public partial class Menu : Window
     {
+        RestaurantContext restaurantContext = new RestaurantContext();
+
+        IPEndPoint serverEndPoint;
+        UdpClient client;
+
         public Menu()
         {
             InitializeComponent();
+            #region Connect to server
+            client = new UdpClient();
+            string serverAddress = ConfigurationManager.AppSettings["ServerAddress"]!;
+            short serverPort = short.Parse(ConfigurationManager.AppSettings["ServerPort"]!);
+            serverEndPoint = new IPEndPoint(IPAddress.Parse(serverAddress), serverPort);
+            #endregion
         }
         #region adaptive borderless-window react
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -75,6 +91,45 @@ namespace Client_App
             Order order = new Order();
             this.Close();
             order.ShowDialog();
+        }
+
+        #region Function For Server
+        private async void SendMessage(object message)
+        {
+            byte[] data;
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (var ms = new MemoryStream())
+            {
+                formatter.Serialize(ms, message);
+                data = ms.ToArray();
+            }
+            await client.SendAsync(data, data.Length, serverEndPoint);
+        }
+        #endregion
+
+        private void ServeMe_Click(object sender, RoutedEventArgs e)
+        {
+            int TableId = 0;
+            int RecepientId = 0;
+            var Tables = restaurantContext.Tables;
+            foreach (var item in Tables)
+            {
+                if (item.Active == true)
+                {
+                    TableId = item.ID;
+                    RecepientId = item.WaiterId;
+                    break;
+                }
+            }
+            
+            if(TableId == 0)
+            {
+                MessageBox.Show("Sorry, all seats are taken");
+                return;
+            };
+            //MessageBox.Show($"W : {RecepientId}\t T : {TableId}");
+            SendMessage(new LogicClassToMessage() { Function = "$SENDMESSAGE", RecipientId = RecepientId, Message = $"• Client at table {TableId} needs waiter" });
+
         }
     }
 }

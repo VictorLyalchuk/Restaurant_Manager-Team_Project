@@ -143,7 +143,8 @@ namespace Waiter_Main
                         Application.Current.Dispatcher.Invoke(() =>
                         {
                             viewModel.AddInNew(new StringClass() { Message = classToOrders.Msg });
-                            MessageBox.Show($"ID : {order.ID}\nWaiter ID : {order.WaiterId}\nDate : {order.OrderDate}\nActive : {order.Active}\n Message : {classToOrders.Msg}");
+                            if(order != null) 
+                                MessageBox.Show($"ID : {order.ID}\nWaiter ID : {order.WaiterId}\nDate : {order.OrderDate}\nActive : {order.Active}\n Message : {classToOrders.Msg}");
                         });
                     }
                     else if (logic.Function == "$SENDMESSAGE_TO_WAITER")
@@ -155,6 +156,14 @@ namespace Waiter_Main
                         });
                         //Після чого можна було б зробити DOUBLE CLICK на ListBox повідомлення про чек, і воно надсилає чек нашому клієнту по полю logicClassToCheck.RecepientId
                         //перед цим це поле - logicClassToCheck.RecepientId,  труба було б змінити на Order.Id
+                    }
+                    else if (logic.Function == "$SENDMESSAGE")
+                    {
+                        LogicClassToMessage logicClassToMessage = (LogicClassToMessage)logic;
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            viewModel.AddInNew(new StringClass { Message = logicClassToMessage.Message });
+                        });
                     }
                 }
 
