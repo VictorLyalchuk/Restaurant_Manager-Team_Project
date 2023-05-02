@@ -12,7 +12,7 @@ namespace LibraryForServer
     {
         public int RecipientId { get; set; }
         public int OrderId { get; set; }
-        public string Message { get; set; }
+        public int TableID { get; set; }
         public Order Order { get; set; }
     }
 }
