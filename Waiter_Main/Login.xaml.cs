@@ -80,6 +80,7 @@ namespace Waiter_App
             Waiter waiter = restaurantContext.Waiters.Where(x => x.FirstName == username.SelectedItem.ToString() && 
                                                             x.SurName == usersurname.SelectedItem.ToString()).FirstOrDefault()!;
             MainWindow menu = new MainWindow(waiter.ID);
+            User.ID = waiter.ID;
             this.Close();
             menu.ShowDialog();
         }

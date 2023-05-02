@@ -3,6 +3,7 @@ using PropertyChanged;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using Waiter_App.ViewModel_Models;
 
 namespace Waiter_App
@@ -76,6 +77,5 @@ namespace Waiter_App
         {
             _Receipts.Clear();
         }
-    } 
-
+    }
 }

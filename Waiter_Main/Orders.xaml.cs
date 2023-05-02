@@ -108,38 +108,43 @@ namespace Waiter_App
         {
             try
             {
-                Order thisorder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId.ToString() == ComboBoxTables.SelectedValue);
-                Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
-
-                if (thisorder != null)
+                if (ComboBoxTables.SelectedValue != null && ListBoxProductsFromMenu.SelectedItem != null)
                 {
-                    restaurantContext.ProductsOrders.Add(new ProductOrder
+                    Order thisorder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId.ToString() == ComboBoxTables.SelectedValue);
+                    Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
+
+                    if (thisorder != null)
                     {
-                        OrderId = thisorder.ID,
-                        ProductId = selectedvalue.ID
-                    });
-                    restaurantContext.SaveChanges();
+                        restaurantContext.ProductsOrders.Add(new ProductOrder
+                        {
+                            OrderId = thisorder.ID,
+                            ProductId = selectedvalue.ID
+                        });
+                        restaurantContext.SaveChanges();
+                    }
+                    else
+                    {
+                        restaurantContext.Orders.Add(new Order
+                        {
+                            Active = false,
+                            OrderDate = DateTime.Now,
+                            TableId = (int)ComboBoxTables.SelectedValue,
+                            WaiterId = User.ID
+                        });
+                        restaurantContext.SaveChanges();
+
+                        var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.TableId == (int)ComboBoxTables.SelectedValue);
+                        restaurantContext.ProductsOrders.Add(new ProductOrder
+                        {
+                            OrderId = newOrder.ID,
+                            ProductId = selectedvalue.ID
+                        });
+                        restaurantContext.SaveChanges();
+                    }
+                    GetOrderItems();
                 }
                 else
-                {
-                    restaurantContext.Orders.Add(new Order
-                    {
-                        Active = false,
-                        OrderDate = DateTime.Now,
-                        TableId = (int)ComboBoxTables.SelectedValue,
-                        WaiterId = 1 // Connect Waiter
-                    });
-                    restaurantContext.SaveChanges();
-
-                    var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.TableId == (int)ComboBoxTables.SelectedValue);
-                    restaurantContext.ProductsOrders.Add(new ProductOrder
-                    {
-                        OrderId = newOrder.ID,
-                        ProductId = selectedvalue.ID
-                    });
-                    restaurantContext.SaveChanges();
-                }
-                GetOrderItems();
+                    MessageBox.Show($@"PLease, make your choise first");
             }
             catch (Exception ex)
             {
@@ -191,13 +196,16 @@ namespace Waiter_App
         {
             ListBoxProductsFromOrderByTableNumber.Items.Clear();
             Order thisorderTwo = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
-            List<Product> res = (List<Product>)restaurantContext.ProductsOrders.Include(a => a.Product).Where(a => a.OrderId == thisorderTwo.ID).Select(a => a.Product).ToList();
-            List<Product> Show = new List<Product>();
-            foreach (var item in res)
-                Show.Add(item);
-            foreach (var item in Show)
-                ListBoxProductsFromOrderByTableNumber.Items.Add(item);
-            ListBoxProductsFromOrderByTableNumber.Items.Refresh();
+            if (thisorderTwo != null)
+            {
+                List<Product> res = (List<Product>)restaurantContext.ProductsOrders.Include(a => a.Product).Where(a => a.OrderId == thisorderTwo.ID).Select(a => a.Product).ToList();
+                List<Product> Show = new List<Product>();
+                foreach (var item in res)
+                    Show.Add(item);
+                foreach (var item in Show)
+                    ListBoxProductsFromOrderByTableNumber.Items.Add(item);
+                ListBoxProductsFromOrderByTableNumber.Items.Refresh();
+            }
         }
     }
 }
