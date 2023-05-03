@@ -24,13 +24,13 @@ using Data_Access_Entity;
 
 namespace Client_App
 {
-    public partial class Order : Window
+    public partial class Orders : Window
     {
         ViewModel ViewModel = new ViewModel();
         RestaurantContext restaurantContext = new RestaurantContext();
         IPEndPoint serverEndPoint;
         UdpClient client;
-        public Order()
+        public Orders()
         {
             InitializeComponent();
             DbToViewModel();
@@ -200,7 +200,7 @@ namespace Client_App
                             Active = false,
                             OrderDate = DateTime.Now,
                             TableId = (int)ComboBoxTables.SelectedValue,
-                            WaiterId = User.ID
+                            WaiterId = TableId.RecepientId
                         });
                         restaurantContext.SaveChanges();
                         var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
@@ -210,7 +210,7 @@ namespace Client_App
                             Active = false,
                             OrderDate = DateTime.Now,
                             TableId = (int)ComboBoxTables.SelectedValue,
-                            //WaiterId = User.ID
+                            WaiterId = TableId.RecepientId
                         });
                         ViewModel.AddInProductOrder(new ProductOrder
                         {
@@ -257,10 +257,8 @@ namespace Client_App
         {
             try
             {
-                foreach (var item in ViewModel.Table)
-                {
-                    ComboBoxTables.Items.Add(item.ID);
-                }
+                ComboBoxTables.Items.Add(TableId.tableId);
+                ComboBoxTables.SelectedValue = TableId.tableId;
             }
             catch (Exception ex)
             {

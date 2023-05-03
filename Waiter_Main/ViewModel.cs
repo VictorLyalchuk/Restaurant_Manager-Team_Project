@@ -136,5 +136,21 @@ namespace Waiter_App
             }
             return arr;
         }
+        public void SetOrders(IEnumerable<Order> orders)
+        {
+            ClearInOrders();
+            foreach (var item in orders)
+            {
+                AddInOrders(item);
+            }
+        }
+        public void SetProductOrder(IEnumerable<ProductOrder> productorder)
+        {
+            ClearInProductOrders();
+            foreach (var item in productorder)
+            {
+                AddInProductOrder(item);
+            }
+        }
     }
 }
