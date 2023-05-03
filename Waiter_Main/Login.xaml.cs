@@ -34,7 +34,6 @@ namespace Waiter_App
             GetWaiter();
             GetAccount();
         }
-
         #region adaptive borderless-window react
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {

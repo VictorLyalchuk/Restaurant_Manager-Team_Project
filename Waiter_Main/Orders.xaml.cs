@@ -105,7 +105,6 @@ namespace Waiter_App
                 MessageBox.Show(ex.Message);
             }
         }
-
         private void Add_Button_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -213,7 +212,6 @@ namespace Waiter_App
                     ListBoxProductsFromOrderByTableNumber.Items.Add(item);
             }
         }
-
         private void GetProducts()
         {
             try

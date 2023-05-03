@@ -1,4 +1,6 @@
-﻿namespace Data_Access_Entity.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Data_Access_Entity.Entities
 {
     [Serializable]
     public class Order

@@ -4,9 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using Waiter_App.ViewModel_Models;
 
-namespace Waiter_App
+namespace Client_App
 {
     [AddINotifyPropertyChangedInterface]
     class ViewModel
@@ -135,22 +134,6 @@ namespace Waiter_App
                 if (item.OrderId == OrederId) arr.Add(item.ProductId);
             }
             return arr;
-        }
-        public void SetOrders(IEnumerable<Order> orders)
-        {
-            ClearInOrders();
-            foreach (var item in orders)
-            {
-                AddInOrders(item);
-            }
-        }
-        public void SetProductOrder(IEnumerable<ProductOrder> productorder)
-        {
-            ClearInProductOrders();
-            foreach (var item in productorder)
-            {
-                AddInProductOrder(item);
-            }
         }
     }
 }

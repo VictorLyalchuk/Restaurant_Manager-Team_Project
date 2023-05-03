@@ -34,6 +34,7 @@ namespace Client_App
         public Menu()
         {
             InitializeComponent();
+            GenerateTable();
             #region Connect to server
             client = new UdpClient();
             string serverAddress = ConfigurationManager.AppSettings["ServerAddress"]!;
@@ -88,7 +89,7 @@ namespace Client_App
 
         private void OpenCatalogueBtn_Click(object sender, RoutedEventArgs e)
         {
-            Order order = new Order();
+            Orders order = new Orders();
             this.Close();
             order.ShowDialog();
         }
@@ -109,27 +110,28 @@ namespace Client_App
 
         private void ServeMe_Click(object sender, RoutedEventArgs e)
         {
-            int TableId = 0;
-            int RecepientId = 0;
-            var Tables = restaurantContext.Tables;
-            foreach (var item in Tables)
-            {
-                if (item.Active == true)
-                {
-                    TableId = item.ID;
-                    RecepientId = item.WaiterId;
-                    break;
-                }
-            }
-            
-            if(TableId == 0)
+            if(TableId.tableId == 0)
             {
                 MessageBox.Show("Sorry, all seats are taken");
                 return;
             };
             //MessageBox.Show($"W : {RecepientId}\t T : {TableId}");
-            SendMessage(new LogicClassToMessage() { Function = "$SENDMESSAGE", RecipientId = RecepientId, Message = $"• Client at table {TableId} needs waiter" });
-
+            SendMessage(new LogicClassToMessage() { Function = "$SENDMESSAGE", RecipientId = TableId.RecepientId, Message = $"• Client at table {TableId.tableId} needs waiter" });
+        }
+        private void GenerateTable()
+        { 
+            //int TableId = 0;
+            //int RecepientId = 0;
+            var Tables = restaurantContext.Tables;
+            foreach (var item in Tables)
+            {
+                if (item.Active == true)
+                {
+                    TableId.tableId = item.ID;
+                    TableId.RecepientId = item.WaiterId;
+                    break;
+                }
+            }
         }
     }
 }

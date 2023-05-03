@@ -26,18 +26,17 @@ using Waiter_App.ViewModel_Models;
 
 namespace Waiter_Main
 {
-
     public partial class MainWindow : Window
     {
         static int WaiterID;
         IPEndPoint serverEndPoint;
         UdpClient client;
-
         ViewModel viewModel = new ViewModel();
         public MainWindow()
         {
             InitializeComponent();
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            DataContext = viewModel;
         }
         public MainWindow(int Id) : this()
         {
@@ -50,12 +49,13 @@ namespace Waiter_Main
             SendMessage(new LogicClassToRecipient { Function = "$WAITERJOIN",Id = WaiterID});
             ListenAsync();
             #endregion
-
-            DataContext = viewModel;
-
-
         }
+/*        public MainWindow(ICollection<Order> orders, ICollection<ProductOrder> productorder) : this()
+        {
+            viewModel.SetOrders(orders);
+            viewModel.SetProductOrder(productorder);
 
+        }*/
         #region adaptive borderless-window react
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
