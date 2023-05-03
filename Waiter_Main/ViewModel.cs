@@ -12,21 +12,26 @@ namespace Waiter_App
     class ViewModel
     {
         private ObservableCollection<Order> _Orders;
+        private ObservableCollection<Product> _Product;
+        private ObservableCollection<ProductOrder> _ProductOrder;
         private ObservableCollection<StringClass> _New;
         private ObservableCollection<StringClass> _Update;
         private ObservableCollection<IDClass> _Receipts;
         public ViewModel()
         {
             _Orders = new ObservableCollection<Order>();
+            _Product = new ObservableCollection<Product>();
+            _ProductOrder = new ObservableCollection<ProductOrder>();
             _New = new ObservableCollection<StringClass>();
             _Update = new ObservableCollection<StringClass>();
             _Receipts = new ObservableCollection<IDClass>();
         }
         public IEnumerable<Order> Orders => _Orders;
+        public IEnumerable<Product> Product => _Product;
+        public IEnumerable<ProductOrder> ProductOrder => _ProductOrder;
         public IEnumerable<StringClass> New => _New;
         public IEnumerable<StringClass> Update => _Update;
         public IEnumerable<IDClass> Receipts => _Receipts;
-
         public Order SelectedOrder { get; set; }
         public IDClass SelectedRecepient { get; set; }
         public void AddInOrders(Order order)
@@ -40,6 +45,30 @@ namespace Waiter_App
         public void ClearInOrders()
         {
             _Orders.Clear();
+        }
+        public void AddInProduct(Product product)
+        {
+            _Product.Add(product);
+        }
+        public void RemoveInProduct(Product product)
+        {
+            _Product.Remove(product);
+        }
+        public void ClearInProduct()
+        {
+            _Product.Clear();
+        }
+        public void AddInProductOrder(ProductOrder productorder)
+        {
+            _ProductOrder.Add(productorder);
+        }
+        public void RemoveInProductOrder(ProductOrder productorder)
+        {
+            _ProductOrder.Remove(productorder);
+        }
+        public void ClearInProductOrders()
+        {
+            _ProductOrder.Clear();
         }
         public void AddInNew(StringClass _new)
         {
@@ -76,6 +105,15 @@ namespace Waiter_App
         public void CleareInReceipts()
         {
             _Receipts.Clear();
+        }
+        public List<int> GetProductId(int OrederId)
+        {
+            List<int> arr = new List<int>();
+            foreach (var item in _ProductOrder)
+            {
+                if (item.OrderId == OrederId) arr.Add(item.ProductId);
+            }
+            return arr;
         }
     }
 }

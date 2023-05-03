@@ -127,6 +127,9 @@ namespace Data_Access_Entity.Migrations
                     b.Property<int>("TableId")
                         .HasColumnType("int");
 
+                    b.Property<double>("TotalSum")
+                        .HasColumnType("float");
+
                     b.Property<int>("WaiterId")
                         .HasColumnType("int");
 
@@ -236,7 +239,7 @@ namespace Data_Access_Entity.Migrations
                         {
                             ID = 11,
                             CategoryId = 3,
-                            Name = "Caprese Salad",
+                            Name = "Caesar Salad",
                             Price = 12.199999999999999
                         },
                         new

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data_Access_Entity.Migrations
 {
-    public partial class _02052023_Create : Migration
+    public partial class _03052023_Create : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -84,7 +84,8 @@ namespace Data_Access_Entity.Migrations
                     OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     WaiterId = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
-                    TableId = table.Column<int>(type: "int", nullable: false)
+                    TableId = table.Column<int>(type: "int", nullable: false),
+                    TotalSum = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -188,7 +189,7 @@ namespace Data_Access_Entity.Migrations
                     { 8, 2, "Minestrone Soup", 15.5 },
                     { 9, 2, "Tom Yum Soup", 19.600000000000001 },
                     { 10, 2, "Chupe de Marisco Soup", 26.399999999999999 },
-                    { 11, 3, "Caprese Salad", 12.199999999999999 },
+                    { 11, 3, "Caesar Salad", 12.199999999999999 },
                     { 12, 3, "Greek Salad", 15.0 },
                     { 13, 3, "Waldorf Salad", 11.4 },
                     { 14, 3, "Caprese Salad", 15.5 },

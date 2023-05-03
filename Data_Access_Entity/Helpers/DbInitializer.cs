@@ -259,7 +259,7 @@ namespace Data_Access_Entity.Helpers
                 {
                     ID = 11,
                     CategoryId = 3,
-                    Name = "Caprese Salad",
+                    Name = "Caesar Salad",
                     Price = 12.2
 
                 },
