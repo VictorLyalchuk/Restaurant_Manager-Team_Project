@@ -254,7 +254,8 @@ namespace Waiter_App
                 var tables = restaurantContext.Tables;
                 foreach (var item in tables)
                 {
-                    ViewModel.AddInTable(item);
+                    if(item.WaiterId == User.ID)
+                        ViewModel.AddInTable(item);
                 }
             }
             catch (Exception ex)
