@@ -34,6 +34,9 @@ namespace Waiter_App
         public Orders()
         {
             InitializeComponent();
+
+            DbToViewModel();
+
             GetCategoriesToComboBox();
             GetTablesToComboBox();
             DataContext = ViewModel;
@@ -91,9 +94,8 @@ namespace Waiter_App
             try
             {
                 ListBoxProductsFromMenu.Items.Clear();
-                Category selectedCategory = restaurantContext.Categories.FirstOrDefault(a => a.Name == (string)ComboBoxCategories.SelectedValue);
-                var products = restaurantContext.Products;
-                foreach (var item in products)
+                Category selectedCategory = ViewModel.Category.FirstOrDefault(a => a.Name == (string)ComboBoxCategories.SelectedValue);
+                foreach (var item in ViewModel.Product)
                 {
                     if (item.CategoryId == selectedCategory.ID)
                     {
@@ -113,7 +115,7 @@ namespace Waiter_App
             {
                 if (ComboBoxTables.SelectedValue != null && ListBoxProductsFromMenu.SelectedItem != null)
                 {
-                    Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId.ToString() == ComboBoxTables.SelectedValue);
+                    Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
                     Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
 
                     if (thisorder != null)
@@ -134,7 +136,6 @@ namespace Waiter_App
                             WaiterId = User.ID
                         });
                         restaurantContext.SaveChanges();
-
                         var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
                         ViewModel.AddInOrders(new Order
                         {
@@ -144,7 +145,6 @@ namespace Waiter_App
                             TableId = (int)ComboBoxTables.SelectedValue,
                             WaiterId = User.ID
                         });
-
                         ViewModel.AddInProductOrder(new ProductOrder
                         {
                             OrderId = newOrder.ID,
@@ -176,8 +176,7 @@ namespace Waiter_App
         {
             try
             {
-                var categories = restaurantContext.Categories;
-                foreach (var item in categories)
+                foreach (var item in ViewModel.Category)
                 {
                     ComboBoxCategories.Items.Add(item.Name);
                 }
@@ -191,8 +190,7 @@ namespace Waiter_App
         {
             try
             {
-                var categories = restaurantContext.Tables;
-                foreach (var item in categories)
+                foreach (var item in ViewModel.Table)
                 {
                     ComboBoxTables.Items.Add(item.ID);
                 }
@@ -212,13 +210,63 @@ namespace Waiter_App
                 List<Product> Show = new List<Product>();
                 foreach (var item in b)
                 {
-                    Show.Add(restaurantContext.Products.FirstOrDefault(x => x.ID == item));
-
+                    Show.Add(ViewModel.Product.FirstOrDefault(x => x.ID == item));
                 }
                 foreach (var item in Show)
                     ListBoxProductsFromOrderByTableNumber.Items.Add(item);
-                //ListBoxProductsFromOrderByTableNumber.Items.Refresh();
             }
+        }
+
+        private void GetProducts()
+        {
+            try
+            {
+                var products = restaurantContext.Products;
+                foreach (var item in products)
+                {
+                    ViewModel.AddInProduct(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void GetCategories()
+        {
+            try
+            {
+                var categories = restaurantContext.Categories;
+                foreach (var item in categories)
+                {
+                    ViewModel.AddInCategory(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void GetTables()
+        {
+            try
+            {
+                var tables = restaurantContext.Tables;
+                foreach (var item in tables)
+                {
+                    ViewModel.AddInTable(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void DbToViewModel()
+        {
+            GetCategories();
+            GetProducts();
+            GetTables();
         }
     }
 }
