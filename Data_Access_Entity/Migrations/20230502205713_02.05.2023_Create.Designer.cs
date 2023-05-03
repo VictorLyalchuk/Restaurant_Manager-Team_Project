@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access_Entity.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20230502173729_table_active")]
-    partial class table_active
+    [Migration("20230502205713_02.05.2023_Create")]
+    partial class _02052023_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -125,6 +125,9 @@ namespace Data_Access_Entity.Migrations
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("TableId")
+                        .HasColumnType("int");
 
                     b.Property<int>("WaiterId")
                         .HasColumnType("int");

@@ -159,8 +159,6 @@
 
                     <ComboBox Name="ComboBoxTables" Margin="40,0,40,0" SelectionChanged="ComboBoxTables_SelectionChanged"></ComboBox>
                     <ListBox Name="ListBoxProductsFromOrderByTableNumber" Grid.Row="1" Margin="40,0,40,0">
-                        <ListBoxItem>• Philadelphia</ListBoxItem>
-                        <ListBoxItem>• Cola</ListBoxItem>
                     </ListBox>
                     <Button BorderThickness="0"
                             Content="ORDER"

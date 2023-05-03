@@ -1,6 +1,9 @@
 ﻿using Data_Access_Entity;
 using Data_Access_Entity.Entities;
+using MaterialDesignThemes.Wpf;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -103,12 +106,61 @@ namespace Waiter_App
 
         private void Add_Button_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (ComboBoxTables.SelectedValue != null && ListBoxProductsFromMenu.SelectedItem != null)
+                {
+                    Order thisorder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId.ToString() == ComboBoxTables.SelectedValue);
+                    Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
 
+                    if (thisorder != null)
+                    {
+                        restaurantContext.ProductsOrders.Add(new ProductOrder
+                        {
+                            OrderId = thisorder.ID,
+                            ProductId = selectedvalue.ID
+                        });
+                        restaurantContext.SaveChanges();
+                    }
+                    else
+                    {
+                        restaurantContext.Orders.Add(new Order
+                        {
+                            Active = false,
+                            OrderDate = DateTime.Now,
+                            TableId = (int)ComboBoxTables.SelectedValue,
+                            WaiterId = User.ID
+                        });
+                        restaurantContext.SaveChanges();
+
+                        var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.TableId == (int)ComboBoxTables.SelectedValue);
+                        restaurantContext.ProductsOrders.Add(new ProductOrder
+                        {
+                            OrderId = newOrder.ID,
+                            ProductId = selectedvalue.ID
+                        });
+                        restaurantContext.SaveChanges();
+                    }
+                    GetOrderItems();
+                }
+                else
+                    MessageBox.Show($@"PLease, make your choise first");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
-
         private void ComboBoxTables_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            try
+            {
+                GetOrderItems();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         private void GetCategoriesToComboBox()
         {
@@ -138,6 +190,21 @@ namespace Waiter_App
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+        private void GetOrderItems()
+        {
+            ListBoxProductsFromOrderByTableNumber.Items.Clear();
+            Order thisorderTwo = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
+            if (thisorderTwo != null)
+            {
+                List<Product> res = (List<Product>)restaurantContext.ProductsOrders.Include(a => a.Product).Where(a => a.OrderId == thisorderTwo.ID).Select(a => a.Product).ToList();
+                List<Product> Show = new List<Product>();
+                foreach (var item in res)
+                    Show.Add(item);
+                foreach (var item in Show)
+                    ListBoxProductsFromOrderByTableNumber.Items.Add(item);
+                ListBoxProductsFromOrderByTableNumber.Items.Refresh();
             }
         }
     }
