@@ -42,7 +42,7 @@
 
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                    <GradientStop Color="#060531" Offset="0"/>
+                    <GradientStop Color="#78A3FC" Offset="0"/>
                     <GradientStop Color="#1B1448" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>

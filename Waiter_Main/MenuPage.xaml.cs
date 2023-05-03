@@ -101,17 +101,10 @@ namespace Waiter_Main
 
         #endregion
 
-        private void OpenContextMenu_Click(object sender, RoutedEventArgs e)
-        {
-            Orders orders = new Orders();
-            this.Close();
-            orders.ShowDialog();
-        }
         private void ActiveOrderLBItem_DoubleClick(object sender, MouseButtonEventArgs e)
         {
             Orders orders = new Orders();
-            this.Close();
-            orders.ShowDialog();
+            orders.Show();
         }
 
         #region Function For Server_App

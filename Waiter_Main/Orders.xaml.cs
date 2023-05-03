@@ -70,7 +70,8 @@ namespace Waiter_App
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.Application.Current.Shutdown();
+            this.Close();
+            //System.Windows.Application.Current.Shutdown();
         }
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
@@ -83,9 +84,7 @@ namespace Waiter_App
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow menu = new MainWindow();
             this.Close();
-            menu.ShowDialog();
         }
         private void ComboBoxCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

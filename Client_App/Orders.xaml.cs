@@ -37,6 +37,7 @@ namespace Client_App
             GetCategoriesToComboBox();
             GetTablesToComboBox();
             DataContext = ViewModel;
+
             #region Connect to server
             client = new UdpClient();
             string serverAddress = ConfigurationManager.AppSettings["ServerAddress"]!;

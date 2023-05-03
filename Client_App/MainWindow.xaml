@@ -266,8 +266,16 @@ WindowStyle="None"
                                FontFamily="Montserrat"
                                Cursor="Hand"
                                Margin="8,0,0,0"/>
+                        <TextBlock HorizontalAlignment="Center" Text="| Guest Mode"
+                               Foreground="White"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"
+                               Cursor="Hand"
+                               Margin="8,0,0,0"/>
+                       
                     </StackPanel>
-
+                    
                 </StackPanel>
 
             </Grid>

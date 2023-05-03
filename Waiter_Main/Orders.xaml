@@ -157,7 +157,7 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <ComboBox Name="ComboBoxTables" Margin="40,0,40,0" SelectionChanged="ComboBoxTables_SelectionChanged"></ComboBox>
+                    <ComboBox Foreground="White" Name="ComboBoxTables" Margin="40,0,40,0" SelectionChanged="ComboBoxTables_SelectionChanged"></ComboBox>
                     <ListBox Name="ListBoxProductsFromOrderByTableNumber" Grid.Row="1" Margin="40,0,40,0">
                     </ListBox>
                     <Button BorderThickness="0"
@@ -199,7 +199,7 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <ComboBox Name="ComboBoxCategories" Margin="40,0,40,0" Grid.Column="1" SelectionChanged="ComboBoxCategories_SelectionChanged"></ComboBox>
+                    <ComboBox Foreground="White" Name="ComboBoxCategories" Margin="40,0,40,0" Grid.Column="1" SelectionChanged="ComboBoxCategories_SelectionChanged"></ComboBox>
                     <ListBox Name="ListBoxProductsFromMenu" Grid.Row="1" Margin="40,0,40,0" Grid.Column="1">
                     </ListBox>
                     <Button Click="Add_Button_Click"

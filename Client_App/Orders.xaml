@@ -1,3 +1,4 @@
+
 ﻿<Window x:Class="Client_App.Orders"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -156,7 +157,6 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-
                     <ComboBox Name="ComboBoxTables" Margin="40,0,40,0" SelectionChanged="ComboBoxTables_SelectionChanged" IsReadOnly="True"></ComboBox>
                     <ListBox Name="ListBoxProductsFromOrderByTableNumber" Grid.Row="1" Margin="40,0,40,0">
                     </ListBox>
