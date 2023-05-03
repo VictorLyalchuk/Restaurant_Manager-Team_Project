@@ -11,7 +11,7 @@
     <None Remove="img\back.jpg" />
     <None Remove="img\icon.ico" />
     <None Remove="img\logo.png" />
-    <None Remove="img\logoicon.png" />
+    <None Remove="img\newlogo.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,7 +31,7 @@
   <ItemGroup>
     <Resource Include="img\back.jpg" />
     <Resource Include="img\logo.png" />
-    <Resource Include="img\logoicon.png" />
+    <Resource Include="img\newlogo.png" />
   </ItemGroup>
 
 </Project>

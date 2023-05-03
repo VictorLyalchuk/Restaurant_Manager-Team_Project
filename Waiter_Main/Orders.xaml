@@ -11,7 +11,7 @@
         Background="Transparent"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown"
-        Title="Orders" MinHeight="450" MinWidth="450" Height="550" Width="800" Icon="img\logoicon.png">
+        Title="Orders" MinHeight="450" MinWidth="450" Height="550" Width="1200" Icon="img\newlogo.png">
     <Border CornerRadius="10"                    
             BorderThickness="1">
 
@@ -48,8 +48,12 @@
                     <RowDefinition Height="30"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-
-                <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0" Grid.ColumnSpan="3">
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -144,7 +148,7 @@
                     </StackPanel>
                 </Grid>
                 <Grid HorizontalAlignment="Stretch"
-                            Grid.Row="1"
+                            Grid.Row="1" Grid.Column="2"
                             Margin="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition></ColumnDefinition>
@@ -244,7 +248,111 @@
                    
 
                 </Grid>
+                <Grid Grid.Row="1">
+                    <Border CornerRadius="0,0,0,10" Grid.Row="2"
+                    Grid.Column="0">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
+                                <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
+                                <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition ></RowDefinition>
+                                <RowDefinition Height="3*"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="3*"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="3*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Label HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" FontFamily="Courier New" FontSize="24">★ new</Label>
+                            <Label HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2" FontFamily="Courier New" FontSize="24">🧾 update</Label>
+                            <Label HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="4" FontFamily="Courier New" FontSize="24">✓ check</Label>
+                            <Border CornerRadius="0" BorderThickness="1" Grid.Row="1" Margin="10,0,10,10">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
 
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <ListBox Name="NewOrdersLB" Grid.Row="1" VerticalAlignment="Top" Margin="5" FontFamily="Segoe UI" Height="105" ItemsSource="{Binding New}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding Message}"></TextBlock>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <!--<ListBoxItem Content="• Client at table 1 made order" />
+                            <ListBoxItem Content="• Client at table 2 made order" />-->
+                                </ListBox>
+                            </Border>
+                            <Border CornerRadius="0" BorderThickness="1" Grid.Row="3" Margin="10,0,10,10">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="{StaticResource winBorderColor2}" Offset="0"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <ListBox  Name="OrdersUpdateLB" Grid.Row="3" VerticalAlignment="Top" Margin="5" FontFamily="Segoe UI">
+                                    <ListBoxItem  Content="• Client at table 1 update order"/>
+                                </ListBox>
+                            </Border>
+                            <Border CornerRadius="0" BorderThickness="1" Grid.Row="5" Margin="10,0,10,20">
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <ListBox Name="CheckOrdersLB" VerticalAlignment="Top" Margin="5" FontFamily="Segoe UI" Height="95" 
+                                 ItemsSource="{Binding Receipts}" SelectedItem="{Binding SelectedRecepient, Mode=TwoWay}" MouseDoubleClick="ListBoxCheck_MouseDoubleClick">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel>
+                                                <TextBlock>• Client at table <Run Text="{Binding TableId}"></Run> needs check</TextBlock>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <!--<ListBoxItem Content="• Client at table 2 needs check" MouseDoubleClick="ListBoxCheck_MouseDoubleClick"/>-->
+                                </ListBox>
+                            </Border>
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+                <Grid Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="1" FontFamily="Courier New" FontSize="36">↦ active orders</Label>
+                    <Border CornerRadius="50" BorderThickness="1" Grid.Row="2" Margin="20">
+                        <Border.BorderBrush>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
+                                <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.5"/>
+                                <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.BorderBrush>
+                        <ListBox HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="30,20,20,10" >
+
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel IsItemsHost="True"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+
+                            <ListBoxItem Style="{StaticResource ActiveOrder}" Content="Table 1" MouseDoubleClick="ActiveOrderLBItem_DoubleClick"/>
+                            <ListBoxItem Style="{StaticResource ActiveOrder}" Content="Table 2" MouseDoubleClick="ActiveOrderLBItem_DoubleClick"/>
+                            <ListBoxItem Style="{StaticResource ActiveOrder}" Content="Table 3" MouseDoubleClick="ActiveOrderLBItem_DoubleClick"/>
+                            <ListBoxItem Style="{StaticResource ActiveOrder}" Content="Table 4" MouseDoubleClick="ActiveOrderLBItem_DoubleClick"/>
+                            <ListBoxItem Style="{StaticResource ActiveOrder}" Content="Table 5" MouseDoubleClick="ActiveOrderLBItem_DoubleClick"/>
+                            <ListBoxItem Style="{StaticResource ActiveOrder}" Content="Table 6" MouseDoubleClick="ActiveOrderLBItem_DoubleClick"/>
+                        </ListBox>
+                    </Border>
+                </Grid>
             </Grid>
         </Border>
         

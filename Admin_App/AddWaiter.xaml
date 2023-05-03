@@ -14,7 +14,7 @@
         AllowsTransparency="True"
         MouseDown="Window_MouseDown"
         
-        Title="AddWaiter" MinHeight="450" MinWidth="700" Height="550" Width="800" Icon="img\logoicon.png">
+        Title="AddWaiter" MinHeight="450" MinWidth="700" Height="550" Width="800" Icon="img\newlogo.png">
     <Border CornerRadius="10"                    
             BorderThickness="1">
         <Border.Background>

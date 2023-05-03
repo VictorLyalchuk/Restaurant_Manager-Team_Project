@@ -11,7 +11,7 @@
         Background="Transparent"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown"
-        Title="Orders" MinHeight="450" MinWidth="450" Height="550" Width="800" Icon="img\logoicon.png">
+        Title="Orders" MinHeight="450" MinWidth="450" Height="550" Width="800" Icon="img\newlogo.png">
     <Border CornerRadius="10"                    
             BorderThickness="1">
 
@@ -156,7 +156,7 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <ComboBox Name="ComboBoxTables" Margin="40,0,40,0" SelectionChanged="ComboBoxTables_SelectionChanged" IsReadOnly="True"></ComboBox>
+                    <ComboBox Foreground="White" Name="ComboBoxTables" Margin="40,0,40,0" SelectionChanged="ComboBoxTables_SelectionChanged" IsReadOnly="True"></ComboBox>
                     <ListBox Name="ListBoxProductsFromOrderByTableNumber" Grid.Row="1" Margin="40,0,40,0">
                     </ListBox>
                     <Button BorderThickness="0"
@@ -200,7 +200,7 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <ComboBox Name="ComboBoxCategories" Margin="40,0,40,0" Grid.Column="1" SelectionChanged="ComboBoxCategories_SelectionChanged"></ComboBox>
+                    <ComboBox Foreground="White"  Name="ComboBoxCategories" Margin="40,0,40,0" Grid.Column="1" SelectionChanged="ComboBoxCategories_SelectionChanged"></ComboBox>
                     <ListBox Name="ListBoxProductsFromMenu" Grid.Row="1" Margin="40,0,40,0" Grid.Column="1">
                     </ListBox>
                     <Button Click="Add_Button_Click"
