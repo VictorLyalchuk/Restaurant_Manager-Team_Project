@@ -41,9 +41,15 @@ namespace Waiter_App
         static int WaiterID;
         IPEndPoint serverEndPoint;
         UdpClient client;
-        public Orders(int Id) : this()
+        public Orders()
         {
-            WaiterID = Id;
+            InitializeComponent();
+            DbToViewModel();
+            GetCategoriesToComboBox();
+            GetTablesToComboBox();
+            DataContext = ViewModel;
+
+            WaiterID = User.ID;
             #region Connect to server
             client = new UdpClient();
             string serverAddress = ConfigurationManager.AppSettings["ServerAddress"]!;
@@ -53,14 +59,8 @@ namespace Waiter_App
             ListenAsync();
             #endregion
         }
-        public Orders()
+        public Orders(int Id) : this()
         {
-            InitializeComponent();
-            DbToViewModel();
-            GetCategoriesToComboBox();
-            GetTablesToComboBox();
-            DataContext = ViewModel;
-
         }
         #region adaptive borderless-window react
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
