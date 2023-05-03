@@ -1,25 +1,26 @@
-﻿<Window x:Class="Admin_App.MainWindow"
+﻿<Window x:Class="Admin_App.AddWaiter"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Admin_App"
+               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+
         mc:Ignorable="d"
-        WindowStyle="None"
+         WindowStyle="None"
         ResizeMode="CanResizeWithGrip"
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown"
-        Title="LoginAdmin" MinHeight="550" MinWidth="350" Height="550" Width="800" Icon="img\logoicon.png">
+        
+        Title="AddWaiter" MinHeight="450" MinWidth="700" Height="550" Width="800" Icon="img\logoicon.png">
     <Border CornerRadius="10"                    
             BorderThickness="1">
-
         <Border.Background>
             <ImageBrush ImageSource="/img/back3.jpg"
                         Stretch="Fill"/>
         </Border.Background>
-
         <Border.BorderBrush>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
@@ -34,15 +35,15 @@
 
             <Border.BorderBrush>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                    <GradientStop Color="#EF6C96" Offset="0"/>
-                    <GradientStop Color="#E285DE" Offset="0.75"/>
-                    <GradientStop Color="#E285DE" Offset="1"/>
+                    <GradientStop Color="#462AD8" Offset="0"/>
+                    <GradientStop Color="#DA34AE" Offset="0.75"/>
+                    <GradientStop Color="#8A16C1" Offset="1"/>
                 </LinearGradientBrush>
             </Border.BorderBrush>
 
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                    <GradientStop Color="#FBA1AA" Offset="0"/>
+                    <GradientStop Color="#060531" Offset="0"/>
                     <GradientStop Color="#1B1448" Offset="1"/>
                 </LinearGradientBrush>
             </Border.Background>
@@ -59,7 +60,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="LOG IN"
+                    <TextBlock Text="ADD"
                                Foreground="DarkGray"
                                FontSize="10"
                                FontFamily="Courier New"
@@ -148,114 +149,75 @@
                     </StackPanel>
                 </Grid>
 
-                <StackPanel VerticalAlignment="Center" Width="220"
+                <Grid MaxHeight="700" MaxWidth="1000" VerticalAlignment="Stretch" 
                             Grid.Row="1"
-                            Orientation="Vertical"
-                            Margin="0,35,0,35">
+                            Margin="20,10,20,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="5*"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
 
-                    <Image Source="/img/logo.png"
-                           Width="100" Height="100"/>
+                    <Border MaxWidth="300" CornerRadius="10" BorderThickness="1" Grid.Row="0" Margin="15">
+                        <Border.BorderBrush>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
 
-                    <TextBlock Text="Vart"
-                               Foreground="White"
-                               FontSize="25"
-                               FontWeight="Medium"
-                               FontFamily="Centaur"
-                               HorizontalAlignment="Center"/>
+                            </LinearGradientBrush>
+                        </Border.BorderBrush>
+                        <Grid Margin="20">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
 
-                    <TextBlock Text="• viktor • vlad • artem"
-                               Foreground="LightGray"
-                               FontSize="12"
-                               FontWeight="Medium"
-                               FontFamily="Centaur"
-                               TextWrapping="Wrap"
-                               TextAlignment="Center"
-                               Margin="0,5,0,0"/>
+                            </Grid.RowDefinitions>
+                            <TextBox Width="200" Foreground="White" materialDesign:HintAssist.Hint="Name"></TextBox>
+                            <TextBox Width="200" Grid.Row="1" Foreground="White" materialDesign:HintAssist.Hint="Surname"></TextBox>
+                            <DatePicker Grid.Row="2" Foreground="White"
+                              Width="200"
+                              materialDesign:HintAssist.Hint="Birth Date"
+                              Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                            <DatePicker Grid.Row="3" Foreground="White"
+                              Width="200"
+                              materialDesign:HintAssist.Hint="Employment Date"
+                              Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                            <TextBox Width="200" Grid.Row="4" Foreground="White" materialDesign:HintAssist.Hint="Salary"></TextBox>
+                            <TextBox Width="200" Grid.Row="5" Foreground="White" materialDesign:HintAssist.Hint="Rating"></TextBox>
+                            <ListBox Name="TablesLB" Width="200" Grid.Row="6">
+                                
+                            </ListBox>
+                        </Grid>
+                        
+                    </Border>
 
-
-                    <TextBlock Text="Username"
-                               Foreground="DarkGray"
-                               FontSize="12"
-                               FontWeight="Medium"
-                               FontFamily="Montserrat"                             
-                               Margin="0,35,0,0"/>
-
-                    <TextBox x:Name="txtUser"
-                             FontSize="13"
-                             FontWeight="Medium"
-                             FontFamily="Montserrat"                            
-                             Foreground="White"
-                             CaretBrush="LightGray"
-                             BorderBrush="DarkGray"
-                             BorderThickness="0,0,0,2"
-                             Height="28"
-                             VerticalContentAlignment="Center"
-                             Margin="0,5,0,0"
-                             Padding="20,0,0,0">
-
-                        <TextBox.Background>
-                            <ImageBrush ImageSource="/img/user.png"
-                                        Stretch="None"
-                                        AlignmentX="Left"/>
-                        </TextBox.Background>
-                    </TextBox>
-
-                    <TextBlock Text="Password"
-                               Foreground="DarkGray"
-                               FontSize="12"
-                               FontWeight="Medium"
-                               FontFamily="Montserrat"                             
-                               Margin="0,15,0,0"/>
-
-                    <PasswordBox x:Name="txtPass"
-                             FontSize="13"
-                             FontWeight="Medium"
-                             FontFamily="Montserrat"                            
-                             Foreground="White"
-                             CaretBrush="LightGray"
-                             BorderBrush="DarkGray"
-                             BorderThickness="0,0,0,2"
-                             Height="28"
-                             VerticalContentAlignment="Center"
-                             Margin="0,5,0,0"
-                             Padding="20,0,0,0">
-
-                        <PasswordBox.Background>
-                            <ImageBrush ImageSource="/img/key.png"
-                                        Stretch="None"
-                                        AlignmentX="Left"/>
-                        </PasswordBox.Background>
-                    </PasswordBox>
-
-                    <Button x:Name="btnLogin"                          
-                            BorderThickness="0"
-                            Content="LOG IN"
+                    <Button BorderThickness="0"
+                            Content="View Waiters"
                             Foreground="White"
                             FontSize="12"
                             FontFamily="Montserrat"
-                            Cursor="Hand"                           
-                            Margin="0,50,0,0"
-                            Click="btnLogin_Click" Style="{StaticResource designBtn}">
-
+                            Cursor="Hand"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource designBtn3}" Grid.Row="2" Margin="5" >
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
-                                <Border Width="150" Height="40"
+                                <Border Width="150" Height="50"
                                         CornerRadius="20"
                                         Background="{TemplateBinding Background}">
-                                    <ContentPresenter VerticalAlignment="Center"
-                                                      HorizontalAlignment="Center"/>
+                                    <Viewbox>
+                                        <Label FontSize="5" FontFamily="Courier New" Content="• Add"/>
+                                    </Viewbox>
                                 </Border>
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-
-
-                    <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Center"
-                                Margin="0,15,0,0"/>
-
-                </StackPanel>
-
+                </Grid>
             </Grid>
 
         </Border>

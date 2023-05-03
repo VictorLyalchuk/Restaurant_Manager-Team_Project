@@ -1,4 +1,4 @@
-﻿using Data_Access_Entity;
+﻿using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,19 +13,19 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Admin_App
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for Menu.xaml
+    /// </summary>
+    public partial class Menu : Window
     {
-        RestaurantContext restaurantContext = new RestaurantContext();
-        public MainWindow()
+        public Menu()
         {
             InitializeComponent();
         }
-
         #region adaptive borderless-window react
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -68,11 +68,21 @@ namespace Admin_App
 
         #endregion
 
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        private void finalDatePicker_selectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            Menu menu = new Menu();
+            if(finalDatePicker.SelectedDate < startDatePicker.SelectedDate) { MessageBox.Show("Choose only future dates!"); finalDatePicker.SelectedDate = DateTime.Now; }
+        }
+
+        private void startDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (startDatePicker.SelectedDate > DateTime.Now) { MessageBox.Show("Choose only former date!"); startDatePicker.SelectedDate = DateTime.Now;  }
+        }
+
+        private void AddBtn_Click(object sender, RoutedEventArgs e)
+        {
+            AddWaiter add = new AddWaiter();
             this.Close();
-            menu.ShowDialog();
+            add.Show();
         }
     }
 }

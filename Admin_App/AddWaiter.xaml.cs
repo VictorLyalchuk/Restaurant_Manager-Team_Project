@@ -1,5 +1,4 @@
-﻿using Data_Access_Entity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -13,19 +12,19 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Admin_App
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for AddWaiter.xaml
+    /// </summary>
+    public partial class AddWaiter : Window
     {
-        RestaurantContext restaurantContext = new RestaurantContext();
-        public MainWindow()
+        public AddWaiter()
         {
             InitializeComponent();
         }
-
         #region adaptive borderless-window react
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -67,12 +66,5 @@ namespace Admin_App
         }
 
         #endregion
-
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
-        {
-            Menu menu = new Menu();
-            this.Close();
-            menu.ShowDialog();
-        }
     }
 }

@@ -11,7 +11,7 @@
         Background="Transparent"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown"
-        Title="Menu" MinHeight="450" MinWidth="700" Height="550" Width="800" Icon="img\logoicon.png">
+        Title="MenuClient" MinHeight="450" MinWidth="700" Height="550" Width="800" Icon="img\logoicon.png">
     <Border CornerRadius="10"                    
             BorderThickness="1">
         <Border.Background>

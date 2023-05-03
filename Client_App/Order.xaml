@@ -157,7 +157,7 @@
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <ComboBox Margin="40,0,40,0"></ComboBox>
+                    <ComboBox Foreground="White" Margin="40,0,40,0"></ComboBox>
                     <ListBox Grid.Row="1" Margin="40,0,40,0">
                         <ListBoxItem>• Philadelphia</ListBoxItem>
                         <ListBoxItem>• Cola</ListBoxItem>
@@ -203,7 +203,7 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <ComboBox Margin="40,0,40,0" Grid.Column="1"></ComboBox>
+                    <ComboBox Foreground="White" Margin="40,0,40,0" Grid.Column="1"></ComboBox>
                     <ListBox Grid.Row="1" Margin="40,0,40,0" Grid.Column="1">
                         <ListBoxItem>• Sprite</ListBoxItem>
                         <ListBoxItem>• Fanta</ListBoxItem>
