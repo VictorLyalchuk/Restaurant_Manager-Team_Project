@@ -34,9 +34,7 @@ namespace Waiter_App
         public Orders()
         {
             InitializeComponent();
-
             DbToViewModel();
-
             GetCategoriesToComboBox();
             GetTablesToComboBox();
             DataContext = ViewModel;
