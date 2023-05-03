@@ -11,7 +11,7 @@ WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown"
-        Title="Login" MinHeight="550" MinWidth="350" Height="550" Width="800" Icon="img\logoicon.png">
+        Title="Login" MinHeight="550" MinWidth="350" Height="550" Width="800" Icon="img\newlogo.png">
     <Border CornerRadius="10"                    
             BorderThickness="1">
 

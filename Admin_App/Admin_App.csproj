@@ -8,11 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="img\back.jpg" />
     <None Remove="img\back3.jpg" />
     <None Remove="img\key.png" />
     <None Remove="img\logo.png" />
-    <None Remove="img\logoicon.png" />
+    <None Remove="img\newlogo.png" />
     <None Remove="img\user.png" />
   </ItemGroup>
 
@@ -29,11 +28,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="img\back.jpg" />
     <Resource Include="img\back3.jpg" />
     <Resource Include="img\key.png" />
     <Resource Include="img\logo.png" />
-    <Resource Include="img\logoicon.png" />
+    <Resource Include="img\newlogo.png" />
     <Resource Include="img\user.png" />
   </ItemGroup>
 

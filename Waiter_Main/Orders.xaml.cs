@@ -1,11 +1,14 @@
 ﻿using Data_Access_Entity;
 using Data_Access_Entity.Entities;
+using LibraryForServer;
 using MaterialDesignThemes.Wpf;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -21,6 +24,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Waiter_Main;
 using static System.Net.Mime.MediaTypeNames;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Configuration;
+using Waiter_App.ViewModel_Models;
 
 namespace Waiter_App
 {
@@ -31,6 +38,21 @@ namespace Waiter_App
     {
         ViewModel ViewModel = new ViewModel();
         RestaurantContext restaurantContext = new RestaurantContext();
+        static int WaiterID;
+        IPEndPoint serverEndPoint;
+        UdpClient client;
+        public Orders(int Id) : this()
+        {
+            WaiterID = Id;
+            #region Connect to server
+            client = new UdpClient();
+            string serverAddress = ConfigurationManager.AppSettings["ServerAddress"]!;
+            short serverPort = short.Parse(ConfigurationManager.AppSettings["ServerPort"]!);
+            serverEndPoint = new IPEndPoint(IPAddress.Parse(serverAddress), serverPort);
+            SendMessage(new LogicClassToRecipient { Function = "$WAITERJOIN", Id = WaiterID });
+            ListenAsync();
+            #endregion
+        }
         public Orders()
         {
             InitializeComponent();
@@ -81,6 +103,96 @@ namespace Waiter_App
         }
 
         #endregion
+
+        #region Function For Server_App
+        private async void SendMessage(object message)
+        {
+            byte[] data;
+            BinaryFormatter formatter = new BinaryFormatter();
+            using (var ms = new MemoryStream())
+            {
+                formatter.Serialize(ms, message);
+                data = ms.ToArray();
+            }
+            await client.SendAsync(data, data.Length, serverEndPoint);
+        }
+
+        async void ListenAsync()
+        {
+            await Task.Run(() => {
+
+                while (true)
+                {
+                    byte[] data = client.Receive(ref serverEndPoint);
+                    LogicClass logic = (LogicClass)ConvertFromBytes(data);
+
+                    if (logic.Function == "$ADDORDER")
+                    {
+                        LogicClassToOrders classToOrders = (LogicClassToOrders)logic;
+                        Order order = classToOrders.Order;
+                        System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            ViewModel.AddInNew(new StringClass() { Message = classToOrders.Msg });
+                            if (order != null)
+                                MessageBox.Show($"ID : {order.ID}\nWaiter ID : {order.WaiterId}\nDate : {order.OrderDate}\nActive : {order.Active}\n Message : {classToOrders.Msg}");
+                        });
+                    }
+                    else if (logic.Function == "$SENDMESSAGE_TO_WAITER")
+                    {
+                        LogicClassToCheck logicClassToCheck = (LogicClassToCheck)logic;
+                        System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            ViewModel.AddInReceipts(new IDClass { TableId = logicClassToCheck.TableID, OrderID = logicClassToCheck.OrderId });
+                        });
+                        //Після чого можна було б зробити DOUBLE CLICK на ListBox повідомлення про чек, і воно надсилає чек нашому клієнту по полю logicClassToCheck.RecepientId
+                        //перед цим це поле - logicClassToCheck.RecepientId,  труба було б змінити на Order.Id
+                    }
+                    else if (logic.Function == "$SENDMESSAGE")
+                    {
+                        LogicClassToMessage logicClassToMessage = (LogicClassToMessage)logic;
+                        System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            ViewModel.AddInNew(new StringClass { Message = logicClassToMessage.Message });
+                        });
+                    }
+                }
+
+            });
+        }
+        public object ConvertFromBytes(byte[] data)
+        {
+            using (var memStream = new MemoryStream())
+            {
+                try
+                {
+                    var binForm = new BinaryFormatter();
+                    memStream.Write(data, 0, data.Length);
+                    memStream.Seek(0, SeekOrigin.Begin);
+                    object obj = binForm.Deserialize(memStream);
+                    return obj;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+            }
+        }
+        #endregion
+
+        private void ActiveOrderLBItem_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Orders orders = new Orders();
+            orders.Show();
+        }
+        private void ListBoxCheck_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var Table = ViewModel.SelectedRecepient.TableId;
+
+            Order order = new Order() { ID = 10, Active = true, OrderDate = DateTime.Now, WaiterId = 1 };
+            SendMessage(new LogicClassToCheck { Function = "$SENDMESSAGE_TO_CLIENT", RecipientId = order.ID, Order = order });
+
+        }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {

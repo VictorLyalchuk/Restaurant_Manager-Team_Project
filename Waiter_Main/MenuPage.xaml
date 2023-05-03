@@ -38,6 +38,16 @@
                 <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
+            
+            <Border CornerRadius="10,0,0,0">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
+                        <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
+                        <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Label VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,20" Foreground="#DDB5B5B5" FontSize="10" Content="WAITER MENU" FontFamily="Courier New"/>
+            </Border>
             <Border CornerRadius="0,0,0,10" Grid.Row="2"
                     Grid.Column="0">
                 <Border.Background>
@@ -62,7 +72,7 @@
                         <Border.BorderBrush>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                 <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
-                             
+
                             </LinearGradientBrush>
                         </Border.BorderBrush>
                         <ListBox Name="NewOrdersLB" Grid.Row="1" VerticalAlignment="Top" Margin="5" FontFamily="Segoe UI" Height="105" ItemsSource="{Binding New}">
@@ -106,16 +116,7 @@
                         </ListBox>
                     </Border>
                 </Grid>
-                
-            </Border>
-            <Border CornerRadius="10,0,0,0">
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
-                        <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
-                        <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-                <Label VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,20" Foreground="#DDB5B5B5" FontSize="10" Content="WAITER MENU" FontFamily="Courier New"/>
+
             </Border>
 
             <!--main-->
@@ -128,117 +129,7 @@
                         <GradientStop Color="{StaticResource primaryBackColor2}" Offset="1"/>
                     </LinearGradientBrush>
                 </Border.Background>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
-                        <RowDefinition Height="50"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Label HorizontalAlignment="Center" VerticalAlignment="Bottom" Grid.Row="1" FontFamily="Courier New" FontSize="36">↦ active orders</Label>
-                    <StackPanel x:Name="pnlControlBar"
-                                Grid.Row="0"
-                                Orientation="Horizontal"
-                                FlowDirection="RightToLeft"
-                                Background="Transparent"
-                                Margin="0,0,5,0"
-                                MouseLeftButtonDown="pnlControlBar_MouseLeftButtonDown"
-                                MouseEnter = "pnlControlBar_MouseEnter">
-                        <Button x:Name="btnClose"                           
-                            BorderThickness="0"
-                            Margin="4"
-                            Content="×"
-                            Foreground="White"
-                            FontSize="16"
-                            FontFamily="Montserrat"
-                            Cursor="Hand"
-                            Grid.Column="1"
-                            Click="btnClose_Click"
-                            Style="{StaticResource closeBtn}">
-
-                            <Button.Template>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Width="18" Height="18"
-                                        CornerRadius="9"
-                                        Background="{TemplateBinding Background}">
-                                        <ContentPresenter VerticalAlignment="Center"
-                                                      HorizontalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                        
-                        <Button x:Name="btnMax"                           
-                            BorderThickness="0"
-                            Content="◾"
-                            Foreground="White"
-                            FontSize="16"
-                            FontFamily="Montserrat"
-                            Cursor="Hand"
-                            Grid.Column="1"
-                            Click="btnMaximize_Click"
-                            Margin="5"
-                            Style="{StaticResource maxBtn}">
-
-                            <Button.Template>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Width="18" Height="18"
-                                        CornerRadius="9"
-                                        Background="{TemplateBinding Background}">
-                                        <ContentPresenter VerticalAlignment="Center"
-                                                      HorizontalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                        
-                        <Button x:Name="btnMin"                           
-                            BorderThickness="0"
-                            Content="-"
-                            Foreground="White"
-                            FontSize="16"
-                            FontFamily="Montserrat"
-                            Cursor="Hand"
-                            Grid.Column="1"
-                            Click="btnMinimize_Click"
-                            Style="{StaticResource minBtn}"
-                            Margin="5">
-                            <Button.Template>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Width="18" Height="18"
-                                        CornerRadius="9"
-                                        Background="{TemplateBinding Background}">
-                                        <ContentPresenter VerticalAlignment="Center"
-                                                      HorizontalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                    </StackPanel>
-                    <Border CornerRadius="50" BorderThickness="1" Grid.Row="2" Margin="20">
-                        <Border.BorderBrush>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
-                                <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.5"/>
-                                <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.BorderBrush>
-                        <ListBox HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="30,20,20,10" >
-
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel IsItemsHost="True"/>
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-
-                            <ListBoxItem Style="{StaticResource ActiveOrder}" Content="Table 1" MouseDoubleClick="ActiveOrderLBItem_DoubleClick"/>
-                            <ListBoxItem Style="{StaticResource ActiveOrder}" Content="Table 2" MouseDoubleClick="ActiveOrderLBItem_DoubleClick"/>
-                            <ListBoxItem Style="{StaticResource ActiveOrder}" Content="Table 3" MouseDoubleClick="ActiveOrderLBItem_DoubleClick"/>
-                            <ListBoxItem Style="{StaticResource ActiveOrder}" Content="Table 4" MouseDoubleClick="ActiveOrderLBItem_DoubleClick"/>
-                            <ListBoxItem Style="{StaticResource ActiveOrder}" Content="Table 5" MouseDoubleClick="ActiveOrderLBItem_DoubleClick"/>
-                            <ListBoxItem Style="{StaticResource ActiveOrder}" Content="Table 6" MouseDoubleClick="ActiveOrderLBItem_DoubleClick"/>
-                        </ListBox>
-                    </Border>
-                </Grid>
+               
             </Border>
         </Grid>
     </Border>

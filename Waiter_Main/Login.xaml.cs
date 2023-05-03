@@ -80,10 +80,10 @@ namespace Waiter_App
         {
             Waiter waiter = ViewModel.Waiter.FirstOrDefault(x => x.FirstName == username.SelectedItem.ToString() &&
                                                 x.SurName == usersurname.SelectedItem.ToString())!;
-            MainWindow menu = new MainWindow(waiter.ID);
+            Orders orders = new Orders(waiter.ID);
             User.ID = waiter.ID;
             this.Close();
-            menu.ShowDialog();
+            orders.ShowDialog();
         }
 
         private void username_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 RestaurantServer restaurantServer = new RestaurantServer();
 restaurantServer.Start();
+
 class RestaurantServer
 {
     const short port = 4040;
