@@ -131,14 +131,6 @@ namespace Waiter_Main
 
                     if (logic.Function == "$ADDORDER")
                     {
-                        LogicClassToOrders classToOrders = (LogicClassToOrders)logic;
-                        Order order = classToOrders.Order;
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            viewModel.AddInNew(new StringClass() { Message = classToOrders.Msg });
-                            if(order != null) 
-                                MessageBox.Show($"ID : {order.ID}\nWaiter ID : {order.WaiterId}\nDate : {order.OrderDate}\nActive : {order.Active}\n Message : {classToOrders.Msg}");
-                        });
                     }
                     else if (logic.Function == "$SENDMESSAGE_TO_WAITER")
                     {

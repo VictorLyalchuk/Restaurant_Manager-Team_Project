@@ -28,6 +28,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Configuration;
 using Waiter_App.ViewModel_Models;
+using Application = System.Windows.Application;
 
 namespace Waiter_App
 {
@@ -129,13 +130,19 @@ namespace Waiter_App
                     if (logic.Function == "$ADDORDER")
                     {
                         LogicClassToOrders classToOrders = (LogicClassToOrders)logic;
-                        Order order = classToOrders.Order;
-                        System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                        Application.Current.Dispatcher.Invoke(() =>
                         {
                             ViewModel.AddInNew(new StringClass() { Message = classToOrders.Msg });
-                            if (order != null)
-                                MessageBox.Show($"ID : {order.ID}\nWaiter ID : {order.WaiterId}\nDate : {order.OrderDate}\nActive : {order.Active}\n Message : {classToOrders.Msg}");
+                            ViewModel.AddInOrders(classToOrders.order);
                         });
+                        foreach (var item in classToOrders.products)
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                //MessageBox.Show(item.OrderId.ToString() + " : " + item.ProductId.ToString());
+                                ViewModel.AddInProductOrder(item);
+                            });
+                        }
                     }
                     else if (logic.Function == "$SENDMESSAGE_TO_WAITER")
                     {

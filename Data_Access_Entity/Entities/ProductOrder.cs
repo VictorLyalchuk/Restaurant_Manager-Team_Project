@@ -1,5 +1,6 @@
 ﻿namespace Data_Access_Entity.Entities
 {
+    [Serializable]
     public class ProductOrder
     {
         public int ProductId { get; set; }

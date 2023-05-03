@@ -120,8 +120,6 @@ namespace Client_App
         }
         private void GenerateTable()
         { 
-            //int TableId = 0;
-            //int RecepientId = 0;
             var Tables = restaurantContext.Tables;
             foreach (var item in Tables)
             {
