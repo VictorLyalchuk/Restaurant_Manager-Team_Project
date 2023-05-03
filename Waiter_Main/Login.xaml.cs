@@ -79,11 +79,8 @@ namespace Waiter_App
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            //Waiter waiter = restaurantContext.Waiters.Where(x => x.FirstName == username.SelectedItem.ToString() && 
-            //                                                x.SurName == usersurname.SelectedItem.ToString()).FirstOrDefault()!;
-            Waiter waiter = ViewModel.Waiter.Where(x => x.FirstName == username.SelectedItem.ToString() &&
-                                                x.SurName == usersurname.SelectedItem.ToString()).FirstOrDefault()!;
-
+            Waiter waiter = ViewModel.Waiter.FirstOrDefault(x => x.FirstName == username.SelectedItem.ToString() &&
+                                                x.SurName == usersurname.SelectedItem.ToString())!;
             MainWindow menu = new MainWindow(waiter.ID);
             User.ID = waiter.ID;
             this.Close();
@@ -94,7 +91,6 @@ namespace Waiter_App
         {
             if (username.SelectedItem != null) usersurname.IsEnabled = true;
             else { usersurname.IsEnabled = false; return; }
-            //var waiter = restaurantContext.Waiters.Where(x => x.FirstName == username.SelectedItem.ToString())!;
             var waiter = ViewModel.Waiter.Where(x => x.FirstName == username.SelectedItem.ToString())!;
             usersurname.Items.Clear();
             foreach (var item in waiter)
@@ -104,7 +100,6 @@ namespace Waiter_App
         }
         private void GetAccount()
         {
-            //var waiter = restaurantContext.Waiters;
             var waiter = ViewModel.Waiter;
             foreach (var waiterItem in waiter)
             {
