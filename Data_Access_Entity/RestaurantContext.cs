@@ -32,7 +32,6 @@ namespace Data_Access_Entity
             modelBuilder.SeedProducts();
             modelBuilder.SeedWaiters();
             modelBuilder.SeedTables();
-
             modelBuilder.Entity<Product>().HasOne(p => p.Category).WithMany(c => c.Products).HasForeignKey(p => p.CategoryId);
             modelBuilder.Entity<ProductOrder>().HasKey(po => new {po.OrderId, po.ProductId});
             modelBuilder.Entity<ProductOrder>().HasOne(p => p.Product).WithMany(p => p.ProductsOrders).HasForeignKey(p => p.ProductId);

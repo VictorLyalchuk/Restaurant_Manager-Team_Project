@@ -10,5 +10,6 @@
         public Waiter Waiter { get; set; }
         public bool Active { get; set; }
         public int TableId { get; set; }
+        public double TotalSum { get; set; }
     }
 }

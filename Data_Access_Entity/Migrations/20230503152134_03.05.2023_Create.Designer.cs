@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access_Entity.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20230502205713_02.05.2023_Create")]
-    partial class _02052023_Create
+    [Migration("20230503152134_03.05.2023_Create")]
+    partial class _03052023_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -129,6 +129,9 @@ namespace Data_Access_Entity.Migrations
                     b.Property<int>("TableId")
                         .HasColumnType("int");
 
+                    b.Property<double>("TotalSum")
+                        .HasColumnType("float");
+
                     b.Property<int>("WaiterId")
                         .HasColumnType("int");
 
@@ -238,7 +241,7 @@ namespace Data_Access_Entity.Migrations
                         {
                             ID = 11,
                             CategoryId = 3,
-                            Name = "Caprese Salad",
+                            Name = "Caesar Salad",
                             Price = 12.199999999999999
                         },
                         new

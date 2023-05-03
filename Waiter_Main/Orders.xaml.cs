@@ -29,12 +29,15 @@ namespace Waiter_App
     /// </summary>
     public partial class Orders : Window
     {
+        ViewModel ViewModel = new ViewModel();
         RestaurantContext restaurantContext = new RestaurantContext();
         public Orders()
         {
             InitializeComponent();
             GetCategoriesToComboBox();
             GetTablesToComboBox();
+            DataContext = ViewModel;
+
         }
         #region adaptive borderless-window react
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -110,17 +113,16 @@ namespace Waiter_App
             {
                 if (ComboBoxTables.SelectedValue != null && ListBoxProductsFromMenu.SelectedItem != null)
                 {
-                    Order thisorder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId.ToString() == ComboBoxTables.SelectedValue);
+                    Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId.ToString() == ComboBoxTables.SelectedValue);
                     Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
 
                     if (thisorder != null)
                     {
-                        restaurantContext.ProductsOrders.Add(new ProductOrder
+                        ViewModel.AddInProductOrder(new ProductOrder
                         {
                             OrderId = thisorder.ID,
                             ProductId = selectedvalue.ID
                         });
-                        restaurantContext.SaveChanges();
                     }
                     else
                     {
@@ -133,13 +135,21 @@ namespace Waiter_App
                         });
                         restaurantContext.SaveChanges();
 
-                        var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.TableId == (int)ComboBoxTables.SelectedValue);
-                        restaurantContext.ProductsOrders.Add(new ProductOrder
+                        var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
+                        ViewModel.AddInOrders(new Order
+                        {
+                            ID = newOrder.ID,
+                            Active = false,
+                            OrderDate = DateTime.Now,
+                            TableId = (int)ComboBoxTables.SelectedValue,
+                            WaiterId = User.ID
+                        });
+
+                        ViewModel.AddInProductOrder(new ProductOrder
                         {
                             OrderId = newOrder.ID,
                             ProductId = selectedvalue.ID
                         });
-                        restaurantContext.SaveChanges();
                     }
                     GetOrderItems();
                 }
@@ -195,16 +205,19 @@ namespace Waiter_App
         private void GetOrderItems()
         {
             ListBoxProductsFromOrderByTableNumber.Items.Clear();
-            Order thisorderTwo = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
-            if (thisorderTwo != null)
+            Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
+            if (thisorder != null)
             {
-                List<Product> res = (List<Product>)restaurantContext.ProductsOrders.Include(a => a.Product).Where(a => a.OrderId == thisorderTwo.ID).Select(a => a.Product).ToList();
+                var b = ViewModel.GetProductId(thisorder.ID);
                 List<Product> Show = new List<Product>();
-                foreach (var item in res)
-                    Show.Add(item);
+                foreach (var item in b)
+                {
+                    Show.Add(restaurantContext.Products.FirstOrDefault(x => x.ID == item));
+
+                }
                 foreach (var item in Show)
                     ListBoxProductsFromOrderByTableNumber.Items.Add(item);
-                ListBoxProductsFromOrderByTableNumber.Items.Refresh();
+                //ListBoxProductsFromOrderByTableNumber.Items.Refresh();
             }
         }
     }
