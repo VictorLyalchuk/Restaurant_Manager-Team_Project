@@ -94,9 +94,10 @@ namespace Client_App
         }
         private void Order_Click(object sender, RoutedEventArgs e)
         {
-            Data_Access_Entity.Entities.Order order = new Data_Access_Entity.Entities.Order() { ID = 1, Active = true, OrderDate = DateTime.Now, WaiterId = 1,TableId = 1 };
-            SendMessage(new LogicClassToOrders { Function = "$ADDORDER", Order = order, Msg = "• Client at table 1 made order" });
-
+            var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
+            restaurantContext.Tables.FirstOrDefault(x => x.ID == TableId.tableId).Active = false;
+            restaurantContext.SaveChanges();
+            SendMessage(new LogicClassToOrders { Function = "$ADDORDER", products = ViewModel.ProductOrder, Msg = $"• Client at table {TableId.tableId} made order", RecepientId = TableId.RecepientId, order = newOrder });
         }
         #region Function For Server
         private async void SendMessage(object message)

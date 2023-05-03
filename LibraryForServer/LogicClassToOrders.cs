@@ -10,7 +10,10 @@ namespace LibraryForServer
     [Serializable]
     public class LogicClassToOrders : LogicClass
     {
-        public Order Order { get; set; }
+        public IEnumerable<ProductOrder> products { get; set; }
+        public Order order { get; set; }
+        public int RecepientId { get; set; }
         public string Msg { get; set; }
+
     }
 }
