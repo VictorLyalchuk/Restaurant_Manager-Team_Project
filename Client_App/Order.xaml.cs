@@ -20,18 +20,23 @@ using LibraryForServer;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Data_Access_Entity.Entities;
-
+using Data_Access_Entity;
 
 namespace Client_App
 {
-
     public partial class Order : Window
     {
+        ViewModel ViewModel = new ViewModel();
+        RestaurantContext restaurantContext = new RestaurantContext();
         IPEndPoint serverEndPoint;
         UdpClient client;
         public Order()
         {
             InitializeComponent();
+            DbToViewModel();
+            GetCategoriesToComboBox();
+            GetTablesToComboBox();
+            DataContext = ViewModel;
             #region Connect to server
             client = new UdpClient();
             string serverAddress = ConfigurationManager.AppSettings["ServerAddress"]!;
@@ -80,14 +85,12 @@ namespace Client_App
         }
 
         #endregion
-
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             Menu menu = new Menu();
             this.Close();
             menu.ShowDialog();
         }
-
         private void Order_Click(object sender, RoutedEventArgs e)
         {
             Data_Access_Entity.Entities.Order order = new Data_Access_Entity.Entities.Order() { ID = 1, Active = true, OrderDate = DateTime.Now, WaiterId = 1,TableId = 1 };
@@ -145,7 +148,6 @@ namespace Client_App
             }
         }
         #endregion
-
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
             //В поле ID - Записується Order.Id
@@ -154,6 +156,167 @@ namespace Client_App
 
             SendMessage(new LogicClassToCheck { Function = "$SENDMESSAGE_TO_WAITER", TableID = 1, RecipientId = 1, OrderId = 10 });
 
+        }
+        private void ComboBoxCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                ListBoxProductsFromMenu.Items.Clear();
+                Category selectedCategory = ViewModel.Category.FirstOrDefault(a => a.Name == (string)ComboBoxCategories.SelectedValue);
+                foreach (var item in ViewModel.Product)
+                {
+                    if (item.CategoryId == selectedCategory.ID)
+                    {
+                        ListBoxProductsFromMenu.Items.Add(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void Add_Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (ComboBoxTables.SelectedValue != null && ListBoxProductsFromMenu.SelectedItem != null)
+                {
+                    Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
+                    Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
+
+                    if (thisorder != null)
+                    {
+                        ViewModel.AddInProductOrder(new ProductOrder
+                        {
+                            OrderId = thisorder.ID,
+                            ProductId = selectedvalue.ID
+                        });
+                    }
+                    else
+                    {
+                        restaurantContext.Orders.Add(new Order
+                        {
+                            Active = false,
+                            OrderDate = DateTime.Now,
+                            TableId = (int)ComboBoxTables.SelectedValue,
+                            WaiterId = User.ID
+                        });
+                        restaurantContext.SaveChanges();
+                        var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
+                        ViewModel.AddInOrders(new Order
+                        {
+                            ID = newOrder.ID,
+                            Active = false,
+                            OrderDate = DateTime.Now,
+                            TableId = (int)ComboBoxTables.SelectedValue,
+                            //WaiterId = User.ID
+                        });
+                        ViewModel.AddInProductOrder(new ProductOrder
+                        {
+                            OrderId = newOrder.ID,
+                            ProductId = selectedvalue.ID
+                        });
+                    }
+                    GetOrderItems();
+                }
+                else
+                    MessageBox.Show($@"PLease, make your choise first");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void ComboBoxTables_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                GetOrderItems();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void GetCategoriesToComboBox()
+        {
+            try
+            {
+                foreach (var item in ViewModel.Category)
+                {
+                    ComboBoxCategories.Items.Add(item.Name);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void GetTablesToComboBox()
+        {
+            try
+            {
+                foreach (var item in ViewModel.Table)
+                {
+                    ComboBoxTables.Items.Add(item.ID);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void GetOrderItems()
+        {
+            ListBoxProductsFromOrderByTableNumber.Items.Clear();
+            Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
+            if (thisorder != null)
+            {
+                var b = ViewModel.GetProductId(thisorder.ID);
+                List<Product> Show = new List<Product>();
+                foreach (var item in b)
+                {
+                    Show.Add(ViewModel.Product.FirstOrDefault(x => x.ID == item));
+                }
+                foreach (var item in Show)
+                    ListBoxProductsFromOrderByTableNumber.Items.Add(item);
+            }
+        }
+        private void GetProducts()
+        {
+            try
+            {
+                var products = restaurantContext.Products;
+                foreach (var item in products)
+                {
+                    ViewModel.AddInProduct(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void GetCategories()
+        {
+            try
+            {
+                var categories = restaurantContext.Categories;
+                foreach (var item in categories)
+                {
+                    ViewModel.AddInCategory(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void DbToViewModel()
+        {
+            GetCategories();
+            GetProducts();
         }
     }
 }

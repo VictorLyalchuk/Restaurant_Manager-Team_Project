@@ -201,10 +201,6 @@
                     </Button>
                     <ComboBox Name="ComboBoxCategories" Margin="40,0,40,0" Grid.Column="1" SelectionChanged="ComboBoxCategories_SelectionChanged"></ComboBox>
                     <ListBox Name="ListBoxProductsFromMenu" Grid.Row="1" Margin="40,0,40,0" Grid.Column="1">
-                        <!--<ListBoxItem>• Sprite</ListBoxItem>
-                        <ListBoxItem>• Fanta</ListBoxItem>
-                        <ListBoxItem>• Cola</ListBoxItem>
-                        <ListBoxItem>• Pepsi</ListBoxItem>-->
                     </ListBox>
                     <Button Click="Add_Button_Click"
                             BorderThickness="0"
