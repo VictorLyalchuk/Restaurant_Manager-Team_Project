@@ -338,26 +338,32 @@
                             </LinearGradientBrush>
                         </Border.BorderBrush>
                         <ListBox Name="ListBoxTables" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="30,20,20,10" ItemsSource="{Binding Table}" SelectionChanged="ListBoxTables_SelectionChanged">
-
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel IsItemsHost="True"/>
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
-
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Border Width="70" Height="100">
-                                        <Grid>
+                                        <Grid Name="BackgroundGrid">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition></RowDefinition>
                                                 <RowDefinition></RowDefinition>
                                             </Grid.RowDefinitions>
                                             <TextBlock Grid.Row="0" Text="Table" FontSize="18" VerticalAlignment ="Center" HorizontalAlignment="Center"/>
                                             <TextBlock Grid.Row="1" Text="{Binding ID}" FontSize="28" VerticalAlignment ="Center" HorizontalAlignment="Center"/>
-
                                         </Grid>
                                     </Border>
+                                    <DataTemplate.Triggers>
+                                        <DataTrigger Binding="{Binding Active}" Value="True">
+                                            <Setter TargetName="BackgroundGrid" Property="Background" Value="Green"/>
+                                        </DataTrigger>
+
+                                        <DataTrigger Binding="{Binding Active}" Value="False">
+                                            <Setter TargetName="BackgroundGrid" Property="Background" Value="Red"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
 

@@ -1,8 +1,10 @@
-﻿using System.Xml.Linq;
+﻿using PropertyChanged;
+using System.Xml.Linq;
 
 namespace Data_Access_Entity.Entities
 {
     [Serializable]
+    [AddINotifyPropertyChangedInterface]
     public class Table
     {
         public int ID { get; set; }
