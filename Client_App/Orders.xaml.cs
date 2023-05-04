@@ -34,7 +34,6 @@ namespace Client_App
         {
             InitializeComponent();
             DbToViewModel();
-            GetCategoriesToComboBox();
             GetTablesToComboBox();
             DataContext = ViewModel;
 
@@ -159,12 +158,14 @@ namespace Client_App
             SendMessage(new LogicClassToCheck { Function = "$SENDMESSAGE_TO_WAITER", TableID = 1, RecipientId = 1, OrderId = 10 });
 
         }
+        #region ViewModel to BD
         private void ComboBoxCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
                 ListBoxProductsFromMenu.Items.Clear();
-                Category selectedCategory = ViewModel.Category.FirstOrDefault(a => a.Name == (string)ComboBoxCategories.SelectedValue);
+                Category selCat = (Category)ComboBoxCategories.SelectedValue;
+                Category selectedCategory = ViewModel.Category.FirstOrDefault(a => a.Name == selCat.Name)!;
                 foreach (var item in ViewModel.Product)
                 {
                     if (item.CategoryId == selectedCategory.ID)
@@ -241,20 +242,6 @@ namespace Client_App
                 MessageBox.Show(ex.Message);
             }
         }
-        private void GetCategoriesToComboBox()
-        {
-            try
-            {
-                foreach (var item in ViewModel.Category)
-                {
-                    ComboBoxCategories.Items.Add(item.Name);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
         private void GetTablesToComboBox()
         {
             try
@@ -318,5 +305,6 @@ namespace Client_App
             GetCategories();
             GetProducts();
         }
+        #endregion
     }
 }
