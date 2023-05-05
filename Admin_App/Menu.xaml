@@ -165,6 +165,12 @@
                     </Grid.RowDefinitions>
 
                     <Border CornerRadius="10" BorderThickness="1" Grid.Row="0" Margin="15">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
+                                <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
+                                <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
                         <Border.BorderBrush>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                 <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
@@ -205,7 +211,7 @@
                             FontFamily="Montserrat"
                             Cursor="Hand"
                             VerticalAlignment="Center"
-                            Style="{StaticResource designBtn3}" Grid.Row="1" Margin="5" Click="AddBtn_Click" >
+                            Style="{StaticResource designBtn3}" Grid.Row="1" Margin="5" Click="AddWaiterBtn_Click" >
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
                                         <Border Width="auto" Height="auto"
@@ -261,6 +267,12 @@
                         </Grid>
                     </Border>
                     <Border CornerRadius="10" BorderThickness="1" Grid.Column="1" Margin="15">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
+                                <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
+                                <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
                         <Border.BorderBrush>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                 <GradientStop Color="{StaticResource winBorderColor2}" Offset="0"/>
@@ -301,7 +313,7 @@
                             FontFamily="Montserrat"
                             Cursor="Hand"
                             VerticalAlignment="Center"
-                            Style="{StaticResource designBtn4}" Grid.Row="1" Margin="5" >
+                            Style="{StaticResource designBtn4}" Grid.Row="1" Margin="5" Click="AddProduct_Click" >
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
                                         <Border Width="auto" Height="auto"
@@ -321,7 +333,7 @@
                             FontFamily="Montserrat"
                             Cursor="Hand"
                             VerticalAlignment="Center"
-                            Style="{StaticResource designBtn4}" Grid.Row="2" Margin="5" >
+                            Style="{StaticResource designBtn4}" Grid.Row="2" Margin="5">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
                                         <Border Width="auto" Height="auto"
@@ -357,6 +369,12 @@
                         </Grid>
                     </Border>
                     <Border CornerRadius="10" BorderThickness="1" Grid.Column="2" Margin="15">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
+                                <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
+                                <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
                         <Border.BorderBrush>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                 <GradientStop Color="{StaticResource winBorderColor3}" Offset="0"/>
@@ -397,7 +415,7 @@
                             FontFamily="Montserrat"
                             Cursor="Hand"
                             VerticalAlignment="Center"
-                            Style="{StaticResource designBtn5}" Grid.Row="1" Margin="5" >
+                            Style="{StaticResource designBtn5}" Grid.Row="1" Margin="5" Click="AddCategory_Click" >
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
                                         <Border Width="auto" Height="auto"
@@ -417,7 +435,7 @@
                             FontFamily="Montserrat"
                             Cursor="Hand"
                             VerticalAlignment="Center"
-                            Style="{StaticResource designBtn5}" Grid.Row="2" Margin="5" >
+                            Style="{StaticResource designBtn5}" Grid.Row="2" Margin="5">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
                                         <Border Width="auto" Height="auto"
@@ -453,6 +471,12 @@
                         </Grid>
                     </Border>
                     <Border CornerRadius="10" BorderThickness="1" Grid.Column="3" Margin="15">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
+                                <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
+                                <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
                         <Border.BorderBrush>
                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                 <GradientStop Color="{StaticResource  winBorderColor4}" Offset="0"/>
