@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access_Entity.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20230503152134_03.05.2023_Create")]
-    partial class _03052023_Create
+    [Migration("20230505235618_06.05.2023")]
+    partial class _06052023
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
