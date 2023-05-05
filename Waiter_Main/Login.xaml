@@ -59,7 +59,7 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="LOG IN"
+                    <TextBlock Text="WAITER | LOG IN"
                                Foreground="DarkGray"
                                FontSize="10"
                                FontFamily="Courier New"

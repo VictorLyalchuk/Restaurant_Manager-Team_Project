@@ -1,4 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using Data_Access_Entity;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +23,12 @@ namespace Admin_App
     /// </summary>
     public partial class Menu : Window
     {
+       
+        
         public Menu()
         {
             InitializeComponent();
+            
         }
         #region adaptive borderless-window react
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -67,7 +71,7 @@ namespace Admin_App
         }
 
         #endregion
-
+        
         private void finalDatePicker_selectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             if(finalDatePicker.SelectedDate < startDatePicker.SelectedDate) { MessageBox.Show("Choose only future dates!"); finalDatePicker.SelectedDate = DateTime.Now; }
@@ -78,9 +82,21 @@ namespace Admin_App
             if (startDatePicker.SelectedDate > DateTime.Now) { MessageBox.Show("Choose only former date!"); startDatePicker.SelectedDate = DateTime.Now;  }
         }
 
-        private void AddBtn_Click(object sender, RoutedEventArgs e)
+        private void AddWaiterBtn_Click(object sender, RoutedEventArgs e)
         {
             AddWaiter add = new AddWaiter();
+            this.Close();
+            add.Show();
+        }
+        private void AddProduct_Click(object sender, RoutedEventArgs e)
+        {
+            AddProduct add = new AddProduct();
+            this.Close();
+            add.Show();
+        }
+        private void AddCategory_Click(object sender, RoutedEventArgs e)
+        {
+            AddCategory add = new AddCategory();
             this.Close();
             add.Show();
         }
