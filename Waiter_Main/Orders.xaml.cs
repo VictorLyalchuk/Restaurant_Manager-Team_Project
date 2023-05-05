@@ -54,9 +54,6 @@ namespace Waiter_App
             ListenAsync();
             #endregion
         }
-        public Orders(int Id) : this()
-        {
-        }
         #region adaptive borderless-window react
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -127,12 +124,12 @@ namespace Waiter_App
                         {
                             ViewModel.AddInNew(new StringClass() { Message = classToOrders.Msg });
                             ViewModel.AddInOrders(classToOrders.order);
+                            ViewModel.Table.FirstOrDefault(x => x.ID == classToOrders.order.ID).Active = false;
                         });
                         foreach (var item in classToOrders.products)
                         {
                             Application.Current.Dispatcher.Invoke(() =>
-                            {
-                                //MessageBox.Show(item.OrderId.ToString() + " : " + item.ProductId.ToString());
+                            {                                
                                 ViewModel.AddInProductOrder(item);
                             });
                         }
@@ -144,8 +141,6 @@ namespace Waiter_App
                         {
                             ViewModel.AddInReceipts(new IDClass { TableId = logicClassToCheck.TableID, OrderID = logicClassToCheck.OrderId });
                         });
-                        //Після чого можна було б зробити DOUBLE CLICK на ListBox повідомлення про чек, і воно надсилає чек нашому клієнту по полю logicClassToCheck.RecepientId
-                        //перед цим це поле - logicClassToCheck.RecepientId,  труба було б змінити на Order.Id
                     }
                     else if (logic.Function == "$SENDMESSAGE")
                     {
@@ -186,10 +181,21 @@ namespace Waiter_App
         }
         private void ListBoxCheck_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var Table = ViewModel.SelectedRecepient.TableId;
+            Order order = ViewModel.Orders.FirstOrDefault(x => x.ID == ViewModel.SelectedRecepient.OrderID)!;
+            var collection = ViewModel.GetProductId(order.ID);
+            ViewModel.Table.FirstOrDefault(x => x.ID == ViewModel.SelectedRecepient.TableId)!.Active = true;
 
-            Order order = new Order() { ID = 10, Active = true, OrderDate = DateTime.Now, WaiterId = 1 };
-            SendMessage(new LogicClassToCheck { Function = "$SENDMESSAGE_TO_CLIENT", RecipientId = order.ID, Order = order });
+            restaurantContext.Tables.FirstOrDefault(x => x.ID == ViewModel.SelectedRecepient.TableId)!.Active = true;
+            restaurantContext.SaveChanges();
+            foreach (var item in collection)
+                restaurantContext.ProductsOrders.Add(new ProductOrder() { OrderId = order.ID, ProductId = item });       
+            restaurantContext.SaveChanges();
+
+            ViewModel.RemoveProductOrderToId(order.ID);
+            ViewModel.RemoveInOrders(order);
+            ViewModel.RemoveCheck(ViewModel.SelectedRecepient);
+
+            SendMessage(new LogicClassToProducts { Function = "$SENDMESSAGE_TO_CLIENT", RecepietId = order.ID, Products = collection });
 
         }
         private void BackButton_Click(object sender, RoutedEventArgs e)

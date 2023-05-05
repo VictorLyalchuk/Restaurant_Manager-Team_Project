@@ -100,11 +100,10 @@ class RestaurantServer
                 }
                 else if (waiter.Function == "$SENDMESSAGE_TO_CLIENT")
                 {
-                    LogicClassToCheck logic = (LogicClassToCheck)waiter;
-                    //Console.WriteLine("Object was sended to CLIENT with ID : " + logic.RecipientId);
+                    LogicClassToProducts logic = (LogicClassToProducts)waiter;
                     IPEndPoint CuurentClient = null;
                     foreach (var item in Clients)
-                        if (item.Id == logic.RecipientId)
+                        if (item.Id == logic.RecepietId)
                             CuurentClient = item.Ip;
                     SendMessage(logic, CuurentClient!);
                 }

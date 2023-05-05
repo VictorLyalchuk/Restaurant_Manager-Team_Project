@@ -126,14 +126,28 @@ namespace Client_App
         {
             _Receipts.Clear();
         }
-        public List<int> GetProductId(int OrederId)
+        public List<int> GetProductId(int OrderID)
         {
             List<int> arr = new List<int>();
             foreach (var item in _ProductOrder)
             {
-                if (item.OrderId == OrederId) arr.Add(item.ProductId);
+                if (item.OrderId == OrderID) arr.Add(item.ProductId);
             }
             return arr;
         }
+        public List<Product> GetProductObj(List<int> ProdId)
+        {
+            List<Product> arr = new List<Product>();
+            foreach (var id in ProdId)
+            {
+                foreach (var item in Product)
+                {
+                    if (item.ID == id) arr.Add(item);
+                }
+            }
+            return arr;
+        }
+
+
     }
 }

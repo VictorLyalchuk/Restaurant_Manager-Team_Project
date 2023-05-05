@@ -152,5 +152,20 @@ namespace Waiter_App
                 AddInProductOrder(item);
             }
         }
+        public void RemoveProductOrderToId(int orderId)
+        {
+            List<ProductOrder> deletelist = new List<ProductOrder>();
+            foreach (var item in _ProductOrder)           
+                if(item.OrderId == orderId)              
+                    deletelist.Add(item);
+
+            foreach (var item in deletelist)
+                RemoveInProductOrder(item);
+
+        }
+        public void RemoveCheck(IDClass iDClass)
+        {
+            _Receipts.Remove(iDClass);
+        }
     }
 }

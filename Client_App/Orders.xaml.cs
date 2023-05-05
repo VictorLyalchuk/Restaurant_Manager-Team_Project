@@ -121,8 +121,24 @@ namespace Client_App
 
                     if (message.Function == "$SENDMESSAGE_TO_CLIENT")
                     {
-                        LogicClassToCheck logic = (LogicClassToCheck)message;
-                        MessageBox.Show($"-----------------YOUR CHECK-----------------\nOrder ID : {logic.Order.ID}\nWaiter ID : {logic.Order.WaiterId}\nOrderDate : {logic.Order.OrderDate}");
+                        LogicClassToProducts logic = (LogicClassToProducts)message;
+                        List<Product> products = new List<Product>();
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            products = ViewModel.GetProductObj(logic.Products);
+                        });
+                        double sum = 0;
+                        foreach (Product product in products) { sum += product.Price; }
+                        var order = restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId);
+                        var Fname = restaurantContext.Waiters.FirstOrDefault(x => x.ID == TableId.RecepientId).FirstName;
+                        var Sname = restaurantContext.Waiters.FirstOrDefault(x => x.ID == TableId.RecepientId).SurName;
+                        MessageBox.Show($"----------------------------------------CHECK----------------------------------------\n" +
+                                        $"ID | {TableId.orderId}\n" +
+                                        $"Table | {TableId.tableId}\n" +
+                                        $"Date/Time |{order.OrderDate}\n" +
+                                        $"Waiter | {Fname} {Sname}\n" +
+                                        $"Sum | {sum}$\n" +
+                                        $"-------------------------------------------------------------------------------------");
 
                     }    
                 }
@@ -151,11 +167,10 @@ namespace Client_App
         #endregion
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            //В поле ID - Записується Order.Id
-            SendMessage(new LogicClassToRecipient { Function = "$CLIENTJOIN", Id = 10 });
+            SendMessage(new LogicClassToRecipient { Function = "$CLIENTJOIN", Id = TableId.orderId});
             ListenAsync();
 
-            SendMessage(new LogicClassToCheck { Function = "$SENDMESSAGE_TO_WAITER", TableID = 1, RecipientId = 1, OrderId = 10 });
+            SendMessage(new LogicClassToCheck { Function = "$SENDMESSAGE_TO_WAITER", TableID = TableId.tableId, RecipientId = TableId.RecepientId, OrderId = TableId.orderId });
 
         }
         #region ViewModel to BD
@@ -187,7 +202,6 @@ namespace Client_App
                 {
                     Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
                     Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
-
                     if (thisorder != null)
                     {
                         ViewModel.AddInProductOrder(new ProductOrder
@@ -207,6 +221,7 @@ namespace Client_App
                         });
                         restaurantContext.SaveChanges();
                         var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
+                        TableId.orderId = newOrder.ID;
                         ViewModel.AddInOrders(new Order
                         {
                             ID = newOrder.ID,
@@ -293,6 +308,21 @@ namespace Client_App
                 foreach (var item in categories)
                 {
                     ViewModel.AddInCategory(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void GetWaiter()
+        {
+            try
+            {
+                var waiter = restaurantContext.Waiters;
+                foreach (var item in waiter)
+                {
+                    ViewModel.AddInWaiter(item);
                 }
             }
             catch (Exception ex)
