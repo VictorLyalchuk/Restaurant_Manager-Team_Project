@@ -32,9 +32,6 @@ using Application = System.Windows.Application;
 
 namespace Waiter_App
 {
-    /// <summary>
-    /// Interaction logic for Orders.xaml
-    /// </summary>
     public partial class Orders : Window
     {
         ViewModel ViewModel = new ViewModel();
@@ -46,10 +43,7 @@ namespace Waiter_App
         {
             InitializeComponent();
             DbToViewModel();
-            GetCategoriesToComboBox();
-            GetTablesToComboBox();
             DataContext = ViewModel;
-
             WaiterID = User.ID;
             #region Connect to server
             client = new UdpClient();
@@ -104,7 +98,6 @@ namespace Waiter_App
         }
 
         #endregion
-
         #region Function For Server_App
         private async void SendMessage(object message)
         {
@@ -186,7 +179,6 @@ namespace Waiter_App
             }
         }
         #endregion
-
         private void ActiveOrderLBItem_DoubleClick(object sender, MouseButtonEventArgs e)
         {
             Orders orders = new Orders();
@@ -200,17 +192,18 @@ namespace Waiter_App
             SendMessage(new LogicClassToCheck { Function = "$SENDMESSAGE_TO_CLIENT", RecipientId = order.ID, Order = order });
 
         }
-
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
+        #region ViewModel to DB
         private void ComboBoxCategories_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
                 ListBoxProductsFromMenu.Items.Clear();
-                Category selectedCategory = ViewModel.Category.FirstOrDefault(a => a.Name == (string)ComboBoxCategories.SelectedValue);
+                Category sel = (Category)ComboBoxCategories.SelectedValue;
+                Category selectedCategory = ViewModel.Category.FirstOrDefault(a => a.Name == sel.Name)!;
                 foreach (var item in ViewModel.Product)
                 {
                     if (item.CategoryId == selectedCategory.ID)
@@ -230,7 +223,8 @@ namespace Waiter_App
             {
                 if (ComboBoxTables.SelectedValue != null && ListBoxProductsFromMenu.SelectedItem != null)
                 {
-                    Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
+                    Data_Access_Entity.Entities.Table selTable = (Data_Access_Entity.Entities.Table)ComboBoxTables.SelectedValue;
+                    Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selTable.ID)!;
                     Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
 
                     if (thisorder != null)
@@ -247,17 +241,17 @@ namespace Waiter_App
                         {
                             Active = false,
                             OrderDate = DateTime.Now,
-                            TableId = (int)ComboBoxTables.SelectedValue,
+                            TableId = selTable.ID,
                             WaiterId = User.ID
                         });
                         restaurantContext.SaveChanges();
-                        var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
+                        var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selTable.ID);
                         ViewModel.AddInOrders(new Order
                         {
                             ID = newOrder.ID,
                             Active = false,
                             OrderDate = DateTime.Now,
-                            TableId = (int)ComboBoxTables.SelectedValue,
+                            TableId = selTable.ID,
                             WaiterId = User.ID
                         });
                         ViewModel.AddInProductOrder(new ProductOrder
@@ -287,45 +281,18 @@ namespace Waiter_App
                 MessageBox.Show(ex.Message);
             }
         }
-        private void GetCategoriesToComboBox()
-        {
-            try
-            {
-                foreach (var item in ViewModel.Category)
-                {
-                    ComboBoxCategories.Items.Add(item.Name);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-        private void GetTablesToComboBox()
-        {
-            try
-            {
-                foreach (var item in ViewModel.Table)
-                {
-                    ComboBoxTables.Items.Add(item.ID);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
         private void GetOrderItems()
         {
             ListBoxProductsFromOrderByTableNumber.Items.Clear();
-            Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
+            Data_Access_Entity.Entities.Table selecTable = (Data_Access_Entity.Entities.Table)ComboBoxTables.SelectedValue;
+            Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selecTable.ID)!;
             if (thisorder != null)
             {
                 var b = ViewModel.GetProductId(thisorder.ID);
                 List<Product> Show = new List<Product>();
                 foreach (var item in b)
                 {
-                    Show.Add(ViewModel.Product.FirstOrDefault(x => x.ID == item));
+                    Show.Add(ViewModel.Product.FirstOrDefault(x => x.ID == item)!);
                 }
                 foreach (var item in Show)
                     ListBoxProductsFromOrderByTableNumber.Items.Add(item);
@@ -383,5 +350,23 @@ namespace Waiter_App
             GetProducts();
             GetTables();
         }
+        private void ListBoxTables_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ListBoxProductsFromOrderByTableNumber.Items.Clear();
+            Data_Access_Entity.Entities.Table selecTable = (Data_Access_Entity.Entities.Table)ListBoxTables.SelectedValue;
+            Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selecTable.ID)!;
+            if (thisorder != null)
+            {
+                var b = ViewModel.GetProductId(thisorder.ID);
+                List<Product> Show = new List<Product>();
+                foreach (var item in b)
+                {
+                    Show.Add(ViewModel.Product.FirstOrDefault(x => x.ID == item)!);
+                }
+                foreach (var item in Show)
+                    ListBoxProductsFromOrderByTableNumber.Items.Add(item);
+            }
+        }
+        #endregion
     }
 }

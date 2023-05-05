@@ -14,7 +14,7 @@ namespace Data_Access_Entity.Entities
         public double Price { get; set; }
         public override string ToString()
         {
-            return $"{Name} : {Price} $";
+            return $"{Name}"+ "\n" + $"{Price} $";
         }
     }
 }
