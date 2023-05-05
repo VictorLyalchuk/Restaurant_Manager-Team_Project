@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client_App"
+        d:DataContext="{d:DesignInstance local:ViewModel}"
         mc:Ignorable="d"
         WindowStyle="None"
         ResizeMode="CanResizeWithGrip"
@@ -200,7 +201,7 @@
                             </ControlTemplate>
                         </Button.Template>
                     </Button>
-                    <ComboBox Foreground="White"  Name="ComboBoxCategories" Margin="40,0,40,0" Grid.Column="1" SelectionChanged="ComboBoxCategories_SelectionChanged"></ComboBox>
+                    <ComboBox Foreground="White"  Name="ComboBoxCategories" Margin="40,0,40,0" Grid.Column="1" SelectionChanged="ComboBoxCategories_SelectionChanged" ItemsSource="{Binding Category}"></ComboBox>
                     <ListBox Name="ListBoxProductsFromMenu" Grid.Row="1" Margin="40,0,40,0" Grid.Column="1">
                     </ListBox>
                     <Button Click="Add_Button_Click"
