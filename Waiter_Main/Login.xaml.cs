@@ -27,7 +27,6 @@ namespace Waiter_App
     public partial class Login : Window
     {
         ViewModel ViewModel = new ViewModel();
-        RestaurantContext restaurantContext = new RestaurantContext();
         public Login()
         {
             InitializeComponent();
@@ -111,10 +110,13 @@ namespace Waiter_App
         {
             try
             {
-                var waiters = restaurantContext.Waiters;
-                foreach (var item in waiters)
+                using (RestaurantContext restaurantContext = new RestaurantContext())
                 {
-                    ViewModel.AddInWaiter(item);
+                    var waiters = restaurantContext.Waiters;
+                    foreach (var item in waiters)
+                    {
+                        ViewModel.AddInWaiter(item);
+                    }
                 }
             }
             catch (Exception ex)

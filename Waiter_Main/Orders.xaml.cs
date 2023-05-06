@@ -35,7 +35,6 @@ namespace Waiter_App
     public partial class Orders : Window
     {
         ViewModel ViewModel = new ViewModel();
-        RestaurantContext restaurantContext = new RestaurantContext();
         static int WaiterID;
         IPEndPoint serverEndPoint;
         UdpClient client;
@@ -185,17 +184,20 @@ namespace Waiter_App
             var collection = ViewModel.GetProductId(order.ID);
             ViewModel.Table.FirstOrDefault(x => x.ID == ViewModel.SelectedRecepient.TableId)!.Active = true;
 
-            Data_Access_Entity.Entities.Table EditTableStatus = restaurantContext.Tables.FirstOrDefault(t => t.ID == ViewModel.SelectedRecepient.TableId)!;
-            EditTableStatus.Active = true;
-            restaurantContext.Attach(EditTableStatus);
-            restaurantContext.Entry(EditTableStatus).Property(p => p.Active).IsModified = true;
-            restaurantContext.SaveChanges();
-            restaurantContext.Orders.FirstOrDefault(x => x.ID == order.ID).Active = true;
-            restaurantContext.SaveChanges();
+            using (RestaurantContext restaurantContext = new RestaurantContext())
+            {
+                restaurantContext.Tables.FirstOrDefault(x => x.ID == ViewModel.SelectedRecepient.TableId)!.Active = true;
+                restaurantContext.SaveChanges();
+            }
 
-            foreach (var item in collection)
-                restaurantContext.ProductsOrders.Add(new ProductOrder() { OrderId = order.ID, ProductId = item });       
-            restaurantContext.SaveChanges();
+            using (RestaurantContext restaurantContext = new RestaurantContext())
+            {
+                foreach (var item in collection)
+                    restaurantContext.ProductsOrders.Add(new ProductOrder() { OrderId = order.ID, ProductId = item });
+                restaurantContext.Orders.FirstOrDefault(x => x.ID == ViewModel.SelectedRecepient.OrderID).Active = true;
+                restaurantContext.SaveChanges();
+            }
+
 
             ViewModel.RemoveProductOrderToId(order.ID);
             ViewModel.RemoveInOrders(order);
@@ -248,28 +250,31 @@ namespace Waiter_App
                     }
                     else
                     {
-                        restaurantContext.Orders.Add(new Order
+                        using (RestaurantContext restaurantContext = new RestaurantContext())
                         {
-                            Active = false,
-                            OrderDate = DateTime.Now,
-                            TableId = selTable.ID,
-                            WaiterId = User.ID
-                        });
-                        restaurantContext.SaveChanges();
-                        var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selTable.ID);
-                        ViewModel.AddInOrders(new Order
-                        {
-                            ID = newOrder.ID,
-                            Active = false,
-                            OrderDate = DateTime.Now,
-                            TableId = selTable.ID,
-                            WaiterId = User.ID
-                        });
-                        ViewModel.AddInProductOrder(new ProductOrder
-                        {
-                            OrderId = newOrder.ID,
-                            ProductId = selectedvalue.ID
-                        });
+                            restaurantContext.Orders.Add(new Order
+                            {
+                                Active = false,
+                                OrderDate = DateTime.Now,
+                                TableId = selTable.ID,
+                                WaiterId = User.ID
+                            });
+                            restaurantContext.SaveChanges();
+                            var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selTable.ID);
+                            ViewModel.AddInOrders(new Order
+                            {
+                                ID = newOrder.ID,
+                                Active = false,
+                                OrderDate = DateTime.Now,
+                                TableId = selTable.ID,
+                                WaiterId = User.ID
+                            });
+                            ViewModel.AddInProductOrder(new ProductOrder
+                            {
+                                OrderId = newOrder.ID,
+                                ProductId = selectedvalue.ID
+                            });
+                        }
                     }
                     ViewModel.Table.FirstOrDefault(o => o.ID == selTable.ID)!.Active = false;
                     GetOrderItems();
@@ -327,10 +332,13 @@ namespace Waiter_App
         {
             try
             {
-                var products = restaurantContext.Products;
-                foreach (var item in products)
+                using (RestaurantContext restaurantContext = new RestaurantContext())
                 {
-                    ViewModel.AddInProduct(item);
+                    var products = restaurantContext.Products;
+                    foreach (var item in products)
+                    {
+                        ViewModel.AddInProduct(item);
+                    }
                 }
             }
             catch (Exception ex)
@@ -342,10 +350,13 @@ namespace Waiter_App
         {
             try
             {
-                var categories = restaurantContext.Categories;
-                foreach (var item in categories)
+                using (RestaurantContext restaurantContext = new RestaurantContext())
                 {
-                    ViewModel.AddInCategory(item);
+                    var categories = restaurantContext.Categories;
+                    foreach (var item in categories)
+                    {
+                        ViewModel.AddInCategory(item);
+                    }
                 }
             }
             catch (Exception ex)
@@ -357,11 +368,14 @@ namespace Waiter_App
         {
             try
             {
-                var tables = restaurantContext.Tables;
-                foreach (var item in tables)
+                using (RestaurantContext restaurantContext = new RestaurantContext())
                 {
-                    if(item.WaiterId == User.ID)
-                        ViewModel.AddInTable(item);
+                    var tables = restaurantContext.Tables;
+                    foreach (var item in tables)
+                    {
+                        if (item.WaiterId == User.ID)
+                            ViewModel.AddInTable(item);
+                    }
                 }
             }
             catch (Exception ex)

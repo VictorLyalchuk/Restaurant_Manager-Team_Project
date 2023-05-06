@@ -21,12 +21,12 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Data_Access_Entity.Entities;
 using LibraryForServer;
+using Table = Data_Access_Entity.Entities.Table;
 
 namespace Client_App
 {
     public partial class Menu : Window
     {
-        RestaurantContext restaurantContext = new RestaurantContext();
 
         IPEndPoint serverEndPoint;
         UdpClient client;
@@ -73,6 +73,11 @@ namespace Client_App
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
+            using (RestaurantContext restaurantContext = new RestaurantContext())
+            {
+                restaurantContext.Tables.FirstOrDefault(x => x.ID == TableId.tableId).Active = true;
+                restaurantContext.SaveChanges();
+            }
             MainWindow login = new MainWindow();
             this.Close();
             login.ShowDialog();
@@ -119,14 +124,24 @@ namespace Client_App
             SendMessage(new LogicClassToMessage() { Function = "$SENDMESSAGE", RecipientId = TableId.RecepientId, Message = $"• Client at table {TableId.tableId} needs waiter" });
         }
         private void GenerateTable()
-        { 
-            var Tables = restaurantContext.Tables;
+        {
+            List<Table> Tables;
+            using (RestaurantContext restaurantContext = new RestaurantContext())
+            {
+                Tables = restaurantContext.Tables.ToList();
+            }
+
             foreach (var item in Tables)
             {
                 if (item.Active == true)
                 {
                     TableId.tableId = item.ID;
                     TableId.RecepientId = item.WaiterId;
+                    using (RestaurantContext restaurantContext = new RestaurantContext())
+                    {
+                        restaurantContext.Tables.FirstOrDefault(x => x.ID == TableId.tableId).Active = false;
+                        restaurantContext.SaveChanges();
+                    }
                     break;
                 }
             }
