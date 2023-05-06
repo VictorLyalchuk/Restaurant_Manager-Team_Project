@@ -21,7 +21,6 @@ namespace Client_App
 {
     public partial class Receipt : Window
     {
-        RestaurantContext context = new RestaurantContext();
         ViewModel model = new ViewModel();
         Waiter Waiter;
         public Receipt(List<Product> products, Waiter waiter, double price)
@@ -80,11 +79,14 @@ namespace Client_App
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             int rating = Waiter.Raiting + Convert.ToInt32(BasicRatingBar.Value);
-            if (Waiter.Raiting > 0)
-                context.Waiters.FirstOrDefault(x => x.ID == Waiter.ID).Raiting = rating/2;
-            else
-                context.Waiters.FirstOrDefault(x => x.ID == Waiter.ID).Raiting = rating;
-            context.SaveChanges();
+            using (RestaurantContext restaurantContext = new RestaurantContext())
+            {
+                if (Waiter.Raiting > 0)
+                    restaurantContext.Waiters.FirstOrDefault(x => x.ID == Waiter.ID).Raiting = rating / 2;
+                else
+                    restaurantContext.Waiters.FirstOrDefault(x => x.ID == Waiter.ID).Raiting = rating;
+                restaurantContext.SaveChanges();
+            }
             Close();
         }
     }

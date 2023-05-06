@@ -27,7 +27,6 @@ namespace Client_App
     public partial class Orders : Window
     {
         ViewModel ViewModel = new ViewModel();
-        RestaurantContext restaurantContext = new RestaurantContext();
         IPEndPoint serverEndPoint;
         UdpClient client;
         public Orders()
@@ -93,10 +92,15 @@ namespace Client_App
         }
         private void Order_Click(object sender, RoutedEventArgs e)
         {
-            var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
-            restaurantContext.Tables.FirstOrDefault(x => x.ID == TableId.tableId).Active = false;
-            restaurantContext.SaveChanges();
-            SendMessage(new LogicClassToOrders { Function = "$ADDORDER", products = ViewModel.ProductOrder, Msg = $"• Client at table {TableId.tableId} made order", RecepientId = TableId.RecepientId, order = newOrder });
+            using (RestaurantContext restaurantContext = new RestaurantContext())
+            {
+                var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
+
+                restaurantContext.Tables.FirstOrDefault(x => x.ID == TableId.tableId).Active = false;
+                restaurantContext.SaveChanges();
+
+                SendMessage(new LogicClassToOrders { Function = "$ADDORDER", products = ViewModel.ProductOrder, Msg = $"• Client at table {TableId.tableId} made order", RecepientId = TableId.RecepientId, order = newOrder });
+            }
         }
         #region Function For Server
         private async void SendMessage(object message)
@@ -129,22 +133,19 @@ namespace Client_App
                         });
                         double sum = 0;
                         foreach (Product product in products) { sum += product.Price; }
-                        var order = restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId);
-                        var waiter = restaurantContext.Waiters.FirstOrDefault(x => x.ID == TableId.RecepientId);
-                        Application.Current.Dispatcher.Invoke(() =>
+                        using (RestaurantContext restaurantContext = new RestaurantContext())
                         {
-                            Receipt window = new Receipt(products, waiter, sum);
-                            this.Close();
-                            window.ShowDialog();
-                        });
+                            var order = restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId);
+                            var waiter = restaurantContext.Waiters.FirstOrDefault(x => x.ID == TableId.RecepientId);
 
-                        //MessageBox.Show($"----------------------------------------CHECK----------------------------------------\n" +
-                        //                $"ID | {TableId.orderId}\n" +
-                        //                $"Table | {TableId.tableId}\n" +
-                        //                $"Date/Time |{order.OrderDate}\n" +
-                        //                $"Waiter | {Fname} {Sname}\n" +
-                        //                $"Sum | {sum}$\n" +
-                        //                $"-------------------------------------------------------------------------------------");
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                Receipt window = new Receipt(products, waiter, sum);
+                                this.Close();
+                                window.ShowDialog();
+                            });
+                        }
+
 
                     }    
                 }
@@ -218,29 +219,33 @@ namespace Client_App
                     }
                     else
                     {
-                        restaurantContext.Orders.Add(new Order
+                        using (RestaurantContext restaurantContext = new RestaurantContext())
                         {
-                            Active = false,
-                            OrderDate = DateTime.Now,
-                            TableId = (int)ComboBoxTables.SelectedValue,
-                            WaiterId = TableId.RecepientId
-                        });
-                        restaurantContext.SaveChanges();
-                        var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
-                        TableId.orderId = newOrder.ID;
-                        ViewModel.AddInOrders(new Order
-                        {
-                            ID = newOrder.ID,
-                            Active = false,
-                            OrderDate = DateTime.Now,
-                            TableId = (int)ComboBoxTables.SelectedValue,
-                            WaiterId = TableId.RecepientId
-                        });
-                        ViewModel.AddInProductOrder(new ProductOrder
-                        {
-                            OrderId = newOrder.ID,
-                            ProductId = selectedvalue.ID
-                        });
+                            restaurantContext.Orders.Add(new Order
+                            {
+                                Active = false,
+                                OrderDate = DateTime.Now,
+                                TableId = (int)ComboBoxTables.SelectedValue,
+                                WaiterId = TableId.RecepientId
+                            });
+                            restaurantContext.SaveChanges();
+
+                            var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
+                            TableId.orderId = newOrder.ID;
+                            ViewModel.AddInOrders(new Order
+                            {
+                                ID = newOrder.ID,
+                                Active = false,
+                                OrderDate = DateTime.Now,
+                                TableId = (int)ComboBoxTables.SelectedValue,
+                                WaiterId = TableId.RecepientId
+                            });
+                            ViewModel.AddInProductOrder(new ProductOrder
+                            {
+                                OrderId = newOrder.ID,
+                                ProductId = selectedvalue.ID
+                            });
+                        }
                     }
                     GetOrderItems();
                 }
@@ -295,10 +300,13 @@ namespace Client_App
         {
             try
             {
-                var products = restaurantContext.Products;
-                foreach (var item in products)
+                using (RestaurantContext restaurantContext = new RestaurantContext())
                 {
-                    ViewModel.AddInProduct(item);
+                    var products = restaurantContext.Products;
+                    foreach (var item in products)
+                    {
+                        ViewModel.AddInProduct(item);
+                    }
                 }
             }
             catch (Exception ex)
@@ -310,10 +318,13 @@ namespace Client_App
         {
             try
             {
-                var categories = restaurantContext.Categories;
-                foreach (var item in categories)
+                using (RestaurantContext restaurantContext = new RestaurantContext())
                 {
-                    ViewModel.AddInCategory(item);
+                    var categories = restaurantContext.Categories;
+                    foreach (var item in categories)
+                    {
+                        ViewModel.AddInCategory(item);
+                    }
                 }
             }
             catch (Exception ex)
@@ -325,10 +336,13 @@ namespace Client_App
         {
             try
             {
-                var waiter = restaurantContext.Waiters;
-                foreach (var item in waiter)
+                using (RestaurantContext restaurantContext = new RestaurantContext())
                 {
-                    ViewModel.AddInWaiter(item);
+                    var waiter = restaurantContext.Waiters;
+                    foreach (var item in waiter)
+                    {
+                        ViewModel.AddInWaiter(item);
+                    }
                 }
             }
             catch (Exception ex)
