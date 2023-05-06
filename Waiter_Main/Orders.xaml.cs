@@ -185,8 +185,12 @@ namespace Waiter_App
             var collection = ViewModel.GetProductId(order.ID);
             ViewModel.Table.FirstOrDefault(x => x.ID == ViewModel.SelectedRecepient.TableId)!.Active = true;
 
-            restaurantContext.Tables.FirstOrDefault(x => x.ID == ViewModel.SelectedRecepient.TableId)!.Active = true;
+            Data_Access_Entity.Entities.Table EditTableStatus = restaurantContext.Tables.FirstOrDefault(t => t.ID == ViewModel.SelectedRecepient.TableId)!;
+            EditTableStatus.Active = true;
+            restaurantContext.Attach(EditTableStatus);
+            restaurantContext.Entry(EditTableStatus).Property(p => p.Active).IsModified = true;
             restaurantContext.SaveChanges();
+
             foreach (var item in collection)
                 restaurantContext.ProductsOrders.Add(new ProductOrder() { OrderId = order.ID, ProductId = item });       
             restaurantContext.SaveChanges();
@@ -196,7 +200,6 @@ namespace Waiter_App
             ViewModel.RemoveCheck(ViewModel.SelectedRecepient);
 
             SendMessage(new LogicClassToProducts { Function = "$SENDMESSAGE_TO_CLIENT", RecepietId = order.ID, Products = collection });
-
         }
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
