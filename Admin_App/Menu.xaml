@@ -528,8 +528,8 @@
                             </Button>
                         </Grid>
                     </Border>
+                    <DataGrid  Grid.Row="1" Grid.ColumnSpan="4" Margin="20"/>
 
-                    <DataGrid Grid.Row="1" Grid.ColumnSpan="4" Margin="10"></DataGrid>
                 </Grid>
 
             </Grid>

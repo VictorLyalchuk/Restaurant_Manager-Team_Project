@@ -131,5 +131,12 @@ namespace Client_App
                 }
             }
         }
+
+        private void StaffRating_Click(object sender, RoutedEventArgs e)
+        {
+            StaffRating rating = new StaffRating();
+            this.Close();
+            rating.Show();
+        }
     }
 }
