@@ -124,7 +124,7 @@ namespace Waiter_App
                         {
                             ViewModel.AddInNew(new StringClass() { Message = classToOrders.Msg });
                             ViewModel.AddInOrders(classToOrders.order);
-                            ViewModel.Table.FirstOrDefault(x => x.ID == classToOrders.order.ID).Active = false;
+                            ViewModel.Table.FirstOrDefault(x => x.ID == classToOrders.order.TableId).Active = false;
                         });
                         foreach (var item in classToOrders.products)
                         {
@@ -189,6 +189,8 @@ namespace Waiter_App
             EditTableStatus.Active = true;
             restaurantContext.Attach(EditTableStatus);
             restaurantContext.Entry(EditTableStatus).Property(p => p.Active).IsModified = true;
+            restaurantContext.SaveChanges();
+            restaurantContext.Orders.FirstOrDefault(x => x.ID == order.ID).Active = true;
             restaurantContext.SaveChanges();
 
             foreach (var item in collection)

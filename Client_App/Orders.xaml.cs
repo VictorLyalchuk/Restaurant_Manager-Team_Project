@@ -130,15 +130,21 @@ namespace Client_App
                         double sum = 0;
                         foreach (Product product in products) { sum += product.Price; }
                         var order = restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId);
-                        var Fname = restaurantContext.Waiters.FirstOrDefault(x => x.ID == TableId.RecepientId).FirstName;
-                        var Sname = restaurantContext.Waiters.FirstOrDefault(x => x.ID == TableId.RecepientId).SurName;
-                        MessageBox.Show($"----------------------------------------CHECK----------------------------------------\n" +
-                                        $"ID | {TableId.orderId}\n" +
-                                        $"Table | {TableId.tableId}\n" +
-                                        $"Date/Time |{order.OrderDate}\n" +
-                                        $"Waiter | {Fname} {Sname}\n" +
-                                        $"Sum | {sum}$\n" +
-                                        $"-------------------------------------------------------------------------------------");
+                        var waiter = restaurantContext.Waiters.FirstOrDefault(x => x.ID == TableId.RecepientId);
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            Receipt window = new Receipt(products, waiter, sum);
+                            this.Close();
+                            window.ShowDialog();
+                        });
+
+                        //MessageBox.Show($"----------------------------------------CHECK----------------------------------------\n" +
+                        //                $"ID | {TableId.orderId}\n" +
+                        //                $"Table | {TableId.tableId}\n" +
+                        //                $"Date/Time |{order.OrderDate}\n" +
+                        //                $"Waiter | {Fname} {Sname}\n" +
+                        //                $"Sum | {sum}$\n" +
+                        //                $"-------------------------------------------------------------------------------------");
 
                     }    
                 }
