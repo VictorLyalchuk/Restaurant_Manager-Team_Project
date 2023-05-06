@@ -1,10 +1,12 @@
 ﻿using Data_Access_Entity;
+using Data_Access_Entity.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -17,18 +19,20 @@ using System.Windows.Shapes;
 
 namespace Client_App
 {
-    /// <summary>
-    /// Interaction logic for Receipt.xaml
-    /// </summary>
     public partial class Receipt : Window
     {
-        ViewModel model = new ViewModel();
         RestaurantContext context = new RestaurantContext();
-        public Receipt()
+        ViewModel model = new ViewModel();
+        Waiter Waiter;
+        public Receipt(List<Product> products, Waiter waiter, double price)
         {
             InitializeComponent();
-            GetProducts();
-            DataContext= model;
+            Waiter = waiter;
+            foreach (var item in products)
+                model.AddInProduct(item);   
+            FullName.Text = $"{waiter.FirstName} {waiter.SurName}";
+            TotalPrice.Text = $"{price}$";
+            DataContext = model;
             
         }
         #region adaptive borderless-window react
@@ -72,12 +76,16 @@ namespace Client_App
         }
 
         #endregion
-        void GetProducts()
+
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var item in context.Products.ToArray())
-            {
-                model.AddInProduct(item);
-            }
+            int rating = Waiter.Raiting + Convert.ToInt32(BasicRatingBar.Value);
+            if (Waiter.Raiting > 0)
+                context.Waiters.FirstOrDefault(x => x.ID == Waiter.ID).Raiting = rating/2;
+            else
+                context.Waiters.FirstOrDefault(x => x.ID == Waiter.ID).Raiting = rating;
+            context.SaveChanges();
+            Close();
         }
     }
 }
