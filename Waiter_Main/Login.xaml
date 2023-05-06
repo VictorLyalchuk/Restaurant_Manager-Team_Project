@@ -153,7 +153,7 @@
                             Orientation="Vertical"
                             Margin="0,35,0,35">
 
-                    <Image Source="/img/logo.png"
+                    <Image Source="/img/newlogo.png"
                            Width="100" Height="100"/>
 
                     <TextBlock Text="Vart"

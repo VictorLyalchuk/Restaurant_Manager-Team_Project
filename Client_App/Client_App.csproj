@@ -8,6 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="img\barcode.png" />
+    <None Remove="img\code.png" />
     <None Remove="img\key-icon.png" />
     <None Remove="img\key.png" />
     <None Remove="img\logo.png" />
@@ -28,6 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="img\barcode.png" />
+    <Resource Include="img\code.png" />
     <Resource Include="img\key.png" />
     <Resource Include="img\logo.png" />
     <Resource Include="img\newlogo.png" />
