@@ -100,6 +100,7 @@ namespace Client_App
                 restaurantContext.SaveChanges();
 
                 SendMessage(new LogicClassToOrders { Function = "$ADDORDER", products = ViewModel.ProductOrder, Msg = $"• Client at table {TableId.tableId} made order", RecepientId = TableId.RecepientId, order = newOrder });
+                ViewModel.ClearInProductOrders();
             }
         }
         #region Function For Server

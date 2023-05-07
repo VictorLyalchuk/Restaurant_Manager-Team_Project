@@ -29,6 +29,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Configuration;
 using Waiter_App.ViewModel_Models;
 using Application = System.Windows.Application;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Waiter_App
 {
@@ -119,12 +121,23 @@ namespace Waiter_App
                     if (logic.Function == "$ADDORDER")
                     {
                         LogicClassToOrders classToOrders = (LogicClassToOrders)logic;
-                        Application.Current.Dispatcher.Invoke(() =>
+                        if (ViewModel.Orders.FirstOrDefault(x => x.ID == classToOrders.order.ID) == null)
                         {
-                            ViewModel.AddInNew(new StringClass() { Message = classToOrders.Msg });
-                            ViewModel.AddInOrders(classToOrders.order);
-                            ViewModel.Table.FirstOrDefault(x => x.ID == classToOrders.order.TableId).Active = false;
-                        });
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                ViewModel.AddInNew(new StringClass() { Message = classToOrders.Msg });
+                                ViewModel.AddInOrders(classToOrders.order);
+                                ViewModel.Table.FirstOrDefault(x => x.ID == classToOrders.order.TableId).Active = false;
+                            });
+                        }
+                        else
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                ViewModel.AddInUpdate(new StringClass() { Message = $"• Client at table {classToOrders.order.TableId} update order" });
+                            });
+
+                        }
                         foreach (var item in classToOrders.products)
                         {
                             Application.Current.Dispatcher.Invoke(() =>

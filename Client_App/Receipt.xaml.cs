@@ -30,7 +30,7 @@ namespace Client_App
             foreach (var item in products)
                 model.AddInProduct(item);   
             FullName.Text = $"{waiter.FirstName} {waiter.SurName}";
-            TotalPrice.Text = $"{price}$";
+            TotalPrice.Text = $"{Math.Round(price,2)}$";
             DataContext = model;
             
         }
@@ -78,6 +78,7 @@ namespace Client_App
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (BasicRatingBar.Value == 0) Close();
             int rating = Waiter.Raiting + Convert.ToInt32(BasicRatingBar.Value);
             using (RestaurantContext restaurantContext = new RestaurantContext())
             {
