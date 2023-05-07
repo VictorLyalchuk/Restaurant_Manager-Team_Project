@@ -211,7 +211,7 @@
                             Grid.ColumnSpan="2"/>
                         <Image VerticalAlignment="Center" Source="/img/barcode.png"
                            Width="200" Height="120" Grid.ColumnSpan="2" Grid.Row="5"/>
-                        <DataGrid  Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="2" Margin="20"
+                        <DataGrid IsReadOnly="True"  Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="2" Margin="20"
                           CanUserAddRows="False"
                           ItemsSource="{Binding Product}"
                           SelectionMode="Extended"
