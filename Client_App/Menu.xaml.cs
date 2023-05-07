@@ -76,6 +76,10 @@ namespace Client_App
             using (RestaurantContext restaurantContext = new RestaurantContext())
             {
                 restaurantContext.Tables.FirstOrDefault(x => x.ID == TableId.tableId).Active = true;
+                if(TableId.orderId > 0)
+                {
+                    restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId).Active = true;
+                }
                 restaurantContext.SaveChanges();
             }
             MainWindow login = new MainWindow();
@@ -120,11 +124,11 @@ namespace Client_App
                 MessageBox.Show("Sorry, all seats are taken");
                 return;
             };
-            //MessageBox.Show($"W : {RecepientId}\t T : {TableId}");
             SendMessage(new LogicClassToMessage() { Function = "$SENDMESSAGE", RecipientId = TableId.RecepientId, Message = $"• Client at table {TableId.tableId} needs waiter" });
         }
         private void GenerateTable()
         {
+            if (TableId.tableId > 0) return;
             List<Table> Tables;
             using (RestaurantContext restaurantContext = new RestaurantContext())
             {

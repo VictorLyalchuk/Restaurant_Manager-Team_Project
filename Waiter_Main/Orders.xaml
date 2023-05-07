@@ -295,8 +295,15 @@
                                         <GradientStop Color="{StaticResource winBorderColor2}" Offset="0"/>
                                     </LinearGradientBrush>
                                 </Border.BorderBrush>
-                                <ListBox  Name="OrdersUpdateLB" Grid.Row="3" VerticalAlignment="Top" Margin="5" FontFamily="Segoe UI">
-                                    <ListBoxItem  Content="• Client at table 1 update order"/>
+                                <ListBox  Name="OrdersUpdateLB" Grid.Row="3" VerticalAlignment="Top" Margin="5" FontFamily="Segoe UI" Height="105" ItemsSource="{Binding Update}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel>
+                                                <TextBlock Text="{Binding Message}"></TextBlock>
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                    <!--<ListBoxItem  Content="• Client at table 1 update order"/>-->
                                 </ListBox>
                             </Border>
                             <Border CornerRadius="0" BorderThickness="1" Grid.Row="5" Margin="10,0,10,20">
@@ -357,11 +364,11 @@
                                     </Border>
                                     <DataTemplate.Triggers>
                                         <DataTrigger Binding="{Binding Active}" Value="True">
-                                            <Setter TargetName="BackgroundGrid" Property="Background" Value="Green"/>
+                                            <Setter TargetName="BackgroundGrid" Property="Background" Value="{StaticResource color2}"/>
                                         </DataTrigger>
 
                                         <DataTrigger Binding="{Binding Active}" Value="False">
-                                            <Setter TargetName="BackgroundGrid" Property="Background" Value="Red"/>
+                                            <Setter TargetName="BackgroundGrid" Property="Background" Value="{StaticResource color4}"/>
                                         </DataTrigger>
                                     </DataTemplate.Triggers>
                                 </DataTemplate>

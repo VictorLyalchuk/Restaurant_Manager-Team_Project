@@ -251,7 +251,7 @@ namespace Admin_App
             {
                 sum += item.TotalSum;
             }
-            TotalSumOrders.Content = sum;
+            TotalSumOrders.Content = sum + "$ | Total";
         }
     }
 }

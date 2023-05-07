@@ -23,7 +23,6 @@ namespace Client_App
     public partial class StaffRating : Window
     {
         ViewModel model = new ViewModel();
-        RestaurantContext context = new RestaurantContext();
         public StaffRating()
         {
             InitializeComponent();
@@ -73,10 +72,15 @@ namespace Client_App
         #endregion
         void GetWaiters()
         {
-            foreach (var item in context.Waiters.ToArray())
+            using (RestaurantContext restaurantContext = new RestaurantContext())
             {
-                model.AddInWaiter(item);
+                var waiters = restaurantContext.Waiters.ToList();
+                foreach (var item in waiters)
+                {
+                    model.AddInWaiter(item);
+                }
             }
+        
         }
 
         private void OK_Click(object sender, RoutedEventArgs e)

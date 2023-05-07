@@ -203,7 +203,7 @@
                         </Grid.ColumnDefinitions>
                         <Image Source="/img/newlogo.png"
                             Grid.ColumnSpan="2"/>
-                        <DataGrid  Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="2" Margin="20"
+                        <DataGrid IsReadOnly="True"  Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="2" Margin="20"
                           AutoGenerateColumns="False"
                           CanUserAddRows="False"
                           ItemsSource="{Binding Waiter}"

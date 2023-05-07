@@ -74,7 +74,16 @@ namespace Client_App
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
+            if (TableId.orderId > 0)
+            {
+                using (RestaurantContext restaurantContext = new RestaurantContext())
+                {
+                    restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId).Active = true;
+                    restaurantContext.SaveChanges();
+                }
+            }
             Application.Current.Shutdown();
+
         }
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
@@ -86,6 +95,14 @@ namespace Client_App
         #endregion
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
+            if (TableId.orderId > 0)
+            {
+                using (RestaurantContext restaurantContext = new RestaurantContext())
+                {
+                    restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId).Active = true;
+                    restaurantContext.SaveChanges();
+                }
+            }
             Menu menu = new Menu();
             this.Close();
             menu.ShowDialog();
@@ -100,6 +117,7 @@ namespace Client_App
                 restaurantContext.SaveChanges();
 
                 SendMessage(new LogicClassToOrders { Function = "$ADDORDER", products = ViewModel.ProductOrder, Msg = $"• Client at table {TableId.tableId} made order", RecepientId = TableId.RecepientId, order = newOrder });
+                ViewModel.ClearInProductOrders();
             }
         }
         #region Function For Server
@@ -137,6 +155,8 @@ namespace Client_App
                         {
                             var order = restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId);
                             var waiter = restaurantContext.Waiters.FirstOrDefault(x => x.ID == TableId.RecepientId);
+                            restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId).TotalSum = sum;
+                            restaurantContext.SaveChanges();
 
                             Application.Current.Dispatcher.Invoke(() =>
                             {
