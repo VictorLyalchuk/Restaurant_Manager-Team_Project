@@ -29,6 +29,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Configuration;
 using Waiter_App.ViewModel_Models;
 using Application = System.Windows.Application;
+using System.Data;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -245,60 +246,7 @@ namespace Waiter_App
         }
         private void Add_Button_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (ListBoxTables.SelectedValue != null && ListBoxProductsFromMenu.SelectedItem != null)
-                {
-                    Data_Access_Entity.Entities.Table selTable = (Data_Access_Entity.Entities.Table)ListBoxTables.SelectedValue;
-                    Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selTable.ID)!;
-                    Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
-
-                    if (thisorder != null)
-                    {
-                        ViewModel.AddInProductOrder(new ProductOrder
-                        {
-                            OrderId = thisorder.ID,
-                            ProductId = selectedvalue.ID
-                        });
-                    }
-                    else
-                    {
-                        using (RestaurantContext restaurantContext = new RestaurantContext())
-                        {
-                            restaurantContext.Orders.Add(new Order
-                            {
-                                Active = false,
-                                OrderDate = DateTime.Now,
-                                TableId = selTable.ID,
-                                WaiterId = User.ID
-                            });
-                            restaurantContext.SaveChanges();
-                            var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selTable.ID);
-                            ViewModel.AddInOrders(new Order
-                            {
-                                ID = newOrder.ID,
-                                Active = false,
-                                OrderDate = DateTime.Now,
-                                TableId = selTable.ID,
-                                WaiterId = User.ID
-                            });
-                            ViewModel.AddInProductOrder(new ProductOrder
-                            {
-                                OrderId = newOrder.ID,
-                                ProductId = selectedvalue.ID
-                            });
-                        }
-                    }
-                    ViewModel.Table.FirstOrDefault(o => o.ID == selTable.ID)!.Active = false;
-                    GetOrderItems();
-                }
-                else
-                    MessageBox.Show($@"PLease, make your choise first");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            CreateOrder();
         }
         private void ComboBoxTables_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -417,6 +365,69 @@ namespace Waiter_App
                 }
                 foreach (var item in Show)
                     ListBoxProductsFromOrderByTableNumber.Items.Add(item);
+            }
+        }
+
+        private void ListBoxProductsFromMenu_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            CreateOrder();
+        }
+        private void CreateOrder()
+        {
+            try
+            {
+                if (ListBoxTables.SelectedValue != null && ListBoxProductsFromMenu.SelectedItem != null)
+                {
+                    Data_Access_Entity.Entities.Table selTable = (Data_Access_Entity.Entities.Table)ListBoxTables.SelectedValue;
+                    Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selTable.ID)!;
+                    Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
+
+                    if (thisorder != null)
+                    {
+                        ViewModel.AddInProductOrder(new ProductOrder
+                        {
+                            OrderId = thisorder.ID,
+                            ProductId = selectedvalue.ID
+                        });
+                    }
+                    else
+                    {
+                        using (RestaurantContext restaurantContext = new RestaurantContext())
+                        {
+                            var time = DateTime.Now;
+                            restaurantContext.Orders.Add(new Order
+                            {
+                                Active = false,
+                                OrderDate = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, 0),
+                                TableId = selTable.ID,
+                                WaiterId = User.ID
+                            });
+                            restaurantContext.SaveChanges();
+                            var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selTable.ID);
+                            ViewModel.AddInOrders(new Order
+                            {
+                                ID = newOrder.ID,
+                                Active = false,
+                                OrderDate = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute,0),
+                                TableId = selTable.ID,
+                                WaiterId = User.ID
+                            });
+                            ViewModel.AddInProductOrder(new ProductOrder
+                            {
+                                OrderId = newOrder.ID,
+                                ProductId = selectedvalue.ID
+                            });
+                        }
+                    }
+                    ViewModel.Table.FirstOrDefault(o => o.ID == selTable.ID)!.Active = false;
+                    GetOrderItems();
+                }
+                else
+                    MessageBox.Show($@"PLease, make your choise first");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
         #endregion

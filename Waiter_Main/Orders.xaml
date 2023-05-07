@@ -205,7 +205,7 @@
                         </Button.Template>
                     </Button>
                     <ComboBox Foreground="White" Name="ComboBoxCategories" Margin="40,0,40,0" Grid.Column="1" SelectionChanged="ComboBoxCategories_SelectionChanged" ItemsSource="{Binding Category}"></ComboBox>
-                    <ListBox Name="ListBoxProductsFromMenu" Grid.Row="1" Margin="40,0,40,0" Grid.Column="1">
+                    <ListBox Name="ListBoxProductsFromMenu" Grid.Row="1" Margin="40,0,40,0" Grid.Column="1" MouseDoubleClick="ListBoxProductsFromMenu_MouseDoubleClick">
                     </ListBox>
                     <Button Click="Add_Button_Click"
                             BorderThickness="0"
