@@ -641,11 +641,9 @@
                             <DataGrid Name="MyDataGrid4" Grid.Row="1" Grid.ColumnSpan="4" Margin="20" IsReadOnly="True" AutoGenerateColumns="False">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="ID" Binding="{Binding ID}"></DataGridTextColumn>
-                                    <DataGridTextColumn Header="Day" Binding="{Binding OrderDate.Day}"></DataGridTextColumn>
-                                    <DataGridTextColumn Header="Month" Binding="{Binding OrderDate.Month}"></DataGridTextColumn>
-                                    <DataGridTextColumn Header="Year" Binding="{Binding OrderDate.Year}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Order time" Binding="{Binding OrderDate, StringFormat=\{0:dd.MM.yy HH:mm:ss\}}"></DataGridTextColumn>
                                     <DataGridTextColumn Header="Waiter" Binding="{Binding Waiter}"></DataGridTextColumn>
-                                    <DataGridTextColumn Header="Table availability" Binding="{Binding Active}"></DataGridTextColumn>
+                                    <DataGridCheckBoxColumn Header="Table availability" Binding="{Binding Active}"></DataGridCheckBoxColumn>
                                     <DataGridTextColumn Header="Table number" Binding="{Binding TableId}"></DataGridTextColumn>
                                     <DataGridTextColumn Header="Sum for order" Binding="{Binding TotalSum}"></DataGridTextColumn>
 

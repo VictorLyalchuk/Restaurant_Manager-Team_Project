@@ -203,59 +203,7 @@ namespace Client_App
         }
         private void Add_Button_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (ComboBoxTables.SelectedValue != null && ListBoxProductsFromMenu.SelectedItem != null)
-                {
-                    Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
-                    Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
-                    if (thisorder != null)
-                    {
-                        ViewModel.AddInProductOrder(new ProductOrder
-                        {
-                            OrderId = thisorder.ID,
-                            ProductId = selectedvalue.ID
-                        });
-                    }
-                    else
-                    {
-                        using (RestaurantContext restaurantContext = new RestaurantContext())
-                        {
-                            restaurantContext.Orders.Add(new Order
-                            {
-                                Active = false,
-                                OrderDate = DateTime.Now,
-                                TableId = (int)ComboBoxTables.SelectedValue,
-                                WaiterId = TableId.RecepientId
-                            });
-                            restaurantContext.SaveChanges();
-
-                            var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
-                            TableId.orderId = newOrder.ID;
-                            ViewModel.AddInOrders(new Order
-                            {
-                                ID = newOrder.ID,
-                                Active = false,
-                                OrderDate = DateTime.Now,
-                                TableId = (int)ComboBoxTables.SelectedValue,
-                                WaiterId = TableId.RecepientId
-                            });
-                            ViewModel.AddInProductOrder(new ProductOrder
-                            {
-                                OrderId = newOrder.ID,
-                                ProductId = selectedvalue.ID
-                            });
-                        }
-                    }
-                    GetOrderItems();
-                }
-                else
-                    MessageBox.Show($@"PLease, make your choise first");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            CreareOrder();
         }
         private void ComboBoxTables_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -354,6 +302,67 @@ namespace Client_App
         {
             GetCategories();
             GetProducts();
+        }
+        private void ListBoxProductsFromMenu_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            CreareOrder();
+        }
+        private void CreareOrder()
+        {
+            try
+            {
+                if (ComboBoxTables.SelectedValue != null && ListBoxProductsFromMenu.SelectedItem != null)
+                {
+                    Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
+                    Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
+                    if (thisorder != null)
+                    {
+                        ViewModel.AddInProductOrder(new ProductOrder
+                        {
+                            OrderId = thisorder.ID,
+                            ProductId = selectedvalue.ID
+                        });
+                    }
+                    else
+                    {
+                        using (RestaurantContext restaurantContext = new RestaurantContext())
+                        {
+                            var time = DateTime.Now;
+                            restaurantContext.Orders.Add(new Order
+                            {
+                                Active = false,
+                                OrderDate = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, 0),
+                                TableId = (int)ComboBoxTables.SelectedValue,
+                                WaiterId = TableId.RecepientId
+                            });
+                            restaurantContext.SaveChanges();
+
+                            var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == (int)ComboBoxTables.SelectedValue);
+                            TableId.orderId = newOrder.ID;
+                            ViewModel.AddInOrders(new Order
+                            {
+                                ID = newOrder.ID,
+                                Active = false,
+                                OrderDate = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, 0),
+                                TableId = (int)ComboBoxTables.SelectedValue,
+                                WaiterId = TableId.RecepientId
+                            });
+                            ViewModel.AddInProductOrder(new ProductOrder
+                            {
+                                OrderId = newOrder.ID,
+                                ProductId = selectedvalue.ID
+                            });
+                        }
+                    }
+                    GetOrderItems();
+                }
+                else
+                    MessageBox.Show($@"PLease, make your choise first");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         #endregion
     }
