@@ -74,7 +74,16 @@ namespace Client_App
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
+            if (TableId.orderId > 0)
+            {
+                using (RestaurantContext restaurantContext = new RestaurantContext())
+                {
+                    restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId).Active = true;
+                    restaurantContext.SaveChanges();
+                }
+            }
             Application.Current.Shutdown();
+
         }
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
@@ -86,6 +95,14 @@ namespace Client_App
         #endregion
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
+            if (TableId.orderId > 0)
+            {
+                using (RestaurantContext restaurantContext = new RestaurantContext())
+                {
+                    restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId).Active = true;
+                    restaurantContext.SaveChanges();
+                }
+            }
             Menu menu = new Menu();
             this.Close();
             menu.ShowDialog();
