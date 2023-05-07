@@ -3,6 +3,7 @@
     [Serializable]
     public class ProductOrder
     {
+        public int ID { get; set; }
         public int ProductId { get; set; }
         public Product Product { get; set; }
         public int OrderId { get; set; }

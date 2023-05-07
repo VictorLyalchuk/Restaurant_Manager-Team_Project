@@ -449,13 +449,21 @@ namespace Data_Access_Entity.Migrations
 
             modelBuilder.Entity("Data_Access_Entity.Entities.ProductOrder", b =>
                 {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.HasKey("OrderId", "ProductId");
+                    b.HasKey("ID");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 

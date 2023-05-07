@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data_Access_Entity.Migrations
 {
-    public partial class _08052023 : Migration
+    public partial class _08052023_Iniz : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -122,12 +122,14 @@ namespace Data_Access_Entity.Migrations
                 name: "ProductsOrders",
                 columns: table => new
                 {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductsOrders", x => new { x.OrderId, x.ProductId });
+                    table.PrimaryKey("PK_ProductsOrders", x => x.ID);
                     table.ForeignKey(
                         name: "FK_ProductsOrders_Orders_OrderId",
                         column: x => x.OrderId,
@@ -254,6 +256,11 @@ namespace Data_Access_Entity.Migrations
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductsOrders_OrderId",
+                table: "ProductsOrders",
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductsOrders_ProductId",
