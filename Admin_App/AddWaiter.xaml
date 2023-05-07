@@ -187,17 +187,17 @@
                                 <ColumnDefinition></ColumnDefinition>
                                 <ColumnDefinition></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <TextBox Width="200" Foreground="White" materialDesign:HintAssist.Hint="Name"></TextBox>
-                            <TextBox Width="200" Grid.Row="1" Foreground="White" materialDesign:HintAssist.Hint="Surname"></TextBox>
-                            <DatePicker Grid.Row="2" Foreground="White"
+                            <TextBox Name="TextBoxName" Width="200" Foreground="White" materialDesign:HintAssist.Hint="Name"></TextBox>
+                            <TextBox Name="TextBoxSurName" Width="200" Grid.Row="1" Foreground="White" materialDesign:HintAssist.Hint="Surname"></TextBox>
+                            <DatePicker Name="PickerBirthDate" Grid.Row="2" Foreground="White"
                               Width="200"
                               materialDesign:HintAssist.Hint="Birth Date"
                               Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
-                            <DatePicker Grid.Row="3" Foreground="White"
+                            <DatePicker Name="PickerAcceptDate" Grid.Row="3" Foreground="White"
                               Width="200"
                               materialDesign:HintAssist.Hint="Employment Date"
                               Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
-                            <TextBox Width="200" Grid.Row="4" Foreground="White" materialDesign:HintAssist.Hint="Salary"></TextBox>
+                            <TextBox Name="TextBoxSalary" Width="200" Grid.Row="4" Foreground="White" materialDesign:HintAssist.Hint="Salary"></TextBox>
                             <TextBox Width="200" Grid.Row="5" Foreground="White"  materialDesign:HintAssist.Hint="Rating"></TextBox>
                             <Label Foreground="LightGray" Grid.Column="1" VerticalAlignment="Bottom" HorizontalContentAlignment="Center">Tables</Label>
                             <Border CornerRadius="0" BorderThickness="1" Grid.Row="1" Grid.Column="1" Grid.RowSpan="5" Margin="10">
@@ -217,7 +217,8 @@
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Button BorderThickness="0"
+                        <Button Click="Add_Waiter_Button"
+                            BorderThickness="0"
                             Foreground="White"
                             FontSize="12"
                             FontFamily="Montserrat"

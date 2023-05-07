@@ -1,11 +1,15 @@
-﻿using System;
+﻿using Data_Access_Entity;
+using Data_Access_Entity.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -13,17 +17,24 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Waiter_App;
 
 namespace Admin_App
 {
-    /// <summary>
-    /// Interaction logic for AddCategory.xaml
-    /// </summary>
     public partial class AddCategory : Window
     {
+        bool Edit;
+        int IDC;
         public AddCategory()
         {
             InitializeComponent();
+            Edit = false;
+        }
+        public AddCategory(Category category)
+        {
+            InitializeComponent();
+            SetInfo(category);
+            Edit = true;
         }
         #region adaptive borderless-window react
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -74,6 +85,36 @@ namespace Admin_App
             menu.Show();
         }
 
-
+        private void Add_Button(object sender, RoutedEventArgs e)
+        {
+            if (TextBoxName.Text != "")
+            {
+                using (RestaurantContext restaurantContext = new RestaurantContext())
+                {
+                    if (!Edit)
+                    {
+                        restaurantContext.Categories.Add(new Category
+                        {
+                            Name = TextBoxName.Text,
+                        });
+                        restaurantContext.SaveChanges();
+                        MessageBox.Show("Category successfully added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        restaurantContext.Categories.FirstOrDefault(w => w.ID == IDC)!.Name = TextBoxName.Text;
+                        restaurantContext.SaveChanges();
+                        MessageBox.Show("Category updated", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+            }
+            else
+                MessageBox.Show("Please fill in all values", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        private void SetInfo(Category category)
+        {
+            IDC = category.ID;
+            TextBoxName.Text = category.Name;
+        }
     }
 }

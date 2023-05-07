@@ -180,10 +180,9 @@
                                 <RowDefinition></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                            <TextBox Width="200" Foreground="White" materialDesign:HintAssist.Hint="Name"></TextBox>
-                            <TextBox Width="200" Grid.Row="1" Foreground="White" materialDesign:HintAssist.Hint="Salary"></TextBox>
-                            <TextBox Width="200" Grid.Row="2" Foreground="White" materialDesign:HintAssist.Hint="Price"></TextBox>
-                            <ComboBox Width="200" Grid.Row="3" Foreground="White" materialDesign:HintAssist.Hint="Category"></ComboBox>
+                            <TextBox Name="TextBoxName" Width="200" Foreground="White" materialDesign:HintAssist.Hint="Name"></TextBox>
+                            <TextBox Name="TextBoxPrice" Width="200" Grid.Row="1" Foreground="White" materialDesign:HintAssist.Hint="Price"></TextBox>
+                            <ComboBox Name="ComboBoxCategories" Width="200" Grid.Row="2" Foreground="White" materialDesign:HintAssist.Hint="Category" ItemsSource="{Binding Category}"></ComboBox>
                         </Grid>
                     </Border>
                     <Grid Width="500" Grid.Row="1">
@@ -191,7 +190,7 @@
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Button BorderThickness="0"
+                        <Button Click="Add_Button_Click" BorderThickness="0"
                             Foreground="White"
                             FontSize="12"
                             FontFamily="Montserrat"

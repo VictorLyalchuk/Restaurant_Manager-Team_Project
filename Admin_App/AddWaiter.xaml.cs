@@ -1,4 +1,5 @@
 ﻿using Data_Access_Entity;
+using Data_Access_Entity.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,17 +18,22 @@ using System.Windows.Shapes;
 
 namespace Admin_App
 {
-    /// <summary>
-    /// Interaction logic for AddWaiter.xaml
-    /// </summary>
     public partial class AddWaiter : Window
     {
-        RestaurantContext restaurantContext = new RestaurantContext();
+        bool Edit;
+        int IDW;
         public AddWaiter()
         {
             InitializeComponent();
-            foreach (var item in restaurantContext.Tables) { TablesLB.Items.Add(item.ID.ToString()); }
-            
+            SetTables();
+            Edit = false;
+        }
+        public AddWaiter(Waiter waiter)
+        {
+            InitializeComponent();
+            SetInfo(waiter);
+            SetTables();
+            Edit = true;
         }
         #region adaptive borderless-window react
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -77,7 +83,68 @@ namespace Admin_App
             this.Close();
             menu.Show();
         }
-       
-        
+
+        private void Add_Waiter_Button(object sender, RoutedEventArgs e)
+        {
+            if (TextBoxName.Text != "" && TextBoxSurName.Text != "" && TextBoxSalary.Text != "" && PickerBirthDate.SelectedDate != null && PickerAcceptDate.SelectedDate != null)
+            {
+                using (RestaurantContext restaurantContext = new RestaurantContext())
+                {
+                    if (!Edit)
+                    {
+
+                        restaurantContext.Waiters.Add(new Waiter
+                        {
+                            FirstName = TextBoxName.Text,
+                            SurName = TextBoxSurName.Text,
+                            Salary = double.Parse(TextBoxSalary.Text),
+                            BirthDate = PickerBirthDate.SelectedDate.Value,
+                            StartWorkingDate = PickerAcceptDate.SelectedDate.Value
+                        });
+                        restaurantContext.SaveChanges();
+                        MessageBox.Show("Waiter successfully added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        restaurantContext.Waiters.FirstOrDefault(w => w.ID == IDW)!.FirstName = TextBoxName.Text;
+                        restaurantContext.Waiters.FirstOrDefault(w => w.ID == IDW)!.SurName = TextBoxSurName.Text;
+                        restaurantContext.Waiters.FirstOrDefault(w => w.ID == IDW)!.Salary = double.Parse(TextBoxSalary.Text);
+                        restaurantContext.Waiters.FirstOrDefault(w => w.ID == IDW)!.BirthDate = PickerBirthDate.SelectedDate.Value;
+                        restaurantContext.Waiters.FirstOrDefault(w => w.ID == IDW)!.StartWorkingDate = PickerAcceptDate.SelectedDate.Value;
+
+                        restaurantContext.SaveChanges();
+                        MessageBox.Show("Waiter updated", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+            }
+            else
+                MessageBox.Show("Please fill in all values", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+        }
+        private void SetInfo(Waiter waiter)
+        {
+            IDW = waiter.ID;
+            TextBoxName.Text = waiter.FirstName;
+            TextBoxSurName.Text = waiter.SurName;
+            TextBoxSalary.Text = waiter.Salary.ToString();
+            PickerBirthDate.SelectedDate = waiter.BirthDate;
+            PickerAcceptDate.SelectedDate = waiter.StartWorkingDate;
+            foreach (var item in waiter.Tables)
+            {
+                TablesLB.Items.Add(item.ID.ToString());
+                TablesLB.SelectedItems.Add(item.ID.ToString());
+            }
+        }
+        private void SetTables()
+        {
+            using (RestaurantContext restaurantContext = new RestaurantContext())
+            {
+                foreach (var item in restaurantContext.Tables)
+                {
+                    if (item.WaiterId == 0)
+                        TablesLB.Items.Add(item.ID.ToString());
+                }
+            }
+        }
     }
 }

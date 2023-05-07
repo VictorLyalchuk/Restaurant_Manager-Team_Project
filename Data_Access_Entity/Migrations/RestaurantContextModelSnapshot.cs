@@ -542,6 +542,12 @@ namespace Data_Access_Entity.Migrations
                             ID = 10,
                             Active = true,
                             WaiterId = 5
+                        },
+                        new
+                        {
+                            ID = 11,
+                            Active = true,
+                            WaiterId = 0
                         });
                 });
 
