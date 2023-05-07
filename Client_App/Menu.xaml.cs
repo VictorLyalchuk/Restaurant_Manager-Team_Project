@@ -120,11 +120,11 @@ namespace Client_App
                 MessageBox.Show("Sorry, all seats are taken");
                 return;
             };
-            //MessageBox.Show($"W : {RecepientId}\t T : {TableId}");
             SendMessage(new LogicClassToMessage() { Function = "$SENDMESSAGE", RecipientId = TableId.RecepientId, Message = $"• Client at table {TableId.tableId} needs waiter" });
         }
         private void GenerateTable()
         {
+            if (TableId.tableId > 0) return;
             List<Table> Tables;
             using (RestaurantContext restaurantContext = new RestaurantContext())
             {
