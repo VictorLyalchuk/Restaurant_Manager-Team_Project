@@ -138,6 +138,8 @@ namespace Client_App
                         {
                             var order = restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId);
                             var waiter = restaurantContext.Waiters.FirstOrDefault(x => x.ID == TableId.RecepientId);
+                            restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId).TotalSum = sum;
+                            restaurantContext.SaveChanges();
 
                             Application.Current.Dispatcher.Invoke(() =>
                             {
