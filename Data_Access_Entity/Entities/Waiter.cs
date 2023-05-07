@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using System.Xml.Linq;
 
 namespace Data_Access_Entity.Entities
 {
@@ -16,5 +18,9 @@ namespace Data_Access_Entity.Entities
         public ICollection<Table> Tables { get; set; }
         public ICollection<Order> Orders { get; set; }
         public int Raiting { get; set; }
+        public override string ToString()
+        {
+            return $"{FirstName}" + " " + $"{SurName}";
+        }
     }
 }

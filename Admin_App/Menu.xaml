@@ -4,8 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Admin_App"
-                         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
          WindowStyle="None"
         ResizeMode="CanResizeWithGrip"
@@ -150,41 +149,43 @@
                     </StackPanel>
                 </Grid>
 
-                <Grid MaxHeight="700" MaxWidth="1000" VerticalAlignment="Stretch" 
+                <TabControl Grid.Row="1" Grid.ColumnSpan="4" >
+                    <TabItem Header="Waiters">
+                        <Grid MaxHeight="700" MaxWidth="1000" VerticalAlignment="Stretch" 
                             Grid.Row="1"
                             Margin="20,10,20,10">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1.5*"></RowDefinition>
-                        <RowDefinition></RowDefinition>
-                    </Grid.RowDefinitions>
-
-                    <Border CornerRadius="10" BorderThickness="1" Grid.Row="0" Margin="15">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
-                                <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
-                                <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <Border.BorderBrush>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
-
-                            </LinearGradientBrush>
-                        </Border.BorderBrush>
-                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="2*"></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="1.5*"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Button BorderThickness="0"
+                            <Border CornerRadius="10" BorderThickness="1" Grid.Row="0" Margin="15">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
+                                        <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
+                                        <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
+
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <Grid Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="2*"></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Button Click="View_Waiters_Button"
+                            BorderThickness="0"
                             Content="View Waiters"
                             Foreground="White"
                             FontSize="12"
@@ -192,19 +193,19 @@
                             Cursor="Hand"
                             
                             Style="{StaticResource designBtn3}" Grid.Row="0" Margin="5" >
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Width="auto" Height="auto"
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="auto" Height="auto"
                                         CornerRadius="20"
                                         Background="{TemplateBinding Background}">
-                                            <Viewbox>
-                                                <Label FontFamily="Courier New" Content="View Waiters"/>
-                                            </Viewbox>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                            <Button BorderThickness="0"
+                                                    <Viewbox>
+                                                        <Label FontFamily="Courier New" Content="View Waiters"/>
+                                                    </Viewbox>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Button BorderThickness="0"
                             Content="View Waiters"
                             Foreground="White"
                             FontSize="12"
@@ -212,19 +213,22 @@
                             Cursor="Hand"
                             VerticalAlignment="Center"
                             Style="{StaticResource designBtn3}" Grid.Row="1" Margin="5" Click="AddWaiterBtn_Click" >
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Width="auto" Height="auto"
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="auto" Height="auto"
                                         CornerRadius="20"
                                         Background="{TemplateBinding Background}">
-                                            <Viewbox>
-                                                <Label FontSize="5" FontFamily="Courier New" Content="• Add"/>
-                                            </Viewbox>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                            <Button BorderThickness="0"
+                                                    <Viewbox>
+                                                        <Label FontSize="5" FontFamily="Courier New" Content="• Add"/>
+                                                    </Viewbox>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Button Click="Edit_Waiter_Button"
+                                            Name="EditWaiterButton"
+                                            IsEnabled="false"
+                            BorderThickness="0"
                             Content="View Waiters"
                             Foreground="White"
                             FontSize="12"
@@ -232,19 +236,22 @@
                             Cursor="Hand"
                             VerticalAlignment="Center"
                             Style="{StaticResource designBtn3}" Grid.Row="2" Margin="5" >
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Width="auto" Height="auto"
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="auto" Height="auto"
                                         CornerRadius="20"
                                         Background="{TemplateBinding Background}">
-                                            <Viewbox>
-                                                <Label FontSize="5" FontFamily="Courier New" Content="• Edit"/>
-                                            </Viewbox>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                            <Button BorderThickness="0"
+                                                    <Viewbox>
+                                                        <Label FontSize="5" FontFamily="Courier New" Content="• Edit"/>
+                                                    </Viewbox>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Button Click="Delete_Selected_Waiter_Button"
+                                            Name ="DeleteWaiter"
+                                        IsEnabled="False"
+                                        BorderThickness="0"
                             Content="View Waiters"
                             Foreground="White"
                             FontSize="12"
@@ -252,41 +259,76 @@
                             Cursor="Hand"
                             VerticalAlignment="Center"
                             Style="{StaticResource designBtn3}" Grid.Row="3" Margin="5" >
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Width="auto" Height="auto"
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="auto" Height="auto"
                                         CornerRadius="20"
                                         Background="{TemplateBinding Background}">
-                                            <Viewbox>
-                                                <Label FontSize="5" FontFamily="Courier New" Content="• Delete"/>
-                                            </Viewbox>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
+                                                    <Viewbox>
+                                                        <Label FontSize="5" FontFamily="Courier New" Content="• Delete"/>
+                                                    </Viewbox>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                            <DataGrid Name="MyDataGrid" Grid.Row="1" Grid.ColumnSpan="4" Margin="20" IsReadOnly="True"  AutoGenerateColumns="false" SelectionChanged="MyDataGrid_SelectionChanged" ItemsSource="{Binding Waiter}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding ID}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Firstname" Binding="{Binding FirstName}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Surname" Binding="{Binding SurName}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Salary" Binding="{Binding Salary}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Birth Year" Binding="{Binding BirthDate.Year}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Year of accept" Binding="{Binding StartWorkingDate.Year}"></DataGridTextColumn>
+                                    <DataGridTemplateColumn Header="Tables">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox ItemsSource="{Binding Tables}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Raiting" Binding="{Binding Raiting}"></DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </Grid>
-                    </Border>
-                    <Border CornerRadius="10" BorderThickness="1" Grid.Column="1" Margin="15">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
-                                <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
-                                <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <Border.BorderBrush>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                <GradientStop Color="{StaticResource winBorderColor2}" Offset="0"/>
-
-                            </LinearGradientBrush>
-                        </Border.BorderBrush>
-                        <Grid Margin="10">
+                    </TabItem>
+                    <TabItem Header="Products">
+                        <Grid MaxHeight="700" MaxWidth="1000" VerticalAlignment="Stretch" 
+                            Grid.Row="1"
+                            Margin="20,10,20,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="2*"></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="1.5*"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Button BorderThickness="0"
+                            <Border CornerRadius="10" BorderThickness="1" Grid.Column="1" Margin="15">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
+                                        <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
+                                        <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="{StaticResource winBorderColor2}" Offset="0"/>
+
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <Grid Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="2*"></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Button Click="View_Products_Button"
+                            BorderThickness="0"
                             Content="View Waiters"
                             Foreground="White"
                             FontSize="12"
@@ -294,19 +336,19 @@
                             Cursor="Hand"
                             
                             Style="{StaticResource designBtn4}" Grid.Row="0" Margin="5" >
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Width="auto" Height="auto"
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="auto" Height="auto"
                                         CornerRadius="20"
                                         Background="{TemplateBinding Background}">
-                                            <Viewbox>
-                                                <Label FontFamily="Courier New" Content="View Products"/>
-                                            </Viewbox>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                            <Button BorderThickness="0"
+                                                    <Viewbox>
+                                                        <Label FontFamily="Courier New" Content="View Products"/>
+                                                    </Viewbox>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Button BorderThickness="0"
                             Content="View Waiters"
                             Foreground="White"
                             FontSize="12"
@@ -314,19 +356,22 @@
                             Cursor="Hand"
                             VerticalAlignment="Center"
                             Style="{StaticResource designBtn4}" Grid.Row="1" Margin="5" Click="AddProduct_Click" >
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Width="auto" Height="auto"
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="auto" Height="auto"
                                         CornerRadius="20"
                                         Background="{TemplateBinding Background}">
-                                            <Viewbox>
-                                                <Label FontSize="5" FontFamily="Courier New" Content="• Add"/>
-                                            </Viewbox>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                            <Button BorderThickness="0"
+                                                    <Viewbox>
+                                                        <Label FontSize="5" FontFamily="Courier New" Content="• Add"/>
+                                                    </Viewbox>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Button Click="Edit_Product_Button" 
+                                            Name="EditProductButton"
+                                            IsEnabled="false"
+                                            BorderThickness="0"
                             Content="View Waiters"
                             Foreground="White"
                             FontSize="12"
@@ -334,19 +379,22 @@
                             Cursor="Hand"
                             VerticalAlignment="Center"
                             Style="{StaticResource designBtn4}" Grid.Row="2" Margin="5">
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Width="auto" Height="auto"
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="auto" Height="auto"
                                         CornerRadius="20"
                                         Background="{TemplateBinding Background}">
-                                            <Viewbox>
-                                                <Label FontSize="5" FontFamily="Courier New" Content="• Edit"/>
-                                            </Viewbox>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                            <Button BorderThickness="0"
+                                                    <Viewbox>
+                                                        <Label FontSize="5" FontFamily="Courier New" Content="• Edit"/>
+                                                    </Viewbox>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Button Click="Delete_Product_Button"
+                                            Name="DeleteProductButton"
+                                            IsEnabled="false"
+                                        BorderThickness="0"
                             Content="View Waiters"
                             Foreground="White"
                             FontSize="12"
@@ -354,41 +402,68 @@
                             Cursor="Hand"
                             VerticalAlignment="Center"
                             Style="{StaticResource designBtn4}" Grid.Row="3" Margin="5" >
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Width="auto" Height="auto"
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="auto" Height="auto"
                                         CornerRadius="20"
                                         Background="{TemplateBinding Background}">
-                                            <Viewbox>
-                                                <Label FontSize="5" FontFamily="Courier New" Content="• Delete"/>
-                                            </Viewbox>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
+                                                    <Viewbox>
+                                                        <Label FontSize="5" FontFamily="Courier New" Content="• Delete"/>
+                                                    </Viewbox>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                            <DataGrid Name="MyDataGrid2" Grid.Row="1" Grid.ColumnSpan="4" Margin="20" IsReadOnly="True" AutoGenerateColumns="false" ItemsSource="{Binding Product}" SelectionChanged="MyDataGrid2_SelectionChanged">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding ID}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Category" Binding="{Binding Category}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Price $" Binding="{Binding Price}"></DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </Grid>
-                    </Border>
-                    <Border CornerRadius="10" BorderThickness="1" Grid.Column="2" Margin="15">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
-                                <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
-                                <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <Border.BorderBrush>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                <GradientStop Color="{StaticResource winBorderColor3}" Offset="0"/>
 
-                            </LinearGradientBrush>
-                        </Border.BorderBrush>
-                        <Grid Margin="10">
+
+                    </TabItem>
+                    <TabItem Header="Categories">
+                        <Grid MaxHeight="700" MaxWidth="1000" VerticalAlignment="Stretch" 
+                            Grid.Row="1"
+                            Margin="20,10,20,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="2*"></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="1.5*"></RowDefinition>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Button BorderThickness="0"
+                            <Border CornerRadius="10" BorderThickness="1" Grid.Column="2" Margin="15">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
+                                        <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
+                                        <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="{StaticResource winBorderColor3}" Offset="0"/>
+
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <Grid Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="2*"></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Button Click="View_Categories_Button"
+                                        BorderThickness="0"
                             Content="View Waiters"
                             Foreground="White"
                             FontSize="12"
@@ -396,19 +471,19 @@
                             Cursor="Hand"
                             
                             Style="{StaticResource designBtn5}" Grid.Row="0" Margin="5" >
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Width="auto" Height="auto"
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="auto" Height="auto"
                                         CornerRadius="20"
                                         Background="{TemplateBinding Background}">
-                                            <Viewbox>
-                                                <Label FontFamily="Courier New" Content="View Categories"/>
-                                            </Viewbox>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                            <Button BorderThickness="0"
+                                                    <Viewbox>
+                                                        <Label FontFamily="Courier New" Content="View Categories"/>
+                                                    </Viewbox>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Button BorderThickness="0"
                             Content="View Waiters"
                             Foreground="White"
                             FontSize="12"
@@ -416,19 +491,22 @@
                             Cursor="Hand"
                             VerticalAlignment="Center"
                             Style="{StaticResource designBtn5}" Grid.Row="1" Margin="5" Click="AddCategory_Click" >
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Width="auto" Height="auto"
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="auto" Height="auto"
                                         CornerRadius="20"
                                         Background="{TemplateBinding Background}">
-                                            <Viewbox>
-                                                <Label FontSize="5" FontFamily="Courier New" Content="• Add"/>
-                                            </Viewbox>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                            <Button BorderThickness="0"
+                                                    <Viewbox>
+                                                        <Label FontSize="5" FontFamily="Courier New" Content="• Add"/>
+                                                    </Viewbox>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Button Click="Edit_Category_Button"
+                                            Name="EditCategoryButton"
+                                        IsEnabled="False"
+                                        BorderThickness="0"
                             Content="View Waiters"
                             Foreground="White"
                             FontSize="12"
@@ -436,19 +514,22 @@
                             Cursor="Hand"
                             VerticalAlignment="Center"
                             Style="{StaticResource designBtn5}" Grid.Row="2" Margin="5">
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Width="auto" Height="auto"
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="auto" Height="auto"
                                         CornerRadius="20"
                                         Background="{TemplateBinding Background}">
-                                            <Viewbox>
-                                                <Label FontSize="5" FontFamily="Courier New" Content="• Edit"/>
-                                            </Viewbox>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                            <Button BorderThickness="0"
+                                                    <Viewbox>
+                                                        <Label FontSize="5" FontFamily="Courier New" Content="• Edit"/>
+                                                    </Viewbox>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Button Click="Delete_Category_Button"
+                                            Name="DeleteCategoryButton"
+                                            IsEnabled="false"
+                                        BorderThickness="0"
                             Content="View Waiters"
                             Foreground="White"
                             FontSize="12"
@@ -456,81 +537,124 @@
                             Cursor="Hand"
                             VerticalAlignment="Center"
                             Style="{StaticResource designBtn5}" Grid.Row="3" Margin="5" >
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Width="auto" Height="auto"
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="auto" Height="auto"
                                         CornerRadius="20"
                                         Background="{TemplateBinding Background}">
-                                            <Viewbox>
-                                                <Label FontSize="5" FontFamily="Courier New" Content="• Delete"/>
-                                            </Viewbox>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
+                                                    <Viewbox>
+                                                        <Label FontSize="5" FontFamily="Courier New" Content="• Delete"/>
+                                                    </Viewbox>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                            <DataGrid Name="MyDataGrid3" Grid.Row="1" Grid.ColumnSpan="4" Margin="20" IsReadOnly="True" AutoGenerateColumns="false" ItemsSource="{Binding Category}" SelectionChanged="MyDataGrid3_SelectionChanged">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding ID}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
+                                    <DataGridTemplateColumn Header="Products">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox ItemsSource="{Binding Products}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
                         </Grid>
-                    </Border>
-                    <Border CornerRadius="10" BorderThickness="1" Grid.Column="3" Margin="15">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
-                                <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
-                                <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
-                        <Border.BorderBrush>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                <GradientStop Color="{StaticResource  winBorderColor4}" Offset="0"/>
-                            </LinearGradientBrush>
-                        </Border.BorderBrush>
-                        <Grid Margin="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
-                            </Grid.RowDefinitions>
+
+                    </TabItem>
+                    <TabItem Header="Finances">
+                        <Grid MaxHeight="700" MaxWidth="1000" VerticalAlignment="Stretch" 
+                            Grid.Row="1"
+                            Margin="20,10,20,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition></ColumnDefinition>
                                 <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1.5*"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition Height="40"></RowDefinition>
+                            </Grid.RowDefinitions>
 
-                            <DatePicker Name="startDatePicker" 
+                            <Border CornerRadius="10" BorderThickness="1" Grid.Column="3" Margin="15">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
+                                        <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
+                                        <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Border.BorderBrush>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="{StaticResource  winBorderColor4}" Offset="0"/>
+                                    </LinearGradientBrush>
+                                </Border.BorderBrush>
+                                <Grid Margin="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+
+                                    <DatePicker Name="startDatePicker" 
                               Width="auto" Height="150" Foreground="White"
                               materialDesign:HintAssist.Hint="Start"
                               Style="{StaticResource MaterialDesignFloatingHintDatePicker}" SelectedDateChanged="startDatePicker_SelectedDateChanged" />
 
-
-
-                            <DatePicker Grid.Column="1" Name="finalDatePicker" Height="150" Margin="10"
+                                    <DatePicker Grid.Column="1" Name="finalDatePicker" Height="150" Margin="10"
                               Width="auto" Foreground="White"
                               materialDesign:HintAssist.Hint="Final" SelectedDateChanged="finalDatePicker_selectedDateChanged"
                               Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
 
-
-
-                            <Button BorderThickness="0"
+                                    <Button Click="View_Finances_Button"
+                                        BorderThickness="0"
                             Content="View Waiters"
                             Foreground="White"
                             FontSize="12"
                             FontFamily="Montserrat"
                             Cursor="Hand"
-                            
                             Style="{StaticResource designBtn6}" Grid.Row="1" Grid.ColumnSpan="2" Margin="5" >
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Width="auto" Height="auto"
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="auto" Height="auto"
                                         CornerRadius="20"
                                         Background="{TemplateBinding Background}">
-                                            <Viewbox>
-                                                <Label FontFamily="Courier New" Content="View Finances"/>
-                                            </Viewbox>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                        </Grid>
-                    </Border>
-                    <DataGrid  Grid.Row="1" Grid.ColumnSpan="4" Margin="20"/>
+                                                    <Viewbox>
+                                                        <Label FontFamily="Courier New" Content="View Finances"/>
+                                                    </Viewbox>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                            
+                            <DataGrid Name="MyDataGrid4" Grid.Row="1" Grid.ColumnSpan="4" Margin="20" IsReadOnly="True" AutoGenerateColumns="False">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding ID}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Day" Binding="{Binding OrderDate.Day}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Month" Binding="{Binding OrderDate.Month}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Year" Binding="{Binding OrderDate.Year}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Waiter" Binding="{Binding Waiter}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Table availability" Binding="{Binding Active}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Table number" Binding="{Binding TableId}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Sum for order" Binding="{Binding TotalSum}"></DataGridTextColumn>
 
-                </Grid>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <Label Name="TotalSumOrders" Grid.Row="2"></Label>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
 
             </Grid>
 

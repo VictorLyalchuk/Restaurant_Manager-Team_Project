@@ -177,7 +177,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition></RowDefinition>
                             </Grid.RowDefinitions>
-                            <TextBox Height="100" Width="200" Foreground="White" materialDesign:HintAssist.Hint="Name"></TextBox>
+                            <TextBox Name="TextBoxName" Height="100" Width="200" Foreground="White" materialDesign:HintAssist.Hint="Name"></TextBox>
                         </Grid>
                     </Border>
                     <Grid Width="500" Grid.Row="1">
@@ -185,7 +185,8 @@
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Button BorderThickness="0"
+                        <Button Click="Add_Button"
+                            BorderThickness="0"
                             Foreground="White"
                             FontSize="12"
                             FontFamily="Montserrat"
