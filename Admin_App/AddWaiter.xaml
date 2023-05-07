@@ -180,7 +180,6 @@
                                 <RowDefinition></RowDefinition>
                                 <RowDefinition></RowDefinition>
                                 <RowDefinition></RowDefinition>
-                                <RowDefinition></RowDefinition>
 
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
@@ -198,7 +197,6 @@
                               materialDesign:HintAssist.Hint="Employment Date"
                               Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
                             <TextBox Name="TextBoxSalary" Width="200" Grid.Row="4" Foreground="White" materialDesign:HintAssist.Hint="Salary"></TextBox>
-                            <TextBox Width="200" Grid.Row="5" Foreground="White"  materialDesign:HintAssist.Hint="Rating"></TextBox>
                             <Label Foreground="LightGray" Grid.Column="1" VerticalAlignment="Bottom" HorizontalContentAlignment="Center">Tables</Label>
                             <Border CornerRadius="0" BorderThickness="1" Grid.Row="1" Grid.Column="1" Grid.RowSpan="5" Margin="10">
                                 <Border.BorderBrush>
