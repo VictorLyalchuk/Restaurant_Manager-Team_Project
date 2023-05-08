@@ -12,6 +12,29 @@
     <None Remove="img\icon.ico" />
     <None Remove="img\logo.png" />
     <None Remove="img\newlogo.png" />
+    <None Remove="img\waiters\1.png" />
+    <None Remove="img\waiters\2.png" />
+    <None Remove="img\waiters\3.png" />
+    <None Remove="img\waiters\4.png" />
+    <None Remove="img\waiters\5.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="img\waiters\1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\waiters\2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\waiters\3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\waiters\4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="img\waiters\5.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

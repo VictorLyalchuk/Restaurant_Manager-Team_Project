@@ -45,6 +45,7 @@ namespace Waiter_App
         {
             InitializeComponent();
             DbToViewModel();
+            SetWaiterProfile();
             DataContext = ViewModel;
             WaiterID = User.ID;
             #region Connect to server
@@ -187,6 +188,31 @@ namespace Waiter_App
             }
         }
         #endregion
+        private void SetWaiterProfile()
+        {
+            try
+            {
+                var w = ViewModel.Waiter.Where(x => x.ID == User.ID).FirstOrDefault();
+                CurrentWaiterLabel.Content = w.FirstName + " " + w.SurName;
+                var dir = Directory.GetCurrentDirectory() + @"\waiters";
+                var pics = Directory.GetFiles(dir);
+                string path = @"/img/waiters/";
+                foreach (var item in pics)
+                {
+                    if (System.IO.Path.GetFileNameWithoutExtension(item) == User.ID.ToString())
+                    {
+                        WaiterPicture.Source = new BitmapImage(new Uri(path + System.IO.Path.GetFileName(item), UriKind.Relative));
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+            
+        }
         private void ActiveOrderLBItem_DoubleClick(object sender, MouseButtonEventArgs e)
         {
             Orders orders = new Orders();
@@ -248,30 +274,30 @@ namespace Waiter_App
         {
             CreateOrder();
         }
-        private void ComboBoxTables_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-                ListBoxProductsFromOrderByTableNumber.Items.Clear();
-                Data_Access_Entity.Entities.Table selecTable = (Data_Access_Entity.Entities.Table)ComboBoxTables.SelectedValue;
-                Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selecTable.ID)!;
-                if (thisorder != null)
-                {
-                    var b = ViewModel.GetProductId(thisorder.ID);
-                    List<Product> Show = new List<Product>();
-                    foreach (var item in b)
-                    {
-                        Show.Add(ViewModel.Product.FirstOrDefault(x => x.ID == item)!);
-                    }
-                    foreach (var item in Show)
-                        ListBoxProductsFromOrderByTableNumber.Items.Add(item);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
+        //private void ComboBoxTables_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        ListBoxProductsFromOrderByTableNumber.Items.Clear();
+        //        Data_Access_Entity.Entities.Table selecTable = (Data_Access_Entity.Entities.Table)ComboBoxTables.SelectedValue;
+        //        Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selecTable.ID)!;
+        //        if (thisorder != null)
+        //        {
+        //            var b = ViewModel.GetProductId(thisorder.ID);
+        //            List<Product> Show = new List<Product>();
+        //            foreach (var item in b)
+        //            {
+        //                Show.Add(ViewModel.Product.FirstOrDefault(x => x.ID == item)!);
+        //            }
+        //            foreach (var item in Show)
+        //                ListBoxProductsFromOrderByTableNumber.Items.Add(item);
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
+        //}
         private void GetOrderItems()
         {
             ListBoxProductsFromOrderByTableNumber.Items.Clear();
@@ -344,11 +370,30 @@ namespace Waiter_App
                 MessageBox.Show(ex.Message);
             }
         }
+        private void GetWaiter()
+        {
+            try
+            {
+                using (RestaurantContext restaurantContext = new RestaurantContext())
+                {
+                    var waiter = restaurantContext.Waiters;
+                    foreach (var item in waiter)
+                    {
+                        ViewModel.AddInWaiter(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void DbToViewModel()
         {
             GetCategories();
             GetProducts();
             GetTables();
+            GetWaiter();
         }
         private void ListBoxTables_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -431,5 +476,15 @@ namespace Waiter_App
             }
         }
         #endregion
+
+        private void ReserveTable_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UnreserveTable_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
