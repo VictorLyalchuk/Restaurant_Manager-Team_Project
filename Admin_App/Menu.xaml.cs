@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -239,19 +240,24 @@ namespace Admin_App
         }
         private void View_Finances_Button(object sender, RoutedEventArgs e)
         {
-            double sum = 0;
-            ObservableCollection<Order> result = new ObservableCollection<Order>();
-            foreach (var item in viewmodel.Orders)
+            if (startDatePicker.SelectedDate != null && finalDatePicker.SelectedDate != null)
             {
-                if (item.OrderDate >= startDatePicker.SelectedDate!.Value && item.OrderDate <= finalDatePicker.SelectedDate!.Value)
-                    result.Add(item);
+                double sum = 0;
+                ObservableCollection<Order> result = new ObservableCollection<Order>();
+                DateTime endtime = (DateTime)finalDatePicker.SelectedDate;
+                DateTime endtime2 = new DateTime(endtime.Year, endtime.Month, endtime.Day, 23, 59, 59);
+                foreach (var item in viewmodel.Orders)
+                {
+                    if (item.OrderDate >= startDatePicker.SelectedDate.Value && item.OrderDate <= endtime2)
+                        result.Add(item);
                 }
-            MyDataGrid4.ItemsSource = result.ToList();
-            foreach (var item in result)
-            {
-                sum += item.TotalSum;
+                MyDataGrid4.ItemsSource = result.ToList();
+                foreach (var item in result)
+                {
+                    sum += item.TotalSum;
+                }
+                TotalSumOrders.Content = sum + " $ | Total";
             }
-            TotalSumOrders.Content = sum + "$ | Total";
         }
     }
 }
