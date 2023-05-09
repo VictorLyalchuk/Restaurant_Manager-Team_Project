@@ -176,35 +176,6 @@ namespace Admin_App
             EditCategoryButton.IsEnabled = true;
             DeleteCategoryButton.IsEnabled = true;
         }
-        private void View_Waiters_Button(object sender, RoutedEventArgs e)
-        {
-            List<Waiter> result;
-            using (RestaurantContext restaurantContext = new RestaurantContext())
-            {
-                result = restaurantContext.Waiters.Include(w => w.Tables).ToList();
-            }
-            MyDataGrid.ItemsSource = result;
-        }
-        private void View_Products_Button(object sender, RoutedEventArgs e)
-        {
-            List<Product> result;
-            using (RestaurantContext restaurantContext = new RestaurantContext())
-            {
-
-                result = restaurantContext.Products.Include(p => p.Category).ToList();
-            }
-            MyDataGrid2.ItemsSource = result;
-        }
-        private void View_Categories_Button(object sender, RoutedEventArgs e)
-        {
-            List<Category> result;
-            using (RestaurantContext restaurantContext = new RestaurantContext())
-            {
-
-                result = restaurantContext.Categories.Include(c => c.Products).ToList();
-            }
-            MyDataGrid3.ItemsSource = result;
-        }
         private void SetModel()
         {
             try

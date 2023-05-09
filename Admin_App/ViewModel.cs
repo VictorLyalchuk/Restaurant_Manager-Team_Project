@@ -31,7 +31,6 @@ namespace Waiter_App
         public IEnumerable<ProductOrder> ProductOrder => _ProductOrder;
         public IEnumerable<Table> Table => _Table;
         public IEnumerable<Waiter> Waiter => _Waiter;
-        public Order SelectedOrder { get; set; }
         public void AddInCategory(Category category)
         {
             _Category.Add(category);
@@ -44,14 +43,6 @@ namespace Waiter_App
         {
             _Orders.Add(order);
         }
-        public void RemoveInOrders(Order order) 
-        {  
-            _Orders.Remove(order); 
-        }
-        public void ClearInOrders()
-        {
-            _Orders.Clear();
-        }
         public void AddInProduct(Product product)
         {
             _Product.Add(product);
@@ -59,22 +50,6 @@ namespace Waiter_App
         public void RemoveInProduct(Product product)
         {
             _Product.Remove(product);
-        }
-        public void AddInProductOrder(ProductOrder productorder)
-        {
-            _ProductOrder.Add(productorder);
-        }
-        public void RemoveInProductOrder(ProductOrder productorder)
-        {
-            _ProductOrder.Remove(productorder);
-        }
-        public void ClearInProductOrders()
-        {
-            _ProductOrder.Clear();
-        }
-        public void AddInTable(Table table)
-        {
-            _Table.Add(table);
         }
         public void AddInWaiter(Waiter waiter)
         {
@@ -84,41 +59,6 @@ namespace Waiter_App
         {
             _Waiter.Remove(waiter);
         }
-        public List<int> GetProductId(int OrederId)
-        {
-            List<int> arr = new List<int>();
-            foreach (var item in _ProductOrder)
-            {
-                if (item.OrderId == OrederId) arr.Add(item.ProductId);
-            }
-            return arr;
-        }
-        public void SetOrders(IEnumerable<Order> orders)
-        {
-            ClearInOrders();
-            foreach (var item in orders)
-            {
-                AddInOrders(item);
-            }
-        }
-        public void SetProductOrder(IEnumerable<ProductOrder> productorder)
-        {
-            ClearInProductOrders();
-            foreach (var item in productorder)
-            {
-                AddInProductOrder(item);
-            }
-        }
-        public void RemoveProductOrderToId(int orderId)
-        {
-            List<ProductOrder> deletelist = new List<ProductOrder>();
-            foreach (var item in _ProductOrder)           
-                if(item.OrderId == orderId)              
-                    deletelist.Add(item);
 
-            foreach (var item in deletelist)
-                RemoveInProductOrder(item);
-
-        }
     }
 }

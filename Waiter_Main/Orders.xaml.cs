@@ -284,50 +284,8 @@ namespace Waiter_App
         }
         private void Add_Button_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                using (RestaurantContext restaurantContext = new RestaurantContext())
-                {
-                    var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == ViewModel.SelectedTable.ID);
-                    Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
-                    ViewModel.AddInProductOrder(new ProductOrder
-                    {
-                        OrderId = newOrder.ID,
-                        ProductId = selectedvalue.ID
-                    });
-                    GetOrderItems();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Table {ViewModel.SelectedTable.ID} is not active");
-            }
-
+            CreateOrder();
         }
-        //private void ComboBoxTables_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    try
-        //    {
-        //        ListBoxProductsFromOrderByTableNumber.Items.Clear();
-        //        Data_Access_Entity.Entities.Table selecTable = (Data_Access_Entity.Entities.Table)ComboBoxTables.SelectedValue;
-        //        Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selecTable.ID)!;
-        //        if (thisorder != null)
-        //        {
-        //            var b = ViewModel.GetProductId(thisorder.ID);
-        //            List<Product> Show = new List<Product>();
-        //            foreach (var item in b)
-        //            {
-        //                Show.Add(ViewModel.Product.FirstOrDefault(x => x.ID == item)!);
-        //            }
-        //            foreach (var item in Show)
-        //                ListBoxProductsFromOrderByTableNumber.Items.Add(item);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //    }
-        //}
         private void GetOrderItems()
         {
             ListBoxProductsFromOrderByTableNumber.Items.Clear();
@@ -443,7 +401,28 @@ namespace Waiter_App
         }
         private void ListBoxProductsFromMenu_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            
+            CreateOrder();
+        }
+        private void CreateOrder()
+        {
+            try
+            {
+                using (RestaurantContext restaurantContext = new RestaurantContext())
+                {
+                    var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == ViewModel.SelectedTable.ID);
+                    Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
+                    ViewModel.AddInProductOrder(new ProductOrder
+                    {
+                        OrderId = newOrder.ID,
+                        ProductId = selectedvalue.ID
+                    });
+                    GetOrderItems();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Table {ViewModel.SelectedTable.ID} is not active");
+            }
         }
         //private void CreateOrder()
         //{
