@@ -81,6 +81,7 @@ namespace Client_App
                     restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId).Active = true;
                     restaurantContext.SaveChanges();
                 }
+                TableId.orderId = 0;
             }
             Application.Current.Shutdown();
 
@@ -102,6 +103,7 @@ namespace Client_App
                     restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId).Active = true;
                     restaurantContext.SaveChanges();
                 }
+                TableId.orderId = 0;
             }
             Menu menu = new Menu();
             this.Close();

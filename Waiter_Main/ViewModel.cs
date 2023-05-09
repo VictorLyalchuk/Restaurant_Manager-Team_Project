@@ -43,6 +43,7 @@ namespace Waiter_App
         public IEnumerable<IDClass> Receipts => _Receipts;
         public Order SelectedOrder { get; set; }
         public IDClass SelectedRecepient { get; set; }
+        public Table SelectedTable { get; set; }
         public void AddInCategory(Category category)
         {
             _Category.Add(category);

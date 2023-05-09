@@ -116,6 +116,15 @@ class RestaurantServer
                             CuurentClient = item.Ip;
                     SendMessage(logic, CuurentClient!);
                 }
+                else if (waiter.Function == "$CLOSE_ORDER")
+                {
+                    LogicClassToCloseOrder logic = (LogicClassToCloseOrder)waiter;
+                    IPEndPoint CuurentClient = null;
+                    foreach (var item in Waiters)
+                        if (item.Id == logic.RecipientId)
+                            CuurentClient = item.Ip;
+                    SendMessage(logic, CuurentClient!);
+                }
             }
         }
         catch (Exception ex)
