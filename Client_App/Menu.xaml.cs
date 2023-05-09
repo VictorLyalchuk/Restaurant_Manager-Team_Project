@@ -239,7 +239,7 @@ namespace Client_App
                 if (item.Active == true)
                 {
                     TableId.tableId = item.ID;
-                    TableId.RecepientId = item.WaiterId;
+                    TableId.RecepientId = (int)item.WaiterId;
                     using (RestaurantContext restaurantContext = new RestaurantContext())
                     {
                         restaurantContext.Tables.FirstOrDefault(x => x.ID == TableId.tableId).Active = false;
