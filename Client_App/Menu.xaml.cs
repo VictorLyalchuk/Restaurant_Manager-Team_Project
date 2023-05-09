@@ -78,7 +78,7 @@ namespace Client_App
             using (RestaurantContext restaurantContext = new RestaurantContext())
             {
                 restaurantContext.Tables.FirstOrDefault(x => x.ID == TableId.tableId).Active = true;
-                if(TableId.orderId > 0)
+                if (TableId.orderId > 0)
                 {
                     restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId).Active = true;
                 }
@@ -100,9 +100,9 @@ namespace Client_App
 
         private void OpenCatalogueBtn_Click(object sender, RoutedEventArgs e)
         {
-            if(TableId.orderId > 0)
+            if (TableId.orderId > 0)
             {
-                if(MessageBox.Show("You have already clicked on Serve Me before, do you want to close the previous order and go to the service itself?","Information",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if (MessageBox.Show("You have already clicked on Serve Me before, do you want to close the previous order and go to the service itself?", "Information", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     using (RestaurantContext restaurantContext = new RestaurantContext())
                     {
@@ -136,15 +136,15 @@ namespace Client_App
 
         private void ServeMe_Click(object sender, RoutedEventArgs e)
         {
-            if(TableId.tableId == 0)
+            if (TableId.tableId == 0)
             {
                 MessageBox.Show("Sorry, all seats are taken");
                 return;
             };
-                using (RestaurantContext restaurantContext = new RestaurantContext())
-                {
-            if (restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == TableId.tableId) == null)
+            using (RestaurantContext restaurantContext = new RestaurantContext())
             {
+                if (restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == TableId.tableId) == null)
+                {
                     var time = DateTime.Now;
                     restaurantContext.Orders.Add(new Order
                     {
@@ -167,7 +167,8 @@ namespace Client_App
         }
         async void ListenAsync()
         {
-            await Task.Run(() => {
+            await Task.Run(() =>
+            {
 
                 while (true)
                 {
