@@ -97,6 +97,11 @@ namespace Waiter_App
                 usersurname.Items.Add(item.SurName);
             }
         }
+        private void usersurname_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (usersurname.SelectedItem != null && username.SelectedItem != null) btnLogin.IsEnabled= true;
+            else { usersurname.IsEnabled = false;}
+        }
         private void GetAccount()
         {
             var waiter = ViewModel.Waiter;
@@ -124,5 +129,7 @@ namespace Waiter_App
                 MessageBox.Show(ex.Message);
             }
         }
+
+        
     }
 }

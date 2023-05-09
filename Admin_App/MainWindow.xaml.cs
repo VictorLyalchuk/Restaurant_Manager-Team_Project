@@ -74,5 +74,17 @@ namespace Admin_App
             this.Close();
             menu.ShowDialog();
         }
+
+        private void txtPass_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if(txtPass.Password.Length > 0 && txtUser.Text.Length > 0) btnLogin.IsEnabled = true;
+            else btnLogin.IsEnabled = false;
+        }
+
+        private void txtUser_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (txtPass.Password.Length > 0 && txtUser.Text.Length > 0) btnLogin.IsEnabled = true;
+            else btnLogin.IsEnabled = false;
+        }
     }
 }

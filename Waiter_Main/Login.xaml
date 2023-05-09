@@ -216,10 +216,10 @@
                              VerticalContentAlignment="Center"
                              Margin="0,5,0,0"
                              Padding="20,0,0,0"
-                             IsEnabled="False">
+                             IsEnabled="False" SelectionChanged="usersurname_SelectionChanged">
                     </ComboBox>
 
-                    <Button x:Name="btnLogin"                          
+                    <Button IsEnabled="False" x:Name="btnLogin"                          
                             BorderThickness="0"
                             Content="LOG IN"
                             Foreground="White"

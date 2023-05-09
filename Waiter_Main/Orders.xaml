@@ -12,7 +12,7 @@
         Background="Transparent"
         AllowsTransparency="True"
         MouseDown="Window_MouseDown"
-        Title="Orders" MinHeight="450" MinWidth="450" Height="550" Width="1200" Icon="img\newlogo.png">
+        Title="Orders" MinHeight="450" MinWidth="950" Height="550" Width="1200" Icon="img\newlogo.png">
     <Border CornerRadius="10"                    
             BorderThickness="1">
 
@@ -161,8 +161,14 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-
-                    <ComboBox Foreground="White" Name="ComboBoxTables" Margin="40,0,40,0" SelectionChanged="ComboBoxTables_SelectionChanged" ItemsSource="{Binding Table}"></ComboBox>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Image Name="WaiterPicture"></Image>
+                        <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" Name="CurrentWaiterLabel" Foreground="White" Margin="40,0,40,0"></Label>
+                    </Grid>
                     <ListBox Name="ListBoxProductsFromOrderByTableNumber" Grid.Row="1" Margin="40,0,40,0">
                     </ListBox>
                     <Button BorderThickness="0"
@@ -345,6 +351,12 @@
                             </LinearGradientBrush>
                         </Border.BorderBrush>
                         <ListBox Name="ListBoxTables" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="30,20,20,10" ItemsSource="{Binding Table}" SelectionChanged="ListBoxTables_SelectionChanged">
+                            <ListBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Click="ReserveTable_Click" Header="Reserve"/>
+                                    <MenuItem Click="UnreserveTable_Click" Header="Unreserve"/>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel IsItemsHost="True"/>
