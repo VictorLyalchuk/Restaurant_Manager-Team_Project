@@ -508,18 +508,26 @@ namespace Waiter_App
 
         private void ReserveTable_Click(object sender, RoutedEventArgs e)
         {
-
+            using (RestaurantContext restaurantContext = new RestaurantContext())
+            {
+                restaurantContext.Tables.FirstOrDefault(x => x.ID == ViewModel.SelectedTable.ID).Active = false;
+                restaurantContext.SaveChanges();
+            }
+            ViewModel.Table.FirstOrDefault(x => x.ID == ViewModel.SelectedTable.ID).Active = false;
         }
-
         private void UnreserveTable_Click(object sender, RoutedEventArgs e)
         {
-
+            using (RestaurantContext restaurantContext = new RestaurantContext())
+            {
+                restaurantContext.Tables.FirstOrDefault(x => x.ID == ViewModel.SelectedTable.ID).Active = true;
+                restaurantContext.SaveChanges();
+            }
+            ViewModel.Table.FirstOrDefault(x => x.ID == ViewModel.SelectedTable.ID).Active = true;
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
             Order order = ViewModel.Orders.FirstOrDefault(x => x.TableId == ViewModel.SelectedTable.ID)!;
-            MessageBox.Show($"{order.ID}");
             var collection = ViewModel.GetProductId(order.ID);
 
 
