@@ -141,25 +141,28 @@ namespace Client_App
                 MessageBox.Show("Sorry, all seats are taken");
                 return;
             };
-            using (RestaurantContext restaurantContext = new RestaurantContext())
+            if (restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == TableId.tableId) == null)
             {
-                var time = DateTime.Now;
-                restaurantContext.Orders.Add(new Order
+                using (RestaurantContext restaurantContext = new RestaurantContext())
                 {
-                    Active = false,
-                    OrderDate = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, 0),
-                    TableId = TableId.tableId,
-                    WaiterId = TableId.RecepientId
-                });
-                restaurantContext.SaveChanges();
+                    var time = DateTime.Now;
+                    restaurantContext.Orders.Add(new Order
+                    {
+                        Active = false,
+                        OrderDate = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, 0),
+                        TableId = TableId.tableId,
+                        WaiterId = TableId.RecepientId
+                    });
+                    restaurantContext.SaveChanges();
 
-                var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == TableId.tableId);
-                TableId.orderId = newOrder.ID;
+                    var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == TableId.tableId);
+                    TableId.orderId = newOrder.ID;
 
-                SendMessage(new LogicClassToRecipient { Function = "$CLIENTJOIN", Id = TableId.orderId });
-                ListenAsync();
+                    SendMessage(new LogicClassToRecipient { Function = "$CLIENTJOIN", Id = TableId.orderId });
+                    ListenAsync();
 
-                SendMessage(new LogicClassToMessage() { Function = "$SENDMESSAGE", RecipientId = TableId.RecepientId, Message = $"• Client at table {TableId.tableId} needs waiter", Order = newOrder });
+                    SendMessage(new LogicClassToMessage() { Function = "$SENDMESSAGE", RecipientId = TableId.RecepientId, Message = $"• Client at table {TableId.tableId} needs waiter", Order = newOrder });
+                }
             }
         }
         async void ListenAsync()
