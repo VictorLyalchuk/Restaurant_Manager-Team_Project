@@ -197,7 +197,8 @@
                             FontFamily="Montserrat"
                             Cursor="Hand"
                             VerticalAlignment="Top"
-                            Style="{StaticResource designBtn2}" Grid.Row="3" Margin="10,5,10,10"  >
+                            Style="{StaticResource designBtn2}" Grid.Row="3" Margin="10,5,10,10"
+                            Click="Accept_Click">
 
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
@@ -350,7 +351,7 @@
                                 <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
                             </LinearGradientBrush>
                         </Border.BorderBrush>
-                        <ListBox Name="ListBoxTables" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="30,20,20,10" ItemsSource="{Binding Table}" SelectionChanged="ListBoxTables_SelectionChanged">
+                        <ListBox Name="ListBoxTables" HorizontalAlignment="Center" VerticalAlignment="Center" SelectedItem="{Binding SelectedTable}"  Margin="30,20,20,10" ItemsSource="{Binding Table}" SelectionChanged="ListBoxTables_SelectionChanged">
                             <ListBox.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Click="ReserveTable_Click" Header="Reserve"/>

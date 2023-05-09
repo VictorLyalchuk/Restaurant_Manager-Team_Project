@@ -32,6 +32,7 @@ using Application = System.Windows.Application;
 using System.Data;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Timers;
 
 namespace Waiter_App
 {
@@ -162,6 +163,18 @@ namespace Waiter_App
                         System.Windows.Application.Current.Dispatcher.Invoke(() =>
                         {
                             ViewModel.AddInNew(new StringClass { Message = logicClassToMessage.Message });
+                            ViewModel.AddInOrders(logicClassToMessage.Order);
+                            ViewModel.Table.FirstOrDefault(x => x.ID == logicClassToMessage.Order.TableId).Active = false;
+                        });
+                    }
+                    else if (logic.Function == "$CLOSE_ORDER")
+                    {
+                        LogicClassToCloseOrder logicClassToMessage = (LogicClassToCloseOrder)logic;
+                        System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            ViewModel.AddInNew(new StringClass { Message = $"• Client at table {logicClassToMessage.TableID} close order" });
+                            ViewModel.Table.FirstOrDefault(x => x.ID == logicClassToMessage.TableID).Active = true;
+                            ViewModel.RemoveInOrders(ViewModel.Orders.FirstOrDefault(x => x.ID == logicClassToMessage.OrderId));
                         });
                     }
                 }
@@ -272,7 +285,25 @@ namespace Waiter_App
         }
         private void Add_Button_Click(object sender, RoutedEventArgs e)
         {
-            CreateOrder();
+            try
+            {
+                using (RestaurantContext restaurantContext = new RestaurantContext())
+                {
+                    var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == ViewModel.SelectedTable.ID);
+                    Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
+                    ViewModel.AddInProductOrder(new ProductOrder
+                    {
+                        OrderId = newOrder.ID,
+                        ProductId = selectedvalue.ID
+                    });
+                    GetOrderItems();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Table {ViewModel.SelectedTable.ID} is not active");
+            }
+
         }
         //private void ComboBoxTables_SelectionChanged(object sender, SelectionChangedEventArgs e)
         //{
@@ -301,8 +332,7 @@ namespace Waiter_App
         private void GetOrderItems()
         {
             ListBoxProductsFromOrderByTableNumber.Items.Clear();
-            Data_Access_Entity.Entities.Table selecTable = (Data_Access_Entity.Entities.Table)ListBoxTables.SelectedValue;
-            Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selecTable.ID)!;
+            Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == ViewModel.SelectedTable.ID)!;
             if (thisorder != null)
             {
                 var b = ViewModel.GetProductId(thisorder.ID);
@@ -412,69 +442,68 @@ namespace Waiter_App
                     ListBoxProductsFromOrderByTableNumber.Items.Add(item);
             }
         }
-
         private void ListBoxProductsFromMenu_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            CreateOrder();
+            
         }
-        private void CreateOrder()
-        {
-            try
-            {
-                if (ListBoxTables.SelectedValue != null && ListBoxProductsFromMenu.SelectedItem != null)
-                {
-                    Data_Access_Entity.Entities.Table selTable = (Data_Access_Entity.Entities.Table)ListBoxTables.SelectedValue;
-                    Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selTable.ID)!;
-                    Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
+        //private void CreateOrder()
+        //{
+        //    try
+        //    {
+        //        if (ListBoxTables.SelectedValue != null && ListBoxProductsFromMenu.SelectedItem != null)
+        //        {
+        //            Data_Access_Entity.Entities.Table selTable = (Data_Access_Entity.Entities.Table)ListBoxTables.SelectedValue;
+        //            Order thisorder = ViewModel.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selTable.ID)!;
+        //            Product selectedvalue = (Product)ListBoxProductsFromMenu.SelectedItem;
 
-                    if (thisorder != null)
-                    {
-                        ViewModel.AddInProductOrder(new ProductOrder
-                        {
-                            OrderId = thisorder.ID,
-                            ProductId = selectedvalue.ID
-                        });
-                    }
-                    else
-                    {
-                        using (RestaurantContext restaurantContext = new RestaurantContext())
-                        {
-                            var time = DateTime.Now;
-                            restaurantContext.Orders.Add(new Order
-                            {
-                                Active = false,
-                                OrderDate = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, 0),
-                                TableId = selTable.ID,
-                                WaiterId = User.ID
-                            });
-                            restaurantContext.SaveChanges();
-                            var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selTable.ID);
-                            ViewModel.AddInOrders(new Order
-                            {
-                                ID = newOrder.ID,
-                                Active = false,
-                                OrderDate = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute,0),
-                                TableId = selTable.ID,
-                                WaiterId = User.ID
-                            });
-                            ViewModel.AddInProductOrder(new ProductOrder
-                            {
-                                OrderId = newOrder.ID,
-                                ProductId = selectedvalue.ID
-                            });
-                        }
-                    }
-                    ViewModel.Table.FirstOrDefault(o => o.ID == selTable.ID)!.Active = false;
-                    GetOrderItems();
-                }
-                else
-                    MessageBox.Show($@"PLease, make your choise first");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
+        //            if (thisorder != null)
+        //            {
+        //                ViewModel.AddInProductOrder(new ProductOrder
+        //                {
+        //                    OrderId = thisorder.ID,
+        //                    ProductId = selectedvalue.ID
+        //                });
+        //            }
+        //            else
+        //            {
+        //                using (RestaurantContext restaurantContext = new RestaurantContext())
+        //                {
+        //                    var time = DateTime.Now;
+        //                    restaurantContext.Orders.Add(new Order
+        //                    {
+        //                        Active = false,
+        //                        OrderDate = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, 0),
+        //                        TableId = selTable.ID,
+        //                        WaiterId = User.ID
+        //                    });
+        //                    restaurantContext.SaveChanges();
+        //                    var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == selTable.ID);
+        //                    ViewModel.AddInOrders(new Order
+        //                    {
+        //                        ID = newOrder.ID,
+        //                        Active = false,
+        //                        OrderDate = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute,0),
+        //                        TableId = selTable.ID,
+        //                        WaiterId = User.ID
+        //                    });
+        //                    ViewModel.AddInProductOrder(new ProductOrder
+        //                    {
+        //                        OrderId = newOrder.ID,
+        //                        ProductId = selectedvalue.ID
+        //                    });
+        //                }
+        //            }
+        //            ViewModel.Table.FirstOrDefault(o => o.ID == selTable.ID)!.Active = false;
+        //            GetOrderItems();
+        //        }
+        //        else
+        //            MessageBox.Show($@"PLease, make your choise first");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
+        //}
         #endregion
 
         private void ReserveTable_Click(object sender, RoutedEventArgs e)
@@ -485,6 +514,29 @@ namespace Waiter_App
         private void UnreserveTable_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Accept_Click(object sender, RoutedEventArgs e)
+        {
+            Order order = ViewModel.Orders.FirstOrDefault(x => x.TableId == ViewModel.SelectedTable.ID)!;
+            MessageBox.Show($"{order.ID}");
+            var collection = ViewModel.GetProductId(order.ID);
+
+
+            using (RestaurantContext restaurantContext = new RestaurantContext())
+            {
+                foreach (var item in collection)
+                    restaurantContext.ProductsOrders.Add(new ProductOrder() { OrderId = order.ID, ProductId = item });
+                restaurantContext.Orders.FirstOrDefault(x => x.ID == order.ID).Active = true;
+                restaurantContext.Tables.FirstOrDefault(x => x.ID == ViewModel.SelectedTable.ID).Active = true;
+                restaurantContext.SaveChanges();
+            }
+
+            ViewModel.RemoveProductOrderToId(order.ID);
+            ViewModel.RemoveInOrders(order);
+            ViewModel.Table.FirstOrDefault(x => x.ID == ViewModel.SelectedTable.ID).Active = true;
+
+            SendMessage(new LogicClassToProducts { Function = "$SENDMESSAGE_TO_CLIENT", RecepietId = order.ID, Products = collection });
         }
     }
 }

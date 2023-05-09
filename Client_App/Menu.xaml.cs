@@ -30,11 +30,13 @@ namespace Client_App
 
         IPEndPoint serverEndPoint;
         UdpClient client;
+        ViewModel ViewModel = new ViewModel();
 
         public Menu()
         {
             InitializeComponent();
             GenerateTable();
+            GetProducts();
             #region Connect to server
             client = new UdpClient();
             string serverAddress = ConfigurationManager.AppSettings["ServerAddress"]!;
@@ -98,6 +100,21 @@ namespace Client_App
 
         private void OpenCatalogueBtn_Click(object sender, RoutedEventArgs e)
         {
+            if(TableId.orderId > 0)
+            {
+                if(MessageBox.Show("You have already clicked on Serve Me before, do you want to close the previous order and go to the service itself?","Information",MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    using (RestaurantContext restaurantContext = new RestaurantContext())
+                    {
+                        restaurantContext.Tables.FirstOrDefault(x => x.ID == TableId.tableId).Active = true;
+                        restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId).Active = true;
+                        restaurantContext.SaveChanges();
+                    }
+                    SendMessage(new LogicClassToCloseOrder() { Function = "$CLOSE_ORDER", OrderId = TableId.orderId, RecipientId = TableId.RecepientId, TableID = TableId.tableId });
+                    TableId.orderId = 0;
+                }
+
+            }
             Orders order = new Orders();
             this.Close();
             order.ShowDialog();
@@ -124,7 +141,85 @@ namespace Client_App
                 MessageBox.Show("Sorry, all seats are taken");
                 return;
             };
-            SendMessage(new LogicClassToMessage() { Function = "$SENDMESSAGE", RecipientId = TableId.RecepientId, Message = $"• Client at table {TableId.tableId} needs waiter" });
+            using (RestaurantContext restaurantContext = new RestaurantContext())
+            {
+                var time = DateTime.Now;
+                restaurantContext.Orders.Add(new Order
+                {
+                    Active = false,
+                    OrderDate = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, 0),
+                    TableId = TableId.tableId,
+                    WaiterId = TableId.RecepientId
+                });
+                restaurantContext.SaveChanges();
+
+                var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == TableId.tableId);
+                TableId.orderId = newOrder.ID;
+
+                SendMessage(new LogicClassToRecipient { Function = "$CLIENTJOIN", Id = TableId.orderId });
+                ListenAsync();
+
+                SendMessage(new LogicClassToMessage() { Function = "$SENDMESSAGE", RecipientId = TableId.RecepientId, Message = $"• Client at table {TableId.tableId} needs waiter", Order = newOrder });
+            }
+        }
+        async void ListenAsync()
+        {
+            await Task.Run(() => {
+
+                while (true)
+                {
+                    byte[] data = client.Receive(ref serverEndPoint);
+                    LogicClass message = (LogicClass)ConvertFromBytes(data);
+
+                    if (message.Function == "$SENDMESSAGE_TO_CLIENT")
+                    {
+                        LogicClassToProducts logic = (LogicClassToProducts)message;
+                        List<Product> products = new List<Product>();
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            products = ViewModel.GetProductObj(logic.Products);
+                        });
+                        double sum = 0;
+                        foreach (Product product in products) { sum += product.Price; }
+                        using (RestaurantContext restaurantContext = new RestaurantContext())
+                        {
+                            var order = restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId);
+                            var waiter = restaurantContext.Waiters.FirstOrDefault(x => x.ID == TableId.RecepientId);
+                            restaurantContext.Orders.FirstOrDefault(x => x.ID == TableId.orderId).TotalSum = sum;
+                            restaurantContext.SaveChanges();
+
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                Receipt window = new Receipt(products, waiter, sum);
+                                this.Close();
+                                window.ShowDialog();
+                            });
+                        }
+
+
+                    }
+                }
+
+            });
+        }
+        public object ConvertFromBytes(byte[] data)
+        {
+            using (var memStream = new MemoryStream())
+            {
+                try
+                {
+                    var binForm = new BinaryFormatter();
+                    memStream.Write(data, 0, data.Length);
+                    memStream.Seek(0, SeekOrigin.Begin);
+                    object obj = binForm.Deserialize(memStream);
+                    return obj;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    throw;
+                }
+            }
         }
         private void GenerateTable()
         {
@@ -156,6 +251,24 @@ namespace Client_App
             StaffRating rating = new StaffRating();
             this.Close();
             rating.Show();
+        }
+        private void GetProducts()
+        {
+            try
+            {
+                using (RestaurantContext restaurantContext = new RestaurantContext())
+                {
+                    var products = restaurantContext.Products;
+                    foreach (var item in products)
+                    {
+                        ViewModel.AddInProduct(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
