@@ -37,6 +37,7 @@ namespace Client_App
             InitializeComponent();
             GenerateTable();
             GetProducts();
+            TableId.orderId = 0;
             #region Connect to server
             client = new UdpClient();
             string serverAddress = ConfigurationManager.AppSettings["ServerAddress"]!;
@@ -143,23 +144,27 @@ namespace Client_App
             };
             using (RestaurantContext restaurantContext = new RestaurantContext())
             {
-                var time = DateTime.Now;
-                restaurantContext.Orders.Add(new Order
+                if (restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == TableId.tableId) == null)
                 {
-                    Active = false,
-                    OrderDate = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, 0),
-                    TableId = TableId.tableId,
-                    WaiterId = TableId.RecepientId
-                });
-                restaurantContext.SaveChanges();
+                    var time = DateTime.Now;
+                    restaurantContext.Orders.Add(new Order
+                    {
+                        Active = false,
+                        OrderDate = new DateTime(time.Year, time.Month, time.Day, time.Hour, time.Minute, 0),
+                        TableId = TableId.tableId,
+                        WaiterId = TableId.RecepientId
+                    });
+                    restaurantContext.SaveChanges();
 
-                var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == TableId.tableId);
-                TableId.orderId = newOrder.ID;
+                    var newOrder = restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == TableId.tableId);
+                    TableId.orderId = newOrder.ID;
 
-                SendMessage(new LogicClassToRecipient { Function = "$CLIENTJOIN", Id = TableId.orderId });
-                ListenAsync();
 
-                SendMessage(new LogicClassToMessage() { Function = "$SENDMESSAGE", RecipientId = TableId.RecepientId, Message = $"• Client at table {TableId.tableId} needs waiter", Order = newOrder });
+                    SendMessage(new LogicClassToRecipient { Function = "$CLIENTJOIN", Id = TableId.orderId });
+                    ListenAsync();
+
+                    SendMessage(new LogicClassToMessage() { Function = "$SENDMESSAGE", RecipientId = TableId.RecepientId, Message = $"• Client at table {TableId.tableId} needs waiter", Order = newOrder });
+                }
             }
         }
         async void ListenAsync()
