@@ -207,9 +207,10 @@ namespace Waiter_App
             {
                 var w = ViewModel.Waiter.Where(x => x.ID == User.ID).FirstOrDefault();
                 CurrentWaiterLabel.Content = w.FirstName + " " + w.SurName;
-                var dir = Directory.GetCurrentDirectory() + @"\waiters";
-                var pics = Directory.GetFiles(dir);
+                string workingDirectory = Environment.CurrentDirectory;
+                string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName + @"\img\waiters";
                 string path = @"/img/waiters/";
+                var pics = Directory.GetFiles(projectDirectory);
                 foreach (var item in pics)
                 {
                     if (System.IO.Path.GetFileNameWithoutExtension(item) == User.ID.ToString())
@@ -223,8 +224,6 @@ namespace Waiter_App
             {
                 MessageBox.Show(ex.Message);
             }
-            
-            
         }
         private void ActiveOrderLBItem_DoubleClick(object sender, MouseButtonEventArgs e)
         {
