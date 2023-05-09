@@ -141,10 +141,10 @@ namespace Client_App
                 MessageBox.Show("Sorry, all seats are taken");
                 return;
             };
-            if (restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == TableId.tableId) == null)
-            {
                 using (RestaurantContext restaurantContext = new RestaurantContext())
                 {
+            if (restaurantContext.Orders.FirstOrDefault(o => o.Active == false && o.TableId == TableId.tableId) == null)
+            {
                     var time = DateTime.Now;
                     restaurantContext.Orders.Add(new Order
                     {
