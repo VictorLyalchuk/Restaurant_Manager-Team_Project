@@ -38,7 +38,7 @@ namespace Data_Access_Entity
             modelBuilder.Entity<ProductOrder>().HasOne(p => p.Product).WithMany(p => p.ProductsOrders).HasForeignKey(p => p.ProductId);
             modelBuilder.Entity<ProductOrder>().HasOne(o => o.Order).WithMany(o => o.ProductsOrders).HasForeignKey(o => o.OrderId);
             modelBuilder.Entity<Order>().HasOne(o => o.Waiter).WithMany(w => w.Orders).HasForeignKey(o => o.WaiterId);
-            modelBuilder.Entity<Table>().HasOne(t => t.Waiter).WithMany(w => w.Tables).HasForeignKey(t => t.WaiterId);
+            //modelBuilder.Entity<Table>().HasOne(t => t.Waiter).WithMany(w => w.Tables).HasForeignKey(t => t.WaiterId);
         }
     }
 }

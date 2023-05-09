@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data_Access_Entity.Migrations
 {
-    public partial class _08052023_Iniz : Migration
+    public partial class _10052023_Iniz : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -104,7 +104,7 @@ namespace Data_Access_Entity.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    WaiterId = table.Column<int>(type: "int", nullable: false),
+                    WaiterId = table.Column<int>(type: "int", nullable: true),
                     Active = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -114,8 +114,7 @@ namespace Data_Access_Entity.Migrations
                         name: "FK_Tables_Waiters_WaiterId",
                         column: x => x.WaiterId,
                         principalTable: "Waiters",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
@@ -162,6 +161,16 @@ namespace Data_Access_Entity.Migrations
                     { 6, "Burgers" },
                     { 7, "Desserts" },
                     { 8, "Drinks" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Tables",
+                columns: new[] { "ID", "Active", "WaiterId" },
+                values: new object[,]
+                {
+                    { 11, true, null },
+                    { 12, true, null },
+                    { 13, true, null }
                 });
 
             migrationBuilder.InsertData(
