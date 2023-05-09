@@ -564,7 +564,7 @@
                                     <DataGridTextColumn Header="Waiter" Binding="{Binding Waiter}"></DataGridTextColumn>
                                     <DataGridCheckBoxColumn Header="Table availability" Binding="{Binding Active}"></DataGridCheckBoxColumn>
                                     <DataGridTextColumn Header="Table number" Binding="{Binding TableId}"></DataGridTextColumn>
-                                    <DataGridTextColumn Header="Price of order, $" Binding="{Binding TotalSum}"></DataGridTextColumn>
+                                    <DataGridTextColumn Header="Price of order, $" Binding="{Binding TotalSum, StringFormat={}{0:#.00}}"></DataGridTextColumn>
 
                                 </DataGrid.Columns>
                             </DataGrid>
