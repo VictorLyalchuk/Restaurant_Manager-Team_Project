@@ -199,11 +199,8 @@ namespace Client_App
                                 window.ShowDialog();
                             });
                         }
-
-
                     }
                 }
-
             });
         }
         public object ConvertFromBytes(byte[] data)
@@ -236,7 +233,7 @@ namespace Client_App
 
             foreach (var item in Tables)
             {
-                if (item.Active == true)
+                if (item.Active == true && item.WaiterId != null)
                 {
                     TableId.tableId = item.ID;
                     TableId.RecepientId = (int)item.WaiterId;

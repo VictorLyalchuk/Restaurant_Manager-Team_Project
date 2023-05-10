@@ -179,6 +179,21 @@ namespace Data_Access_Entity.Helpers
                     WaiterId = 5,
                     Active = true
                 },
+                new Table()
+                {
+                    ID = 11,
+                    Active = true
+                },
+                new Table()
+                {
+                    ID = 12,
+                    Active = true
+                },
+                new Table()
+                {
+                    ID = 13,
+                    Active = true
+                },
             });
         }
         public static void SeedProducts(this ModelBuilder modelBuilder)

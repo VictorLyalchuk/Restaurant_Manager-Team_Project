@@ -481,7 +481,7 @@ namespace Data_Access_Entity.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<int>("WaiterId")
+                    b.Property<int?>("WaiterId")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -550,6 +550,21 @@ namespace Data_Access_Entity.Migrations
                             ID = 10,
                             Active = true,
                             WaiterId = 5
+                        },
+                        new
+                        {
+                            ID = 11,
+                            Active = true
+                        },
+                        new
+                        {
+                            ID = 12,
+                            Active = true
+                        },
+                        new
+                        {
+                            ID = 13,
+                            Active = true
                         });
                 });
 
@@ -683,9 +698,7 @@ namespace Data_Access_Entity.Migrations
                 {
                     b.HasOne("Data_Access_Entity.Entities.Waiter", "Waiter")
                         .WithMany("Tables")
-                        .HasForeignKey("WaiterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("WaiterId");
 
                     b.Navigation("Waiter");
                 });

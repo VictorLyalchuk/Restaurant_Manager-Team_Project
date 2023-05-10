@@ -92,7 +92,6 @@ namespace Admin_App
                 {
                     if (!Edit)
                     {
-
                         restaurantContext.Waiters.Add(new Waiter
                         {
                             FirstName = TextBoxName.Text,
@@ -116,6 +115,7 @@ namespace Admin_App
                         MessageBox.Show("Waiter updated", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
+                UpdateTableInWaiter();
             }
             else
                 MessageBox.Show("Please fill in all values", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -131,8 +131,8 @@ namespace Admin_App
             PickerAcceptDate.SelectedDate = waiter.StartWorkingDate;
             foreach (var item in waiter.Tables)
             {
-                TablesLB.Items.Add(item.ID.ToString());
-                TablesLB.SelectedItems.Add(item.ID.ToString());
+                TablesLB.Items.Add(item.ID);
+                TablesLB.SelectedItems.Add(item.ID);
             }
         }
         private void SetTables()
@@ -141,9 +141,34 @@ namespace Admin_App
             {
                 foreach (var item in restaurantContext.Tables)
                 {
-                    if (item.WaiterId == 0)
-                        TablesLB.Items.Add(item.ID.ToString());
+                    if (item.WaiterId == null)
+                        TablesLB.Items.Add(item.ID);
                 }
+            }
+        }
+        private void UpdateTableInWaiter()
+        {
+            try
+            {
+                using (RestaurantContext restaurantContext = new RestaurantContext())
+                {
+                    var collTable = restaurantContext.Tables.Where(t => t.WaiterId == IDW);
+                    foreach (var item in collTable)
+                    {
+                        item.WaiterId = null;
+                    }
+                    var selectedTables = TablesLB.SelectedItems;
+                    foreach (var item in selectedTables)
+                    {
+                        restaurantContext.Tables.FirstOrDefault(t => t.ID == (int)item)!.WaiterId = IDW;
+                    }
+                    restaurantContext.SaveChanges();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }

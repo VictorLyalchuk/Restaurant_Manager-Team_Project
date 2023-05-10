@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access_Entity.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20230507233857_08.05.2023_Iniz")]
-    partial class _08052023_Iniz
+    [Migration("20230509223253_10.05.2023_Iniz")]
+    partial class _10052023_Iniz
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -483,7 +483,7 @@ namespace Data_Access_Entity.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<int>("WaiterId")
+                    b.Property<int?>("WaiterId")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -552,6 +552,21 @@ namespace Data_Access_Entity.Migrations
                             ID = 10,
                             Active = true,
                             WaiterId = 5
+                        },
+                        new
+                        {
+                            ID = 11,
+                            Active = true
+                        },
+                        new
+                        {
+                            ID = 12,
+                            Active = true
+                        },
+                        new
+                        {
+                            ID = 13,
+                            Active = true
                         });
                 });
 
@@ -685,9 +700,7 @@ namespace Data_Access_Entity.Migrations
                 {
                     b.HasOne("Data_Access_Entity.Entities.Waiter", "Waiter")
                         .WithMany("Tables")
-                        .HasForeignKey("WaiterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("WaiterId");
 
                     b.Navigation("Waiter");
                 });
