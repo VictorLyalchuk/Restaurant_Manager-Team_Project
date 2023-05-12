@@ -101,6 +101,7 @@ namespace Admin_App
                             StartWorkingDate = PickerAcceptDate.SelectedDate.Value
                         });
                         restaurantContext.SaveChanges();
+                        IDW = restaurantContext.Waiters.OrderBy(a => a.ID).LastOrDefault()!.ID;
                         MessageBox.Show("Waiter successfully added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
